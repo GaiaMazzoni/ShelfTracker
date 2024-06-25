@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.traveldiary"
+    namespace = "com.example.shelftracker"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.traveldiary"
+        applicationId = "com.example.shelftracker"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
