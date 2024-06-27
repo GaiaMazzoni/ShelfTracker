@@ -51,9 +51,9 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
-                onClick = { navController.navigate(ShelfTrackerRoute.AddTravel.route) }
+                onClick = { navController.navigate(ShelfTrackerRoute.AddBook.route) }
             ) {
-                Icon(Icons.Outlined.Add, "Add Travel")
+                Icon(Icons.Outlined.Add, "Add Book")
             }
         },
     ) { contentPadding ->
@@ -69,7 +69,7 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
                     TravelItem(
                         item,
                         onClick = {
-                            navController.navigate(ShelfTrackerRoute.TravelDetails.buildRoute(item.id.toString()))
+                            navController.navigate(ShelfTrackerRoute.BookDetails.buildRoute(item.id.toString()))
                         }
                     )
                 }
@@ -158,7 +158,7 @@ fun NoItemsPlaceholder(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            "Tap the + button to add a new place.",
+            "Tap the + button to add a new book.",
             style = MaterialTheme.typography.bodyLarge
         )
     }

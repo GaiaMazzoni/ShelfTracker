@@ -31,7 +31,7 @@ fun ImageWithPlaceholder(uri: Uri?, size: Size) {
                 .data(uri)
                 .crossfade(true)
                 .build(),
-            "Travel picture",
+            "Cover picture",
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .size(if (size == Size.Sm) 72.dp else 128.dp)
@@ -40,7 +40,7 @@ fun ImageWithPlaceholder(uri: Uri?, size: Size) {
     } else {
         Image(
             Icons.Outlined.Image,
-            "Travel picture",
+            "Cover picture",
             contentScale = ContentScale.Fit,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary),
             modifier = Modifier

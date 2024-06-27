@@ -10,12 +10,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.shelftracker.ui.screens.addtravel.AddTravelScreen
-import com.example.shelftracker.ui.screens.addtravel.AddTravelViewModel
+import com.example.shelftracker.ui.screens.addbook.AddBookScreen
+import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 import com.example.shelftracker.ui.screens.home.HomeScreen
 import com.example.shelftracker.ui.screens.settings.SettingsScreen
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
-import com.example.shelftracker.ui.screens.traveldetails.TravelDetailsScreen
+import com.example.shelftracker.ui.screens.bookdetails.BookDetailsScreen
 import org.koin.androidx.compose.koinViewModel
 
 sealed class ShelfTrackerRoute(
@@ -23,19 +23,19 @@ sealed class ShelfTrackerRoute(
     val title: String,
     val arguments: List<NamedNavArgument> = emptyList()
 ) {
-    data object Home : ShelfTrackerRoute("travels", "TravelDiary")
-    data object TravelDetails : ShelfTrackerRoute(
-        "travels/{travelId}",
-        "Travel Details",
-        listOf(navArgument("travelId") { type = NavType.StringType })
+    data object Home : ShelfTrackerRoute("books", "ShelfTracker")
+    data object BookDetails : ShelfTrackerRoute(
+        "books/{bookId}",
+        "Book Details",
+        listOf(navArgument("bookId") { type = NavType.StringType })
     ) {
-        fun buildRoute(travelId: String) = "travels/$travelId"
+        fun buildRoute(bookId: String) = "books/$bookId"
     }
-    data object AddTravel : ShelfTrackerRoute("travels/add", "Add Travel")
+    data object AddBook : ShelfTrackerRoute("books/add", "Add Book")
     data object Settings : ShelfTrackerRoute("settings", "Settings")
 
     companion object {
-        val routes = setOf(Home, TravelDetails, AddTravel, Settings)
+        val routes = setOf(Home, BookDetails, AddBook, Settings)
     }
 }
 
@@ -57,21 +57,21 @@ fun ShelfTrackerNavGraph(
                 HomeScreen(placesState, navController)
             }
         }
-        with(ShelfTrackerRoute.TravelDetails) {
+        with(ShelfTrackerRoute.BookDetails) {
             composable(route, arguments) { backStackEntry ->
                 val place = requireNotNull(placesState.places.find {
-                    it.id == backStackEntry.arguments?.getString("travelId")?.toInt()
+                    it.id == backStackEntry.arguments?.getString("bookId")?.toInt()
                 })
-                TravelDetailsScreen(place)
+                BookDetailsScreen(place)
             }
         }
-        with(ShelfTrackerRoute.AddTravel) {
+        with(ShelfTrackerRoute.AddBook) {
             composable(route) {
-                val addTravelVm = koinViewModel<AddTravelViewModel>()
-                val state by addTravelVm.state.collectAsStateWithLifecycle()
-                AddTravelScreen(
+                val addBookVm = koinViewModel<AddBookViewModel>()
+                val state by addBookVm.state.collectAsStateWithLifecycle()
+                AddBookScreen(
                     state = state,
-                    actions = addTravelVm.actions,
+                    actions = addBookVm.actions,
                     onSubmit = { placesVm.addPlace(state.toPlace()) },
                     navController = navController
                 )

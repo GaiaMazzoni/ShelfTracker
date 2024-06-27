@@ -8,7 +8,7 @@ import com.example.shelftracker.data.remote.OSMDataSource
 import com.example.shelftracker.data.repositories.PlacesRepository
 import com.example.shelftracker.data.repositories.SettingsRepository
 import com.example.shelftracker.ui.PlacesViewModel
-import com.example.shelftracker.ui.screens.addtravel.AddTravelViewModel
+import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.utils.LocationService
 import io.ktor.client.HttpClient
@@ -57,7 +57,7 @@ val appModule = module {
         )
     }
 
-    viewModel { AddTravelViewModel() }
+    viewModel { AddBookViewModel() }
 
     viewModel { SettingsViewModel(get()) }
 

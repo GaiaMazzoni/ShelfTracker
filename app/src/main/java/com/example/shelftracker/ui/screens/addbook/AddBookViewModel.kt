@@ -1,4 +1,4 @@
-package com.example.shelftracker.ui.screens.addtravel
+package com.example.shelftracker.ui.screens.addbook
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-data class AddTravelState(
+data class AddBookState(
     val destination: String = "",
     val date: String = "",
     val description: String = "",
@@ -28,7 +28,7 @@ data class AddTravelState(
     )
 }
 
-interface AddTravelActions {
+interface AddBookActions {
     fun setDestination(title: String)
     fun setDate(date: String)
     fun setDescription(description: String)
@@ -40,11 +40,11 @@ interface AddTravelActions {
     fun setShowNoInternetConnectivitySnackbar(show: Boolean)
 }
 
-class AddTravelViewModel : ViewModel() {
-    private val _state = MutableStateFlow(AddTravelState())
+class AddBookViewModel : ViewModel() {
+    private val _state = MutableStateFlow(AddBookState())
     val state = _state.asStateFlow()
 
-    val actions = object : AddTravelActions {
+    val actions = object : AddBookActions {
         override fun setDestination(title: String) =
             _state.update { it.copy(destination = title) }
 

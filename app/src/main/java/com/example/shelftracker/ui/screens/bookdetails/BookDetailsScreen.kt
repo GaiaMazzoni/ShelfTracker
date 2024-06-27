@@ -1,4 +1,4 @@
-package com.example.shelftracker.ui.screens.traveldetails
+package com.example.shelftracker.ui.screens.bookdetails
 
 import android.content.Intent
 import android.net.Uri
@@ -25,7 +25,7 @@ import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
 
 @Composable
-fun TravelDetailsScreen(place: Place) {
+fun BookDetailsScreen(place: Place) {
     val ctx = LocalContext.current
 
     fun shareDetails() {
@@ -34,7 +34,7 @@ fun TravelDetailsScreen(place: Place) {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, place.name)
         }
-        val shareIntent = Intent.createChooser(sendIntent, "Share travel")
+        val shareIntent = Intent.createChooser(sendIntent, "Share book")
         if (shareIntent.resolveActivity(ctx.packageManager) != null) {
             ctx.startActivity(shareIntent)
         }
@@ -46,7 +46,7 @@ fun TravelDetailsScreen(place: Place) {
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = ::shareDetails
             ) {
-                Icon(Icons.Outlined.Share, "Share Travel")
+                Icon(Icons.Outlined.Share, "Share Book")
             }
         },
     ) { contentPadding ->

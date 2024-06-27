@@ -1,4 +1,4 @@
-package com.example.shelftracker.ui.screens.addtravel
+package com.example.shelftracker.ui.screens.addbook
 
 import android.Manifest
 import android.content.Context
@@ -52,9 +52,9 @@ import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
 
 @Composable
-fun AddTravelScreen(
-    state: AddTravelState,
-    actions: AddTravelActions,
+fun AddBookScreen(
+    state: AddBookState,
+    actions: AddBookActions,
     onSubmit: () -> Unit,
     navController: NavHostController
 ) {
@@ -161,7 +161,7 @@ fun AddTravelScreen(
                     navController.navigateUp()
                 }
             ) {
-                Icon(Icons.Outlined.Check, "Add Travel")
+                Icon(Icons.Outlined.Check, "Add Book")
             }
         },
     ) { contentPadding ->
