@@ -7,13 +7,13 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface PlacesDAO {
-    @Query("SELECT * FROM place ORDER BY name ASC")
-    fun getAll(): Flow<List<Place>>
+interface BooksDAO {
+    @Query("SELECT * FROM book ORDER BY title ASC")
+    fun getAll(): Flow<List<Book>>
 
     @Upsert
-    suspend fun upsert(place: Place)
+    suspend fun upsert(book: Book)
 
     @Delete
-    suspend fun delete(item: Place)
+    suspend fun delete(item: Book)
 }

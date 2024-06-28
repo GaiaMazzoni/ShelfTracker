@@ -2,15 +2,18 @@ package com.example.shelftracker.ui.screens.addbook
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.shelftracker.data.database.Place
+import com.example.shelftracker.data.database.Book
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class AddBookState(
-    val destination: String = "",
-    val date: String = "",
-    val description: String = "",
+    val title: String = "",
+    val author: String = "",
+    val personalDeadline: String = "",
+    val library: String = "",
+    val libraryDeadline: String = "",
+    val pagesRead: Int = 0,
     val imageUri: Uri = Uri.EMPTY,
 
     val showLocationDisabledAlert: Boolean = false,
@@ -18,20 +21,23 @@ data class AddBookState(
     val showLocationPermissionPermanentlyDeniedSnackbar: Boolean = false,
     val showNoInternetConnectivitySnackbar: Boolean = false
 ) {
-    val canSubmit get() = destination.isNotBlank() && date.isNotBlank() && description.isNotBlank()
+    val canSubmit get() = author.isNotBlank() && title.isNotBlank()
 
-    fun toPlace() = Place(
-        name = destination,
-        description =  description,
-        date = date,
-        imageUri = imageUri.toString()
+    fun toBook() = Book(
+        title = title,
+        author = author,
+        personalDeadline = personalDeadline,
+        library = library,
+        libraryDeadline =  libraryDeadline,
+        pagesRead = pagesRead,
+        coverUri = imageUri.toString()
     )
 }
 
 interface AddBookActions {
-    fun setDestination(title: String)
-    fun setDate(date: String)
-    fun setDescription(description: String)
+    fun setTitle(title: String)
+    fun setAuthor(author: String)
+
     fun setImageUri(imageUri: Uri)
 
     fun setShowLocationDisabledAlert(show: Boolean)
@@ -45,14 +51,11 @@ class AddBookViewModel : ViewModel() {
     val state = _state.asStateFlow()
 
     val actions = object : AddBookActions {
-        override fun setDestination(title: String) =
-            _state.update { it.copy(destination = title) }
+        override fun setTitle(title: String) =
+            _state.update { it.copy(title = title) }
 
-        override fun setDate(date: String) =
-            _state.update { it.copy(date = date) }
-
-        override fun setDescription(description: String) =
-            _state.update { it.copy(description = description) }
+        override fun setAuthor(author: String) =
+            _state.update { it.copy(author = author) }
 
         override fun setImageUri(imageUri: Uri) =
             _state.update { it.copy(imageUri = imageUri) }

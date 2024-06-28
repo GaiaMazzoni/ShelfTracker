@@ -52,7 +52,7 @@ val appModule = module {
 
     single {
         PlacesRepository(
-            get<ShelfTrackerDatabase>().placesDAO(),
+            get<ShelfTrackerDatabase>().booksDAO(),
             get<Context>().applicationContext.contentResolver
         )
     }

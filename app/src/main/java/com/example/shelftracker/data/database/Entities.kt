@@ -5,19 +5,28 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Place (
+data class Book (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
     @ColumnInfo
-    val name: String,
+    val title: String,
 
     @ColumnInfo
-    val date: String,
+    val author: String,
 
     @ColumnInfo
-    val description: String,
+    val personalDeadline: String,
 
     @ColumnInfo
-    val imageUri: String?
+    val library: String,
+
+    @ColumnInfo
+    val libraryDeadline: String,
+
+    @ColumnInfo
+    val pagesRead: Int = 0,
+
+    @ColumnInfo
+    val coverUri: String?
 )
