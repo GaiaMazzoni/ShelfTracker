@@ -6,14 +6,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -58,15 +62,13 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
         },
     ) { contentPadding ->
         if (state.places.isNotEmpty()) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+            LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(8.dp, 8.dp, 8.dp, 80.dp),
+                contentPadding = PaddingValues(16.dp, 8.dp),
                 modifier = Modifier.padding(contentPadding)
             ) {
                 items(state.places) { item ->
-                    TravelItem(
+                    BookItem(
                         item,
                         onClick = {
                             navController.navigate(ShelfTrackerRoute.BookDetails.buildRoute(item.id.toString()))
@@ -82,59 +84,66 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TravelItem(item: Place, onClick: () -> Unit) {
+fun BookItem(item: Place, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = Modifier
-            .size(150.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            val imageUri = Uri.parse(item.imageUri)
-            ImageWithPlaceholder(imageUri, Size.Sm)
-            /*if (imageUri.path?.isNotEmpty() == true) {
-                AsyncImage(
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(imageUri)
-                        .crossfade(true)
-                        .build(),
-                    "Travel picture",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(CircleShape)
+        Row{
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                val imageUri = Uri.parse(item.imageUri)
+                ImageWithPlaceholder(imageUri, Size.Sm)
+                /*if (imageUri.path?.isNotEmpty() == true) {
+                    AsyncImage(
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(imageUri)
+                            .crossfade(true)
+                            .build(),
+                        "Travel picture",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .size(72.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        Icons.Outlined.Image,
+                        "Travel picture",
+                        contentScale = ContentScale.Fit,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary),
+                        modifier = Modifier
+                            .size(72.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.secondary)
+                            .padding(20.dp)
+                    )
+                }*/
+            }
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    item.name,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.bodyMedium
                 )
-            } else {
-                Image(
-                    Icons.Outlined.Image,
-                    "Travel picture",
-                    contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondary)
-                        .padding(20.dp)
+                Text(
+                    "provo",
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.bodyMedium
                 )
-            }*/
-            Spacer(Modifier.size(8.dp))
-            Text(
-                item.name,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
+            }
         }
     }
+
 }
 
 @Composable
