@@ -1,5 +1,9 @@
 package com.example.shelftracker.ui.screens.addbook
 
+
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -36,7 +40,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +53,8 @@ import com.example.shelftracker.ui.composables.Size
 import com.example.shelftracker.utils.LocationService
 import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
+import java.util.Calendar
+import android.app.DatePickerDialog
 
 @Composable
 fun AddBookScreen(
@@ -60,6 +65,22 @@ fun AddBookScreen(
 ) {
     val ctx = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val selectedDate = remember { mutableStateOf("") }
+
+
+    fun showDatePicker(){
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
+            val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            selectedDate.value = formattedDate
+            actions.setDate(formattedDate)
+        }, year, month, day).show()
+    }
 
     // Camera
 
@@ -173,10 +194,31 @@ fun AddBookScreen(
                 .padding(12.dp)
                 .fillMaxSize()
         ) {
-            OutlinedTextField(
+            OutlinedTextField( //Field per inserimento Titolo
+                value = state.description,
+                onValueChange = actions::setDescription,
+                label = { Text("Title") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField( //Field per autore
+                value = state.description,
+                onValueChange = actions::setDescription,
+                label = { Text("Author") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField( // Field per inserimento della deadline personale
+                value = selectedDate.value,
+                onValueChange = {actions.setDate(it)},
+                label = { Text("Personal deadline") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showDatePicker() },
+                readOnly = true
+            )
+            OutlinedTextField( //Field per inserimento della biblioteca
                 value = state.destination,
                 onValueChange = actions::setDestination,
-                label = { Text("Destination") },
+                label = { Text("Library") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     IconButton(onClick = ::requestLocation) {
@@ -184,16 +226,17 @@ fun AddBookScreen(
                     }
                 }
             )
-            OutlinedTextField(
-                value = state.date,
-                onValueChange = actions::setDate,
-                label = { Text("Date") },
-                modifier = Modifier.fillMaxWidth()
+            OutlinedTextField( // Field per inserimento della data di riconsegna
+                modifier = Modifier.fillMaxWidth().clickable { showDatePicker() },
+                value = selectedDate.value,
+                label = { Text("Library deadline") },
+                onValueChange = {},
+                readOnly = true
             )
-            OutlinedTextField(
+            OutlinedTextField( //Field per numero di pagine
                 value = state.description,
                 onValueChange = actions::setDescription,
-                label = { Text("Description") },
+                label = { Text("Number of pages") },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.size(24.dp))
