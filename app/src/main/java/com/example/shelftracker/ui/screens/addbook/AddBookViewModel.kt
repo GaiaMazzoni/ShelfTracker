@@ -37,7 +37,10 @@ data class AddBookState(
 interface AddBookActions {
     fun setTitle(title: String)
     fun setAuthor(author: String)
-
+    fun setPersonalDeadline(deadline: String)
+    fun setLibrary(library: String)
+    fun setLibraryDeadline(deadline: String)
+    fun setTotalPages(pages: Int)
     fun setImageUri(imageUri: Uri)
 
     fun setShowLocationDisabledAlert(show: Boolean)
@@ -56,6 +59,18 @@ class AddBookViewModel : ViewModel() {
 
         override fun setAuthor(author: String) =
             _state.update { it.copy(author = author) }
+
+        override fun setPersonalDeadline(deadline: String)  =
+            _state.update { it.copy(personalDeadline = deadline) }
+
+        override fun setLibrary(library: String)  =
+            _state.update { it.copy(library = library) }
+
+        override fun setLibraryDeadline(deadline: String)  =
+            _state.update { it.copy(libraryDeadline = deadline) }
+
+        override fun setTotalPages(pages: Int)  =
+            _state.update { it.copy(totalPages = pages) }
 
         override fun setImageUri(imageUri: Uri) =
             _state.update { it.copy(imageUri = imageUri) }

@@ -180,7 +180,7 @@ fun AddBookScreen(
             return@LaunchedEffect
         }
         val place = osmDataSource.getPlace(locationService.coordinates!!)
-        //actions.setDestination(place.displayName)
+        actions.setLibrary(place.displayName)
     }
 
     // UI
@@ -241,12 +241,12 @@ fun AddBookScreen(
                     .clickable { showDatePicker() },
                 value = state.personalDeadline,
                 label = { Text("PersonalDeadline") },
-                onValueChange = {/*actions.setPersonalDeadline(selectedDate)*/},
+                onValueChange = {actions.setPersonalDeadline(selectedDate.value)},
                 enabled = false
             )
             OutlinedTextField( //Field per inserimento della biblioteca
                 value = state.library,
-                onValueChange = {/*actions.setLibrary(it)*/},
+                onValueChange = {actions.setLibrary(it)},
                 label = { Text("Library") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
@@ -261,14 +261,14 @@ fun AddBookScreen(
                     .clickable { showDatePicker() },
                 value = state.libraryDeadline,
                 label = { Text("Library deadline") },
-                onValueChange = {/*actions.setLibraryDeadline(selectedDate)*/},
+                onValueChange = {actions.setLibraryDeadline(selectedDate.value)},
                 enabled = false
             )
             OutlinedTextField( //Field per numero di pagine
                 modifier = Modifier.fillMaxWidth(),
                 value = state.totalPages.toString(),
                 label = { Text("Total Pages") },
-                onValueChange = {/*actions.setTotalPages(it)*/},
+                onValueChange = {actions.setTotalPages(it.toInt())},
             )
         }
     }
