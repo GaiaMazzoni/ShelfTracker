@@ -101,12 +101,12 @@ fun AddBookScreen(
         }
     }
 
-    val galleryLauncher = rem
+    /*val galleryLauncher = rem
     val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { status ->
         if(status.isGranted){
             galleryLauncher.pick
         }
-    }
+    }*/
 
     fun takePicture() {
         if (cameraPermission.status.isGranted) {
@@ -116,7 +116,7 @@ fun AddBookScreen(
         }
     }
 
-    fun openGallery() {
+    /*fun openGallery() {
         if()
     }
 
@@ -147,7 +147,7 @@ fun AddBookScreen(
                 Text("Take a picture")
             }
         }
-    }
+    }*/
 
     // Location
 
@@ -211,7 +211,7 @@ fun AddBookScreen(
             return@LaunchedEffect
         }
         val place = osmDataSource.getPlace(locationService.coordinates!!)
-        //actions.setDestination(place.displayName)
+        actions.setLibrary(place.displayName)
     }
 
     // UI
@@ -272,12 +272,12 @@ fun AddBookScreen(
                     .clickable { showDatePicker() },
                 value = state.personalDeadline,
                 label = { Text("PersonalDeadline") },
-                onValueChange = {/*actions.setPersonalDeadline(selectedDate)*/},
+                onValueChange = {actions.setPersonalDeadline(selectedDate.value)},
                 enabled = false
             )
             OutlinedTextField( //Field per inserimento della biblioteca
                 value = state.library,
-                onValueChange = {/*actions.setLibrary(it)*/},
+                onValueChange = {actions.setLibrary(it)},
                 label = { Text("Library") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
@@ -292,14 +292,14 @@ fun AddBookScreen(
                     .clickable { showDatePicker() },
                 value = state.libraryDeadline,
                 label = { Text("Library deadline") },
-                onValueChange = {/*actions.setLibraryDeadline(selectedDate)*/},
+                onValueChange = {actions.setLibraryDeadline(selectedDate.value)},
                 enabled = false
             )
             OutlinedTextField( //Field per numero di pagine
                 modifier = Modifier.fillMaxWidth(),
                 value = state.totalPages.toString(),
                 label = { Text("Total Pages") },
-                onValueChange = {/*actions.setTotalPages(it.toInt())*/},
+                onValueChange = {actions.setTotalPages(it.toInt())},
             )
         }
     }
