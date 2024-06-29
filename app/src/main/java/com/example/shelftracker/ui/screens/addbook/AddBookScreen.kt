@@ -101,6 +101,13 @@ fun AddBookScreen(
         }
     }
 
+    val galleryLauncher = rem
+    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { status ->
+        if(status.isGranted){
+            galleryLauncher.pick
+        }
+    }
+
     fun takePicture() {
         if (cameraPermission.status.isGranted) {
             cameraLauncher.captureImage()
@@ -109,14 +116,38 @@ fun AddBookScreen(
         }
     }
 
-    /*fun pictureDialog(){
-        AlertDialog(onDismissRequest = {}) {
-            Button(onClick = { takePicture() },
-                ) {
+    fun openGallery() {
+        if()
+    }
 
+    fun pictureDialog(){
+        AlertDialog(onDismissRequest = {}) {
+            Button(
+                onClick = ::takePicture,
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+            ) {
+                Icon(
+                    Icons.Outlined.PhotoCamera,
+                    contentDescription = "Camera icon",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text("Take a picture")
+            }
+            Button(
+                onClick = ::openGallery,
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+            ) {
+                Icon(
+                    Icons.Outlined.PhotoCamera,
+                    contentDescription = "Camera icon",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text("Take a picture")
             }
         }
-    }*/
+    }
 
     // Location
 
@@ -268,7 +299,7 @@ fun AddBookScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.totalPages.toString(),
                 label = { Text("Total Pages") },
-                onValueChange = {/*actions.setTotalPages(it)*/},
+                onValueChange = {/*actions.setTotalPages(it.toInt())*/},
             )
         }
     }
