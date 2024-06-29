@@ -133,13 +133,15 @@ fun BookItem(item: Book, onClick: () -> Unit) {
                 Text(
                     item.title,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
+                Spacer(modifier = Modifier.size(8.dp))
                 Text(
-                    "provo",
+                    item.author,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.titleMedium
                 )
+
             }
         }
     }
