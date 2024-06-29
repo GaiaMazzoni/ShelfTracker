@@ -63,20 +63,35 @@ fun BookDetailsScreen(book: Book) {
             ImageWithPlaceholder(imageUri, Size.Lg)
             Spacer(Modifier.size(16.dp))
             Text(
-                book.title,
+                "Title: " + book.title,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
-                book.libraryDeadline,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodySmall
-            )
             Spacer(Modifier.size(8.dp))
             Text(
-                book.author,
+                "Author: " + book.author,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                "Library: " + book.library,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                "Pages: " + book.totalPages,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                "Personal deadline: " + book.personalDeadline,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                "Library deadline: " + book.libraryDeadline,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
