@@ -57,6 +57,9 @@ import java.util.Calendar
 import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.graphics.Color
 import io.ktor.http.ContentType
 import org.w3c.dom.Text
@@ -75,7 +78,7 @@ fun AddBookScreen(
     val selectedDate = remember { mutableStateOf("") }
 
 
-    fun showDatePicker(){
+    fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -84,6 +87,11 @@ fun AddBookScreen(
         DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             selectedDate.value = formattedDate
+            if(deadlineType == "personalDeadline"){
+                actions.setPersonalDeadline(formattedDate)
+            }else{
+                actions.setLibraryDeadline(formattedDate)
+            }
         }, year, month, day).show()
     }
 
@@ -266,14 +274,26 @@ fun AddBookScreen(
                 label = { Text("Author") },
                 modifier = Modifier.fillMaxWidth()
             )
-            OutlinedTextField( // Field per inserimento della data di riconsegna
+            OutlinedTextField( // Field per inserimento della data della dealine personale
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { showDatePicker() },
+                    .clickable(onClick = {showDatePicker("personalDeadline")}),
                 value = state.personalDeadline,
                 label = { Text("PersonalDeadline") },
-                onValueChange = {actions.setPersonalDeadline(selectedDate.value)},
-                enabled = false
+                onValueChange = {},
+                enabled = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledContainerColor = Color.Transparent,
+                    disabledBorderColor = MaterialTheme.colorScheme.outline,
+                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
             OutlinedTextField( //Field per inserimento della biblioteca
                 value = state.library,
@@ -289,17 +309,34 @@ fun AddBookScreen(
             OutlinedTextField( // Field per inserimento della data di riconsegna
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { showDatePicker() },
+                    .clickable(onClick = {showDatePicker("libraryDeadline")}),
                 value = state.libraryDeadline,
                 label = { Text("Library deadline") },
-                onValueChange = {actions.setLibraryDeadline(selectedDate.value)},
-                enabled = false
+                onValueChange = {},
+                enabled = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledContainerColor = Color.Transparent,
+                    disabledBorderColor = MaterialTheme.colorScheme.outline,
+                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
             OutlinedTextField( //Field per numero di pagine
                 modifier = Modifier.fillMaxWidth(),
                 value = state.totalPages.toString(),
                 label = { Text("Total Pages") },
-                onValueChange = {actions.setTotalPages(it.toInt())},
+                onValueChange = {
+                    val intValue = it.toIntOrNull()
+                    if(intValue != null){
+                        actions.setTotalPages(intValue)
+                    }
+                }
             )
         }
     }
