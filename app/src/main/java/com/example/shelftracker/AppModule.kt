@@ -5,7 +5,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.shelftracker.data.database.ShelfTrackerDatabase
 import com.example.shelftracker.data.remote.OSMDataSource
-import com.example.shelftracker.data.repositories.PlacesRepository
+import com.example.shelftracker.data.repositories.BooksRepository
 import com.example.shelftracker.data.repositories.SettingsRepository
 import com.example.shelftracker.ui.PlacesViewModel
 import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
@@ -51,7 +51,7 @@ val appModule = module {
     single { SettingsRepository(get()) }
 
     single {
-        PlacesRepository(
+        BooksRepository(
             get<ShelfTrackerDatabase>().booksDAO(),
             get<Context>().applicationContext.contentResolver
         )

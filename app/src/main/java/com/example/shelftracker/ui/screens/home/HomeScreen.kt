@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.shelftracker.data.database.Place
+import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.PlacesState
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
@@ -84,7 +84,7 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookItem(item: Place, onClick: () -> Unit) {
+fun BookItem(item: Book, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -98,7 +98,7 @@ fun BookItem(item: Place, onClick: () -> Unit) {
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                val imageUri = Uri.parse(item.imageUri)
+                val imageUri = Uri.parse(item.coverUri)
                 ImageWithPlaceholder(imageUri, Size.Sm)
                 /*if (imageUri.path?.isNotEmpty() == true) {
                     AsyncImage(
@@ -131,7 +131,7 @@ fun BookItem(item: Place, onClick: () -> Unit) {
                     .padding(16.dp)
             ) {
                 Text(
-                    item.name,
+                    item.title,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )

@@ -72,7 +72,7 @@ fun ShelfTrackerNavGraph(
                 AddBookScreen(
                     state = state,
                     actions = addBookVm.actions,
-                    onSubmit = { placesVm.addPlace(state.toPlace()) },
+                    onSubmit = { placesVm.addPlace(state.toBook()) },
                     navController = navController
                 )
             }

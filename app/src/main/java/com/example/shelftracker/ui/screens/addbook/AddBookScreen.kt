@@ -55,6 +55,10 @@ import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.Color
+import java.time.format.TextStyle
 
 @Composable
 fun AddBookScreen(
@@ -78,7 +82,7 @@ fun AddBookScreen(
         DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             selectedDate.value = formattedDate
-            actions.setDate(formattedDate)
+            //actions.setDate(formattedDate)
         }, year, month, day).show()
     }
 
@@ -166,7 +170,7 @@ fun AddBookScreen(
             return@LaunchedEffect
         }
         val place = osmDataSource.getPlace(locationService.coordinates!!)
-        actions.setDestination(place.displayName)
+        //actions.setDestination(place.displayName)
     }
 
     // UI
@@ -195,29 +199,39 @@ fun AddBookScreen(
                 .fillMaxSize()
         ) {
             OutlinedTextField( //Field per inserimento Titolo
-                value = state.description,
-                onValueChange = actions::setDescription,
+                value = state.title,
+                onValueChange = {actions.setTitle(it)},
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField( //Field per autore
-                value = state.description,
-                onValueChange = actions::setDescription,
+                value = state.author,
+                onValueChange = {actions.setAuthor(it)},
                 label = { Text("Author") },
                 modifier = Modifier.fillMaxWidth()
             )
-            OutlinedTextField( // Field per inserimento della deadline personale
-                value = selectedDate.value,
-                onValueChange = {actions.setDate(it)},
-                label = { Text("Personal deadline") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showDatePicker() },
-                readOnly = true
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = state.personalDeadline,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showDatePicker() }
+                        .padding(16.dp)
+                        .background(MaterialTheme.colorScheme.primary, shape = MaterialTheme.shapes.small)
+                        .padding(16.dp),
+                    style = androidx.compose.ui.text.TextStyle(Color.White)
+                )
+                Text(
+                    text = "Personal deadline",
+                    modifier = Modifier.padding(start = 16.dp, top = 4.dp),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
             OutlinedTextField( //Field per inserimento della biblioteca
-                value = state.destination,
-                onValueChange = actions::setDestination,
+                value = state.library,
+                onValueChange = {},
                 label = { Text("Library") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
@@ -227,18 +241,20 @@ fun AddBookScreen(
                 }
             )
             OutlinedTextField( // Field per inserimento della data di riconsegna
-                modifier = Modifier.fillMaxWidth().clickable { showDatePicker() },
-                value = selectedDate.value,
+                modifier = Modifier.fillMaxWidth()
+                    .clickable { showDatePicker() },
+                value = state.libraryDeadline,
                 label = { Text("Library deadline") },
                 onValueChange = {},
                 readOnly = true
             )
-            OutlinedTextField( //Field per numero di pagine
-                value = state.description,
-                onValueChange = actions::setDescription,
-                label = { Text("Number of pages") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            /*OutlinedTextField( //Field per numero di pagine
+                modifier = Modifier.fillMaxWidth(),
+                value = state.pagesRead,
+                onValueChange = {},
+                label = {Text("Number of pages")},
+
+            )*/
             Spacer(Modifier.size(24.dp))
             Button(
                 onClick = ::takePicture,

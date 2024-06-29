@@ -25,7 +25,7 @@ data class Book (
     val libraryDeadline: String,
 
     @ColumnInfo
-    val pagesRead: Int = 0,
+    val totalPages: Int = 0,
 
     @ColumnInfo
     val coverUri: String?

@@ -20,19 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.shelftracker.data.database.Place
+import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
 
 @Composable
-fun BookDetailsScreen(place: Place) {
+fun BookDetailsScreen(book: Book) {
     val ctx = LocalContext.current
 
     fun shareDetails() {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, place.name)
+            putExtra(Intent.EXTRA_TEXT, book.title)
         }
         val shareIntent = Intent.createChooser(sendIntent, "Share book")
         if (shareIntent.resolveActivity(ctx.packageManager) != null) {
@@ -59,22 +59,22 @@ fun BookDetailsScreen(place: Place) {
                 .fillMaxSize()
         ) {
             Spacer(Modifier.size(16.dp))
-            val imageUri = Uri.parse(place.imageUri)
+            val imageUri = Uri.parse(book.coverUri)
             ImageWithPlaceholder(imageUri, Size.Lg)
             Spacer(Modifier.size(16.dp))
             Text(
-                place.name,
+                book.title,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                place.date,
+                book.libraryDeadline,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodySmall
             )
             Spacer(Modifier.size(8.dp))
             Text(
-                place.description,
+                book.author,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyMedium
             )

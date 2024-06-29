@@ -13,7 +13,7 @@ data class AddBookState(
     val personalDeadline: String = "",
     val library: String = "",
     val libraryDeadline: String = "",
-    val pagesRead: Int = 0,
+    val totalPages: Int = 0,
     val imageUri: Uri = Uri.EMPTY,
 
     val showLocationDisabledAlert: Boolean = false,
@@ -29,7 +29,7 @@ data class AddBookState(
         personalDeadline = personalDeadline,
         library = library,
         libraryDeadline =  libraryDeadline,
-        pagesRead = pagesRead,
+        totalPages = totalPages,
         coverUri = imageUri.toString()
     )
 }

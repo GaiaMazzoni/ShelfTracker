@@ -2,29 +2,29 @@ package com.example.shelftracker.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shelftracker.data.database.Place
-import com.example.shelftracker.data.repositories.PlacesRepository
+import com.example.shelftracker.data.database.Book
+import com.example.shelftracker.data.repositories.BooksRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-data class PlacesState(val places: List<Place>)
+data class PlacesState(val places: List<Book>)
 
 class PlacesViewModel(
-    private val repository: PlacesRepository
+    private val repository: BooksRepository
 ) : ViewModel() {
-    val state = repository.places.map { PlacesState(places = it) }.stateIn(
+    val state = repository.books.map { PlacesState(places = it) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = PlacesState(emptyList())
     )
 
-    fun addPlace(place: Place) = viewModelScope.launch {
+    fun addPlace(place: Book) = viewModelScope.launch {
         repository.upsert(place)
     }
 
-    fun deletePlace(place: Place) = viewModelScope.launch {
+    fun deletePlace(place: Book) = viewModelScope.launch {
         repository.delete(place)
     }
 }
