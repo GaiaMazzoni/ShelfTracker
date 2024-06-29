@@ -58,6 +58,8 @@ import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.graphics.Color
+import io.ktor.http.ContentType
+import org.w3c.dom.Text
 import java.time.format.TextStyle
 
 @Composable
@@ -82,7 +84,6 @@ fun AddBookScreen(
         DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             selectedDate.value = formattedDate
-            //actions.setDate(formattedDate)
         }, year, month, day).show()
     }
 
@@ -107,6 +108,15 @@ fun AddBookScreen(
             cameraPermission.launchPermissionRequest()
         }
     }
+
+    /*fun pictureDialog(){
+        AlertDialog(onDismissRequest = {}) {
+            Button(onClick = { takePicture() },
+                ) {
+
+            }
+        }
+    }*/
 
     // Location
 
@@ -198,64 +208,9 @@ fun AddBookScreen(
                 .padding(12.dp)
                 .fillMaxSize()
         ) {
-            OutlinedTextField( //Field per inserimento Titolo
-                value = state.title,
-                onValueChange = {actions.setTitle(it)},
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField( //Field per autore
-                value = state.author,
-                onValueChange = {actions.setAuthor(it)},
-                label = { Text("Author") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = state.personalDeadline,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showDatePicker() }
-                        .padding(16.dp)
-                        .background(MaterialTheme.colorScheme.primary, shape = MaterialTheme.shapes.small)
-                        .padding(16.dp),
-                    style = androidx.compose.ui.text.TextStyle(Color.White)
-                )
-                Text(
-                    text = "Personal deadline",
-                    modifier = Modifier.padding(start = 16.dp, top = 4.dp),
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-            OutlinedTextField( //Field per inserimento della biblioteca
-                value = state.library,
-                onValueChange = {},
-                label = { Text("Library") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = ::requestLocation) {
-                        Icon(Icons.Outlined.MyLocation, "Current location")
-                    }
-                }
-            )
-            OutlinedTextField( // Field per inserimento della data di riconsegna
-                modifier = Modifier.fillMaxWidth()
-                    .clickable { showDatePicker() },
-                value = state.libraryDeadline,
-                label = { Text("Library deadline") },
-                onValueChange = {},
-                readOnly = true
-            )
-            /*OutlinedTextField( //Field per numero di pagine
-                modifier = Modifier.fillMaxWidth(),
-                value = state.pagesRead,
-                onValueChange = {},
-                label = {Text("Number of pages")},
-
-            )*/
             Spacer(Modifier.size(24.dp))
+            ImageWithPlaceholder(state.imageUri, Size.Lg)
+            Spacer(Modifier.size(8.dp))
             Button(
                 onClick = ::takePicture,
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
@@ -268,8 +223,53 @@ fun AddBookScreen(
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text("Take a picture")
             }
-            Spacer(Modifier.size(8.dp))
-            ImageWithPlaceholder(state.imageUri, Size.Lg)
+            OutlinedTextField( //Field per inserimento Titolo
+                value = state.title,
+                onValueChange = {actions.setTitle(it)},
+                label = { Text("Title") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField( //Field per autore
+                value = state.author,
+                onValueChange = {actions.setAuthor(it)},
+                label = { Text("Author") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField( // Field per inserimento della data di riconsegna
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showDatePicker() },
+                value = state.personalDeadline,
+                label = { Text("PersonalDeadline") },
+                onValueChange = {/*actions.setPersonalDeadline(selectedDate)*/},
+                enabled = false
+            )
+            OutlinedTextField( //Field per inserimento della biblioteca
+                value = state.library,
+                onValueChange = {/*actions.setLibrary(it)*/},
+                label = { Text("Library") },
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    IconButton(onClick = ::requestLocation) {
+                        Icon(Icons.Outlined.MyLocation, "Current location")
+                    }
+                }
+            )
+            OutlinedTextField( // Field per inserimento della data di riconsegna
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showDatePicker() },
+                value = state.libraryDeadline,
+                label = { Text("Library deadline") },
+                onValueChange = {/*actions.setLibraryDeadline(selectedDate)*/},
+                enabled = false
+            )
+            OutlinedTextField( //Field per numero di pagine
+                modifier = Modifier.fillMaxWidth(),
+                value = state.totalPages.toString(),
+                label = { Text("Total Pages") },
+                onValueChange = {/*actions.setTotalPages(it)*/},
+            )
         }
     }
 
