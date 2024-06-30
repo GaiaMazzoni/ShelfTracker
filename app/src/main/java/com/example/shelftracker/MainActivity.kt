@@ -5,13 +5,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
@@ -19,6 +28,7 @@ import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
 import com.example.shelftracker.ui.theme.ShelfTrackerTheme
 import com.example.shelftracker.utils.LocationService
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 
 class MainActivity : ComponentActivity() {
@@ -45,13 +55,48 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    Scaffold(
-                        topBar = { AppBar(navController, currentRoute) }
-                    ) { contentPadding ->
-                        ShelfTrackerNavGraph(
-                            navController,
-                            modifier =  Modifier.padding(contentPadding)
-                        )
+                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                    val scope = rememberCoroutineScope()
+
+                    ModalNavigationDrawer(
+                        drawerContent = {
+                            ModalDrawerSheet {
+                                NavigationDrawerItem(
+                                    label = { Text(text = "Statistics", style = MaterialTheme.typography.titleMedium) },
+                                    modifier = Modifier.padding(8.dp),
+                                    selected = false,
+                                    onClick = { /*TODO*/ }
+                                )
+                                Divider()
+                                NavigationDrawerItem(
+                                    label = { Text(text = "Badges", style = MaterialTheme.typography.titleMedium) },
+                                    modifier = Modifier.padding(8.dp),
+                                    selected = false,
+                                    onClick = { /*TODO*/ }
+                                )
+                                Divider()
+
+                            }
+                        },
+                        drawerState = drawerState
+                    )
+                    {
+                        Scaffold(
+                            topBar = {
+                                AppBar(
+                                    navController,
+                                    currentRoute,
+                                    onMenuClick = {
+                                        scope.launch {
+                                            drawerState.open()
+                                    }
+                            }) }
+                        ) { contentPadding ->
+                            ShelfTrackerNavGraph(
+                                navController,
+                                modifier = Modifier.padding(contentPadding)
+                            )
+                        }
                     }
                 }
             }

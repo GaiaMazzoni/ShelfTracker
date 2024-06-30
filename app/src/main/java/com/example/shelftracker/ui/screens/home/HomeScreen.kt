@@ -100,31 +100,6 @@ fun BookItem(item: Book, onClick: () -> Unit) {
             ) {
                 val imageUri = Uri.parse(item.coverUri)
                 ImageWithPlaceholder(imageUri, Size.Sm)
-                /*if (imageUri.path?.isNotEmpty() == true) {
-                    AsyncImage(
-                        ImageRequest.Builder(LocalContext.current)
-                            .data(imageUri)
-                            .crossfade(true)
-                            .build(),
-                        "Travel picture",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .size(72.dp)
-                            .clip(CircleShape)
-                    )
-                } else {
-                    Image(
-                        Icons.Outlined.Image,
-                        "Travel picture",
-                        contentScale = ContentScale.Fit,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary),
-                        modifier = Modifier
-                            .size(72.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.secondary)
-                            .padding(20.dp)
-                    )
-                }*/
             }
             Column(
                 modifier = Modifier
