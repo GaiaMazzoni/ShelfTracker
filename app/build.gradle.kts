@@ -72,6 +72,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("io.insert-koin:koin-androidx-compose:3.5.3")
     val ktorVersion = "2.3.8"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")

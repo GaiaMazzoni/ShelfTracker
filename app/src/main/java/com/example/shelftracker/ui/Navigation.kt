@@ -44,8 +44,8 @@ fun ShelfTrackerNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val placesVm = koinViewModel<PlacesViewModel>()
-    val placesState by placesVm.state.collectAsStateWithLifecycle()
+    val booksVm = koinViewModel<BooksViewModel>()
+    val booksState by booksVm.state.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
@@ -54,15 +54,15 @@ fun ShelfTrackerNavGraph(
     ) {
         with(ShelfTrackerRoute.Home) {
             composable(route) {
-                HomeScreen(placesState, navController)
+                HomeScreen(booksState, navController)
             }
         }
         with(ShelfTrackerRoute.BookDetails) {
             composable(route, arguments) { backStackEntry ->
-                val place = requireNotNull(placesState.places.find {
+                val book = requireNotNull(booksState.books.find {
                     it.id == backStackEntry.arguments?.getString("bookId")?.toInt()
                 })
-                BookDetailsScreen(place)
+                BookDetailsScreen(book)
             }
         }
         with(ShelfTrackerRoute.AddBook) {
@@ -72,7 +72,7 @@ fun ShelfTrackerNavGraph(
                 AddBookScreen(
                     state = state,
                     actions = addBookVm.actions,
-                    onSubmit = { placesVm.addPlace(state.toBook()) },
+                    onSubmit = { booksVm.addBook(state.toBook()) },
                     navController = navController
                 )
             }

@@ -27,4 +27,5 @@ class SettingsViewModel (
             state = SettingsState(repository.username.first())
         }
     }
+
 }

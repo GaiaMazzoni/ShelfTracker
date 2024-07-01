@@ -1,27 +1,19 @@
 package com.example.shelftracker.ui.screens.home
 
 import android.net.Uri
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,23 +26,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.shelftracker.data.database.Book
-import com.example.shelftracker.ui.PlacesState
+import com.example.shelftracker.ui.BooksState
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
 
 @Composable
-fun HomeScreen(state: PlacesState, navController: NavHostController) {
+fun HomeScreen(state: BooksState, navController: NavHostController) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -61,13 +46,13 @@ fun HomeScreen(state: PlacesState, navController: NavHostController) {
             }
         },
     ) { contentPadding ->
-        if (state.places.isNotEmpty()) {
+        if (state.books.isNotEmpty()) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(16.dp, 8.dp),
                 modifier = Modifier.padding(contentPadding)
             ) {
-                items(state.places) { item ->
+                items(state.books) { item ->
                     BookItem(
                         item,
                         onClick = {

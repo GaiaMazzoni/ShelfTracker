@@ -3,6 +3,7 @@ package com.example.shelftracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
@@ -21,15 +22,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
+import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.theme.ShelfTrackerTheme
+import com.example.shelftracker.ui.theme.Theme
 import com.example.shelftracker.utils.LocationService
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var locationService: LocationService
@@ -40,7 +45,16 @@ class MainActivity : ComponentActivity() {
         locationService = get<LocationService>()
 
         setContent {
-            ShelfTrackerTheme {
+            val themeViewModel = koinViewModel<ThemeViewModel>()
+            val themeState by themeViewModel.state.collectAsStateWithLifecycle()
+
+            ShelfTrackerTheme(
+                darkTheme = when (themeState.theme) {
+                    Theme.Light -> false
+                    Theme.Dark -> true
+                    Theme.System -> isSystemInDarkTheme()
+                }
+            ){
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

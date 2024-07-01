@@ -9,22 +9,22 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-data class PlacesState(val places: List<Book>)
+data class BooksState(val books: List<Book>)
 
-class PlacesViewModel(
+class BooksViewModel(
     private val repository: BooksRepository
 ) : ViewModel() {
-    val state = repository.books.map { PlacesState(places = it) }.stateIn(
+    val state = repository.books.map { BooksState(books = it) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = PlacesState(emptyList())
+        initialValue = BooksState(emptyList())
     )
 
-    fun addPlace(place: Book) = viewModelScope.launch {
-        repository.upsert(place)
+    fun addBook(book: Book) = viewModelScope.launch {
+        repository.upsert(book)
     }
 
-    fun deletePlace(place: Book) = viewModelScope.launch {
-        repository.delete(place)
+    fun deleteBook(book: Book) = viewModelScope.launch {
+        repository.delete(book)
     }
 }
