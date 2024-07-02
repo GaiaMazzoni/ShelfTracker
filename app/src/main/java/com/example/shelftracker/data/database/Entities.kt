@@ -28,5 +28,11 @@ data class Book (
     val totalPages: Int = 0,
 
     @ColumnInfo
-    val coverUri: String?
+    val coverUri: String?,
+
+    @ColumnInfo
+    val favourite: Boolean = false,
+
+    @ColumnInfo
+    val genre: String
 )
