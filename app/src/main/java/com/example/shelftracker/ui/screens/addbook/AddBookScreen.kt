@@ -87,7 +87,7 @@ fun AddBookScreen(
     val genres = arrayOf("Fantasy", "Science Fiction", "Dystopian", "Action", "Mystery",
         "Horror", "Thriller", "Historical", "Romance", "Biography")
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(genres[0]) }
+    var selectedText by remember { mutableStateOf("Genre") }
 
 
     fun showDatePicker(deadlineType: String){
@@ -392,6 +392,7 @@ fun AddBookScreen(
                                 onClick = {
                                     selectedText = item
                                     expanded = false
+                                    actions.setGenre(item)
                                 }
                             )
                         }

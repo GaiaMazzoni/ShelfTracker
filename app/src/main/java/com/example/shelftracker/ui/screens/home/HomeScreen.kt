@@ -56,6 +56,8 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
     val completionStatus = arrayOf("Completed", "Still Reading")
     var selectedTextCompletion by remember { mutableStateOf("Completion Status") }
 
+
+
     Scaffold(
 
         topBar = {
@@ -84,7 +86,10 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
 
                         ExposedDropdownMenu(
                             expanded = expandedGenre,
-                            onDismissRequest = { expandedGenre = false }
+                            onDismissRequest = {
+                                expandedGenre = false
+                                selectedTextGenre = "Genre"
+                            }
                         ) {
                             genres.forEach { item ->
                                 DropdownMenuItem(
@@ -149,7 +154,18 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
                 contentPadding = PaddingValues(16.dp, 8.dp),
                 modifier = Modifier.padding(contentPadding)
             ) {
-                items(state.books) { item ->
+
+                /*
+                * TODO FILTER BASED ON PAGES READ/TOTAL PAGES
+                */
+
+                items(
+                    if (selectedTextGenre != "Genre") {
+                        state.books.filter { book -> book.genre == selectedTextGenre }
+                    } else {
+                        state.books
+                    }
+                ) { item ->
                     BookItem(
                         item,
                         onClick = {

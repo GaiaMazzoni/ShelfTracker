@@ -83,5 +83,11 @@ fun ShelfTrackerNavGraph(
                 SettingsScreen(settingsVm.state, settingsVm::setUsername)
             }
         }
+        /*with(ShelfTrackerRoute.Badges) { TO DO
+            composable(route) {
+                val badgesVm = koinViewModel<BadgesViewModel>()
+                BadgesScreen(badgesVm.state)
+            }
+        }*/
     }
 }
