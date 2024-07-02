@@ -392,7 +392,6 @@ fun AddBookScreen(
                                 onClick = {
                                     selectedText = item
                                     expanded = false
-                                    Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                                 }
                             )
                         }
