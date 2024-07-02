@@ -63,8 +63,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.error,
                 onClick = {
-                    navController.navigateUp()
-                    //booksVm.deleteBook(book)
+                    booksVm.deleteBook(book)
                 }
             ) {
                 Icon(Icons.Outlined.Delete, "Delete Book")

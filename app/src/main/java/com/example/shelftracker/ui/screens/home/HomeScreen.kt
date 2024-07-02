@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Star
@@ -69,7 +70,6 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
 
 
     Scaffold(
-
         topBar = {
             LazyRow (
                 modifier = Modifier
@@ -234,27 +234,18 @@ fun BookItem(item: Book, onClick: () -> Unit) {
             ){
                 IconButton(
                     onClick = {
-                    if(item.favourite){
-                        booksVm.setFavourite(item.title, item.author, false)
-                    }else{
-                        booksVm.setFavourite(item.title, item.author, true)
-                    }
+                        if(item.favourite){
+                            booksVm.setFavourite(item.title, item.author, false)
+                        }else{
+                            booksVm.setFavourite(item.title, item.author, true)
+                        }
                 }) {
                     if(item.favourite){
-                        Icon(Icons.Outlined.StarOutline, contentDescription = "Favourite")
-                    }else{
                         Icon(Icons.Outlined.Star, contentDescription = "Favourite")
+                    }else{
+                        Icon(Icons.Outlined.StarOutline, contentDescription = "Favourite")
                     }
                 }
-                /*FloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.width(36.dp).height(36.dp),
-                    onClick = {
-                        booksVm.deleteBook(item)
-                    }
-                ) {
-                    Icon(Icons.Outlined.Delete, "Delete Book")
-                }*/
             }
         }
     }
@@ -269,7 +260,7 @@ fun NoItemsPlaceholder(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize()
     ) {
         Icon(
-            Icons.Outlined.LocationOn, "Location icon",
+            Icons.Outlined.Book, "Book icon",
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .size(48.dp),

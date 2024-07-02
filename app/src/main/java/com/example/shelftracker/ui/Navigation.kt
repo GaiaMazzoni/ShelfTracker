@@ -60,10 +60,13 @@ fun ShelfTrackerNavGraph(
         }
         with(ShelfTrackerRoute.BookDetails) {
             composable(route, arguments) { backStackEntry ->
-                val book = requireNotNull(booksState.books.find {
-                    it.id == backStackEntry.arguments?.getString("bookId")?.toInt()
-                })
-                BookDetailsScreen(book, navController)
+                val bookId = backStackEntry.arguments?.getString("bookId")?.toIntOrNull()
+                val book = booksState.books.find { it.id == bookId }
+                if (book != null) {
+                    BookDetailsScreen(book, navController)
+                } else {
+                    navController.navigateUp()
+                }
             }
         }
         with(ShelfTrackerRoute.AddBook) {
