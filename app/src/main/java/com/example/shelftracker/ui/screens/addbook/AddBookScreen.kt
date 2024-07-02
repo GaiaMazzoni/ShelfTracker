@@ -13,7 +13,6 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,14 +56,23 @@ import java.util.Calendar
 import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import io.ktor.http.ContentType
 import org.w3c.dom.Text
 import java.time.format.TextStyle
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBookScreen(
     state: AddBookState,
@@ -76,6 +84,10 @@ fun AddBookScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val selectedDate = remember { mutableStateOf("") }
+    val genres = arrayOf("Fantasy", "Science Fiction", "Dystopian", "Action", "Mystery",
+        "Horror", "Thriller", "Historical", "Romance", "Biography")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(genres[0]) }
 
 
     fun showDatePicker(deadlineType: String){
@@ -239,7 +251,7 @@ fun AddBookScreen(
             }
         },
     ) { contentPadding ->
-        Column(
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -247,97 +259,147 @@ fun AddBookScreen(
                 .padding(12.dp)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.size(24.dp))
-            ImageWithPlaceholder(state.imageUri, Size.Lg)
-            Spacer(Modifier.size(8.dp))
-            Button(
-                onClick = ::takePicture,
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-            ) {
-                Icon(
-                    Icons.Outlined.PhotoCamera,
-                    contentDescription = "Camera icon",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Take a picture")
+            item { Spacer(Modifier.size(24.dp)) }
+            item { ImageWithPlaceholder(state.imageUri, Size.Lg) }
+            item { Spacer(Modifier.size(8.dp)) }
+            item {
+                Button(
+                    onClick = ::takePicture,
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                ) {
+                    Icon(
+                        Icons.Outlined.PhotoCamera,
+                        contentDescription = "Camera icon",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Take a picture")
+                }
             }
-            OutlinedTextField( //Field per inserimento Titolo
-                value = state.title,
-                onValueChange = {actions.setTitle(it)},
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField( //Field per autore
-                value = state.author,
-                onValueChange = {actions.setAuthor(it)},
-                label = { Text("Author") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField( // Field per inserimento della data della dealine personale
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = {showDatePicker("personalDeadline")}),
-                value = state.personalDeadline,
-                label = { Text("PersonalDeadline") },
-                onValueChange = {},
-                enabled = false,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledContainerColor = Color.Transparent,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
+
+            item {
+                OutlinedTextField( //Field per inserimento Titolo
+                    value = state.title,
+                    onValueChange = {actions.setTitle(it)},
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth()
                 )
-            )
-            OutlinedTextField( //Field per inserimento della biblioteca
-                value = state.library,
-                onValueChange = {actions.setLibrary(it)},
-                label = { Text("Library") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = ::requestLocation) {
-                        Icon(Icons.Outlined.MyLocation, "Current location")
+            }
+            item {
+                OutlinedTextField( //Field per autore
+                    value = state.author,
+                    onValueChange = { actions.setAuthor(it) },
+                    label = { Text("Author") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item{
+                OutlinedTextField( // Field per inserimento della data della dealine personale
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = { showDatePicker("personalDeadline") }),
+                    value = state.personalDeadline,
+                    label = { Text("PersonalDeadline") },
+                    onValueChange = {},
+                    enabled = false,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                        disabledContainerColor = Color.Transparent,
+                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+            item{
+                OutlinedTextField( //Field per inserimento della biblioteca
+                    value = state.library,
+                    onValueChange = {actions.setLibrary(it)},
+                    label = { Text("Library") },
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        IconButton(onClick = ::requestLocation) {
+                            Icon(Icons.Outlined.MyLocation, "Current location")
+                        }
+                    }
+                )
+            }
+            item{
+                OutlinedTextField( // Field per inserimento della data di riconsegna
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = { showDatePicker("libraryDeadline") }),
+                    value = state.libraryDeadline,
+                    label = { Text("Library deadline") },
+                    onValueChange = {},
+                    enabled = false,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                        disabledContainerColor = Color.Transparent,
+                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+            item{
+                OutlinedTextField( //Field per numero di pagine
+                    modifier = Modifier.fillMaxWidth(),
+                    value = state.totalPages.toString(),
+                    label = { Text("Total Pages") },
+                    onValueChange = {
+                        val intValue = it.toIntOrNull()
+                        if(intValue != null){
+                            actions.setTotalPages(intValue)
+                        }
+                    }
+                )
+            }
+            item {
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = {
+                        expanded = !expanded
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = selectedText,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier.menuAnchor()
+                            .fillMaxWidth()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        genres.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    selectedText = item
+                                    expanded = false
+                                    Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        }
                     }
                 }
-            )
-            OutlinedTextField( // Field per inserimento della data di riconsegna
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = {showDatePicker("libraryDeadline")}),
-                value = state.libraryDeadline,
-                label = { Text("Library deadline") },
-                onValueChange = {},
-                enabled = false,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledContainerColor = Color.Transparent,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            )
-            OutlinedTextField( //Field per numero di pagine
-                modifier = Modifier.fillMaxWidth(),
-                value = state.totalPages.toString(),
-                label = { Text("Total Pages") },
-                onValueChange = {
-                    val intValue = it.toIntOrNull()
-                    if(intValue != null){
-                        actions.setTotalPages(intValue)
-                    }
-                }
-            )
+            }
+
         }
     }
 
@@ -416,3 +478,4 @@ fun AddBookScreen(
         }
     }
 }
+
