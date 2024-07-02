@@ -39,46 +39,46 @@ fun SettingsScreen(
     val themeViewModel = koinViewModel<ThemeViewModel>()
     val themeState by themeViewModel.state.collectAsStateWithLifecycle()
 
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxSize()
+    ) {
+        OutlinedTextField(
+            value = state.username,
+            onValueChange = onUsernameChanged,
+            label = { Text("Username") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(36.dp))
+        Text(
+            text = state.username,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.size(36.dp))
+        Divider()
+        Spacer(modifier = Modifier.size(36.dp))
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(12.dp)
-                .fillMaxSize()
-        ) {
-            OutlinedTextField(
-                value = state.username,
-                onValueChange = onUsernameChanged,
-                label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.size(36.dp))
-            Text(
-                text = state.username,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Spacer(modifier = Modifier.size(36.dp))
-            Divider()
-            Spacer(modifier = Modifier.size(36.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(
-                        width = 1.dp,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(4.dp)
-                    )
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "App Theme: ",
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.titleMedium
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray,
+                    shape = RoundedCornerShape(4.dp)
                 )
-                ThemeChoice(themeState, themeViewModel::changeTheme)
-            }
-
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "App Theme: ",
+                modifier = Modifier.padding(bottom = 8.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+            ThemeChoice(themeState, themeViewModel::changeTheme)
         }
+
+    }
 
 }
 @Composable

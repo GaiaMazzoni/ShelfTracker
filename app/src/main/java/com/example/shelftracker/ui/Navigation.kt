@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -62,7 +63,7 @@ fun ShelfTrackerNavGraph(
                 val book = requireNotNull(booksState.books.find {
                     it.id == backStackEntry.arguments?.getString("bookId")?.toInt()
                 })
-                BookDetailsScreen(book)
+                BookDetailsScreen(book, navController)
             }
         }
         with(ShelfTrackerRoute.AddBook) {

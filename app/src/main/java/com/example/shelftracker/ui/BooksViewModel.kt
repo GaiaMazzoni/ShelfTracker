@@ -27,4 +27,10 @@ class BooksViewModel(
     fun deleteBook(book: Book) = viewModelScope.launch {
         repository.delete(book)
     }
+
+    fun setFavourite(title: String, author: String, favourite: Boolean) = viewModelScope.launch {
+        repository.setFavourite(title, author, favourite)
+    }
+
+
 }

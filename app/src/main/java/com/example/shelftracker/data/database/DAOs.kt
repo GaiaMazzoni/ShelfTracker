@@ -16,4 +16,8 @@ interface BooksDAO {
 
     @Delete
     suspend fun delete(item: Book)
+
+    @Query("UPDATE book SET favourite = :fav WHERE title = :title AND author = :author")
+    suspend fun setFavourite(title: String, author:String, fav: Boolean)
+
 }

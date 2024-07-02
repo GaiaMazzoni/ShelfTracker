@@ -27,4 +27,7 @@ class BooksRepository(
     }
 
     suspend fun delete(book: Book) = booksDAO.delete(book)
+
+    suspend fun setFavourite(title: String, author: String, favourite: Boolean) = booksDAO.setFavourite(title, author, favourite)
+
 }

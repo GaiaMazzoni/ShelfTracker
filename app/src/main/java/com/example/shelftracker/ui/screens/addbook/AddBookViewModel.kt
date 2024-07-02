@@ -98,5 +98,6 @@ class AddBookViewModel : ViewModel() {
 
         override fun setShowNoInternetConnectivitySnackbar(show: Boolean) =
             _state.update { it.copy(showNoInternetConnectivitySnackbar = show) }
-    }
+
+           }
 }
