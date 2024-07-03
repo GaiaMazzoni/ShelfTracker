@@ -47,6 +47,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
     val ctx = LocalContext.current
     val booksVm = koinViewModel<BooksViewModel>()
     var pagesRead by remember { mutableStateOf(0) }
+    var pagesReadText by remember { mutableStateOf("0") }
 
     /*fun shareDetails() {
         val sendIntent = Intent().apply {
@@ -194,6 +195,26 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                     }
                     Spacer(Modifier.size(8.dp))
                     Row {
+                        OutlinedTextField(
+                            label = { Text(" Total pages read") },
+                            value = pagesReadText,
+                            onValueChange = {
+                                pagesReadText = it
+                                pagesRead = it.toIntOrNull()  ?: 0}
+                        )
+                        IconButton(
+                            enabled = (pagesRead != 0),
+                            onClick = {
+                                booksVm.updatePagesRead(book.title, book.author, pagesRead);
+                                pagesRead = 0;
+                                pagesReadText = "0"
+                            },
+                        ) {
+                            Icon(Icons.Outlined.Add, "Modify pages read")
+                        }
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row {
                         IconButton(
                             modifier = Modifier.fillMaxWidth(),
                             colors = iconButtonColors(
@@ -226,22 +247,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
 
                         }
                     }
-                    Row {
-                        OutlinedTextField(
-                            label = { Text(" Total pages read") },
-                            value = pagesRead.toString(),
-                            onValueChange = { pagesRead = it.toInt() }
-                        )
-                        IconButton(
-                            enabled = (pagesRead != 0),
-                            onClick = {
-                                booksVm.updatePagesRead(book.title, book.author, pagesRead);
-                                pagesRead = 0
-                            },
-                        ) {
-                            Icon(Icons.Outlined.Add, "Modify pages read")
-                        }
-                    }
+
                 }
             }
         }
