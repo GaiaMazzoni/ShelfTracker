@@ -85,8 +85,6 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
     var selectedTextFavourite by remember { mutableStateOf("All") }
 
 
-
-
     Scaffold(
         topBar = {
             Row (
