@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.shelftracker.ui.screens.addbook.AddBookScreen
 import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
+import com.example.shelftracker.ui.screens.badges.BadgesScreen
+import com.example.shelftracker.ui.screens.badges.BadgesViewModel
 import com.example.shelftracker.ui.screens.home.HomeScreen
 import com.example.shelftracker.ui.screens.settings.SettingsScreen
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
@@ -34,9 +36,11 @@ sealed class ShelfTrackerRoute(
     }
     data object AddBook : ShelfTrackerRoute("books/add", "Add Book")
     data object Settings : ShelfTrackerRoute("settings", "Settings")
+    data object Badges : ShelfTrackerRoute("badges", "Badges")
+
 
     companion object {
-        val routes = setOf(Home, BookDetails, AddBook, Settings)
+        val routes = setOf(Home, BookDetails, AddBook, Settings, Badges)
     }
 }
 
@@ -87,11 +91,11 @@ fun ShelfTrackerNavGraph(
                 SettingsScreen(settingsVm.state, settingsVm::setUsername)
             }
         }
-        /*with(ShelfTrackerRoute.Badges) { TO DO
+        with(ShelfTrackerRoute.Badges) {
             composable(route) {
-                val badgesVm = koinViewModel<BadgesViewModel>()
-                BadgesScreen(badgesVm.state)
+                //val badgesVm = koinViewModel<BadgesViewModel>()
+                BadgesScreen()
             }
-        }*/
+        }
     }
 }

@@ -86,7 +86,10 @@ class MainActivity : ComponentActivity() {
                                     label = { Text(text = "Badges", style = MaterialTheme.typography.titleMedium) },
                                     modifier = Modifier.padding(8.dp),
                                     selected = false,
-                                    onClick = { /*TODO*/ }
+                                    onClick = {
+                                        navController.navigate(ShelfTrackerRoute.Badges.route)
+                                        scope.launch { drawerState.close() }
+                                    }
                                 )
                                 Divider()
 
