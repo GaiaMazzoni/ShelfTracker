@@ -12,19 +12,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +55,7 @@ import org.koin.androidx.compose.koinViewModel
 fun BookDetailsScreen(book: Book, navController: NavHostController) {
     val ctx = LocalContext.current
     val booksVm = koinViewModel<BooksViewModel>()
+    var pagesRead by remember { mutableStateOf(0) }
 
     /*fun shareDetails() {
         val sendIntent = Intent().apply {
@@ -135,7 +143,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         style = MaterialTheme.typography.headlineSmall
                     )
                     Text(
-                        book.totalPages.toString(),
+                        text =  book.pagesRead.toString() + "/" + book.totalPages.toString(),
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.headlineSmall
                     )
@@ -181,6 +189,21 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.headlineSmall
                     )
+                }
+                Spacer(Modifier.size(8.dp))
+                Row{
+                    OutlinedTextField(
+                        label = { Text(" Total pages read") },
+                        value = pagesRead.toString(),
+                        onValueChange = { pagesRead = it.toInt() }
+                    )
+                    IconButton(
+                        enabled = (pagesRead != 0),
+                        onClick = { booksVm.updatePagesRead(book.title, book.author, pagesRead);
+                                  pagesRead = 0},
+                    ) {
+                        Icon(Icons.Outlined.Add, "Modify pages read")
+                    }
                 }
             }
 
