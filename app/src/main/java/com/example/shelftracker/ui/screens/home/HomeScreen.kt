@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui.screens.home
 
+import android.graphics.drawable.shapes.Shape
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.border
@@ -45,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -62,97 +64,148 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(state: BooksState, navController: NavHostController) {
     val context = LocalContext.current
+
+    //Genres variables
+
     val genres = arrayOf("Fantasy", "Science Fiction", "Dystopian", "Action", "Mystery",
         "Horror", "Thriller", "Historical", "Romance", "Biography")
     var expandedGenre by remember { mutableStateOf(false) }
-    var expandedCompletion by remember { mutableStateOf(false) }
     var selectedTextGenre by remember { mutableStateOf("Genre") }
+
+    //Completion variables
+
     val completionStatus = arrayOf("Completed", "Still Reading")
+    var expandedCompletion by remember { mutableStateOf(false) }
     var selectedTextCompletion by remember { mutableStateOf("Completion Status") }
+
+    //Favourite variables
+
+    val favouriteFilters = arrayOf("Favourite", "Non favourite")
+    var expandedFavourite by remember { mutableStateOf(false) }
+    var selectedTextFavourite by remember { mutableStateOf("All") }
+
 
 
 
     Scaffold(
         topBar = {
             Row (
-                modifier = Modifier
-                    .padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ){
                 //Filter for book genre
 
-                    ExposedDropdownMenuBox(
-                        modifier = Modifier.padding(4.dp)
-                                    .width(LocalConfiguration.current.screenWidthDp.dp/2)
-                                    .height(50.dp),
+                ExposedDropdownMenuBox(
+                    modifier = Modifier
+                        .width(LocalConfiguration.current.screenWidthDp.dp / 3)
+                        .padding(4.dp)
+                        .height(50.dp),
+                    expanded = expandedGenre,
+                    onExpandedChange = {
+                        expandedGenre = !expandedGenre
+                    }
+                ) {
+                    OutlinedTextField(
+                        value = selectedTextGenre,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGenre) },
+                        modifier = Modifier.menuAnchor()
+                    )
+
+                    ExposedDropdownMenu(
                         expanded = expandedGenre,
-                        onExpandedChange = {
-                            expandedGenre = !expandedGenre
+                        onDismissRequest = {
+                            expandedGenre = false
+                            selectedTextGenre = "Genre"
                         }
                     ) {
-                        OutlinedTextField(
-                            value = selectedTextGenre,
-                            onValueChange = {},
-                            readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGenre) },
-                            modifier = Modifier.menuAnchor()
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expandedGenre,
-                            onDismissRequest = {
-                                expandedGenre = false
-                                selectedTextGenre = "Genre"
-                            }
-                        ) {
-                            genres.forEach { item ->
-                                DropdownMenuItem(
-                                    text = { Text(text = item) },
-                                    onClick = {
-                                        selectedTextGenre = item
-                                        expandedGenre = false
-                                    }
-                                )
-                            }
+                        genres.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    selectedTextGenre = item
+                                    expandedGenre = false
+                                }
+                            )
                         }
-
+                    }
                 }
 
                 //Filter for completion status
 
-                    ExposedDropdownMenuBox(
-                        modifier = Modifier.padding(4.dp)
-                                    .width(LocalConfiguration.current.screenWidthDp.dp/2)
-                                    .height(50.dp),
-                        expanded = expandedCompletion,
-                        onExpandedChange = {
-                            expandedCompletion = !expandedCompletion
-                        }
-                    ) {
-                        OutlinedTextField(
-                            value = selectedTextCompletion,
-                            onValueChange = {},
-                            readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCompletion) },
-                            modifier = Modifier.menuAnchor()
-                        )
+                ExposedDropdownMenuBox(
+                    modifier = Modifier
+                        .width(LocalConfiguration.current.screenWidthDp.dp / 3)
+                        .padding(4.dp)
+                        .height(50.dp),
+                    expanded = expandedCompletion,
+                    onExpandedChange = {
+                        expandedCompletion = !expandedCompletion
+                    }
+                ) {
+                    OutlinedTextField(
+                        value = selectedTextCompletion,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCompletion) },
+                        modifier = Modifier.menuAnchor()
+                    )
 
-                        ExposedDropdownMenu(
-                            expanded = expandedCompletion,
-                            onDismissRequest = { expandedCompletion = false }
-                        ) {
-                            completionStatus.forEach { item ->
-                                DropdownMenuItem(
-                                    text = { Text(text = item) },
-                                    onClick = {
-                                        selectedTextCompletion = item
-                                        expandedCompletion = false
-                                    }
-                                )
-                            }
+                    ExposedDropdownMenu(
+                        expanded = expandedCompletion,
+                        onDismissRequest = { expandedCompletion = false }
+                    ) {
+                        completionStatus.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    selectedTextCompletion = item
+                                    expandedCompletion = false
+                                }
+                            )
                         }
                     }
+                }
+
+                // Filter for favourites only
+
+                ExposedDropdownMenuBox(
+                    modifier = Modifier
+                        .width(LocalConfiguration.current.screenWidthDp.dp / 3)
+                        .padding(4.dp)
+                        .height(50.dp),
+                    expanded = expandedFavourite,
+                    onExpandedChange = {
+                        expandedFavourite = !expandedFavourite
+                    }
+                ) {
+                    OutlinedTextField(
+                        value = selectedTextFavourite,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFavourite) },
+                        modifier = Modifier.menuAnchor()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expandedFavourite,
+                        onDismissRequest = {
+                            expandedFavourite = false
+                            selectedTextFavourite = "All"
+                        }
+                    ) {
+                        favouriteFilters.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    selectedTextFavourite = item
+                                    expandedFavourite = false
+                                }
+                            )
+                        }
+                    }
+                }
 
             }
 
@@ -178,10 +231,8 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
                 */
 
                 items(
-                    if (selectedTextGenre != "Genre") {
-                        state.books.filter { book -> book.genre == selectedTextGenre }
-                    } else {
-                        state.books
+                    state.books.filter { book ->
+                        (book.genre == selectedTextGenre || selectedTextGenre == "Genre") && (selectedTextFavourite == "All" || (book.favourite && selectedTextFavourite == "Favourite") || (!book.favourite && selectedTextFavourite == "Non favourite"))
                     }
                 ) { item ->
                     BookItem(
