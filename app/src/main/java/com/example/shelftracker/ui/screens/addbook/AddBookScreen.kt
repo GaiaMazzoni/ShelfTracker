@@ -333,7 +333,7 @@ fun AddBookScreen(
                 OutlinedTextField( // Field per inserimento della data di riconsegna
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(onClick = { showDatePicker("libraryDeadline") }),
+                        .clickable(onClick = { if(state.library != "") showDatePicker("libraryDeadline") }),
                     value = state.libraryDeadline,
                     label = { Text("Library deadline") },
                     onValueChange = {},
