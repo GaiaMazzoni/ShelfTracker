@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui.composables
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -38,6 +39,7 @@ fun AppBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
+            Log.d(currentRoute.route, currentRoute.title)
             Text(
                 currentRoute.title,
                 fontWeight = FontWeight.Medium,
