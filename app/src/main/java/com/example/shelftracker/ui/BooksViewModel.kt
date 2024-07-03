@@ -32,9 +32,13 @@ class BooksViewModel(
         repository.setFavourite(title, author, favourite)
     }
 
+
     fun returnBook(title: String, author:String) = viewModelScope.launch {
         repository.returnBook(title, author)
     }
 
+    fun updatePagesRead(title: String, author: String, pagesRead: Int) = viewModelScope.launch {
+        repository.updatePagesRead(title, author, pagesRead)
+    }
 
 }

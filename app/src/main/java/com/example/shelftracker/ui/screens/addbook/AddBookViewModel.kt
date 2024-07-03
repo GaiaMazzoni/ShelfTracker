@@ -17,7 +17,10 @@ data class AddBookState(
     val imageUri: Uri = Uri.EMPTY,
     val favourite: Boolean = false,
     val genre: String = "",
+
     val returned: Boolean = false,
+
+    val pagesRead: Int = 0,
 
     val showLocationDisabledAlert: Boolean = false,
     val showLocationPermissionDeniedAlert: Boolean = false,
@@ -35,6 +38,7 @@ data class AddBookState(
         totalPages = totalPages,
         coverUri = imageUri.toString(),
         genre = genre
+
     )
 }
 
@@ -48,6 +52,8 @@ interface AddBookActions {
     fun setImageUri(imageUri: Uri)
     fun setGenre(genre: String)
 
+
+    fun setPagesRead(pagesRead: Int)
 
     fun setShowLocationDisabledAlert(show: Boolean)
     fun setShowLocationPermissionDeniedAlert(show: Boolean)
@@ -97,6 +103,10 @@ class AddBookViewModel : ViewModel() {
 
         override fun setShowNoInternetConnectivitySnackbar(show: Boolean) =
             _state.update { it.copy(showNoInternetConnectivitySnackbar = show) }
+
+        override fun setPagesRead(pagesRead: Int){
+            _state.update {it.copy(pagesRead = pagesRead)}
+        }
 
            }
 }

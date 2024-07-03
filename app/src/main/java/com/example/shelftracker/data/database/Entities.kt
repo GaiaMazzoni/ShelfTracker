@@ -37,5 +37,8 @@ data class Book (
     val genre: String,
 
     @ColumnInfo
-    val returned: Boolean = false
+    val returned: Boolean = false,
+
+    @ColumnInfo
+    val pagesRead: Int = 0
 )

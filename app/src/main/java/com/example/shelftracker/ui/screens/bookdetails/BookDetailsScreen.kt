@@ -14,47 +14,39 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddHome
-import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults.iconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksViewModel
-import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
-import com.example.shelftracker.ui.screens.addbook.AddBookState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BookDetailsScreen(book: Book, navController: NavHostController) {
     val ctx = LocalContext.current
     val booksVm = koinViewModel<BooksViewModel>()
+    var pagesRead by remember { mutableStateOf(0) }
 
     /*fun shareDetails() {
         val sendIntent = Intent().apply {
@@ -110,14 +102,14 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                 Spacer(Modifier.size(8.dp))
             }
             item {
-                Column (
+                Column(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
                         .padding(contentPadding)
                         .padding(12.dp)
                         .fillMaxSize()
-                ){
-                    Row{
+                ) {
+                    Row {
                         Text(
                             "Author: ",
                             fontStyle = FontStyle.Italic,
@@ -131,7 +123,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         Text(
                             "Library: ",
                             fontStyle = FontStyle.Italic,
@@ -145,7 +137,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         Text(
                             "Pages: ",
                             fontStyle = FontStyle.Italic,
@@ -159,7 +151,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         Text(
                             "Personal deadline: ",
                             fontStyle = FontStyle.Italic,
@@ -173,7 +165,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         Text(
                             "Library deadline: ",
                             fontStyle = FontStyle.Italic,
@@ -187,7 +179,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         Text(
                             "Genre: ",
                             fontStyle = FontStyle.Italic,
@@ -201,25 +193,31 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.size(8.dp))
-                    Row{
+                    Row {
                         IconButton(
                             modifier = Modifier.fillMaxWidth(),
                             colors = iconButtonColors(
                                 MaterialTheme.colorScheme.tertiaryContainer,
                                 MaterialTheme.colorScheme.tertiary,
                                 MaterialTheme.colorScheme.secondaryContainer,
-                                MaterialTheme.colorScheme.secondary),
+                                MaterialTheme.colorScheme.secondary
+                            ),
                             enabled = book.library != "" && !book.returned,
-                            onClick = { if(book.library != "" && !book.returned) booksVm.returnBook(book.title, book.author)}
+                            onClick = {
+                                if (book.library != "" && !book.returned) booksVm.returnBook(
+                                    book.title,
+                                    book.author
+                                )
+                            }
                         ) {
-                            Row{
+                            Row {
                                 Icon(
                                     Icons.Outlined.AddHome, "Return icon",
                                     modifier = Modifier.size(36.dp),
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
                                 Text(
-                                    "Return book to library" ,
+                                    "Return book to library",
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     style = MaterialTheme.typography.headlineSmall,
                                     modifier = Modifier.padding(4.dp)
@@ -228,9 +226,24 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
 
                         }
                     }
+                    Row {
+                        OutlinedTextField(
+                            label = { Text(" Total pages read") },
+                            value = pagesRead.toString(),
+                            onValueChange = { pagesRead = it.toInt() }
+                        )
+                        IconButton(
+                            enabled = (pagesRead != 0),
+                            onClick = {
+                                booksVm.updatePagesRead(book.title, book.author, pagesRead);
+                                pagesRead = 0
+                            },
+                        ) {
+                            Icon(Icons.Outlined.Add, "Modify pages read")
+                        }
+                    }
                 }
             }
-
         }
 
     }
