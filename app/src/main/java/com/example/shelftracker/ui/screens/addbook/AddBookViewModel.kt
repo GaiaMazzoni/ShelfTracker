@@ -17,6 +17,7 @@ data class AddBookState(
     val imageUri: Uri = Uri.EMPTY,
     val favourite: Boolean = false,
     val genre: String = "",
+    val returned: Boolean = false,
 
     val showLocationDisabledAlert: Boolean = false,
     val showLocationPermissionDeniedAlert: Boolean = false,
@@ -33,7 +34,6 @@ data class AddBookState(
         libraryDeadline =  libraryDeadline,
         totalPages = totalPages,
         coverUri = imageUri.toString(),
-        favourite = favourite,
         genre = genre
     )
 }
@@ -47,7 +47,7 @@ interface AddBookActions {
     fun setTotalPages(pages: Int)
     fun setImageUri(imageUri: Uri)
     fun setGenre(genre: String)
-    fun setFavourite(favourite: Boolean)
+
 
     fun setShowLocationDisabledAlert(show: Boolean)
     fun setShowLocationPermissionDeniedAlert(show: Boolean)
@@ -84,8 +84,7 @@ class AddBookViewModel : ViewModel() {
         override fun setGenre(genre: String) =
             _state.update { it.copy(genre = genre) }
 
-        override fun setFavourite(favourite: Boolean) =
-            _state.update { it.copy(favourite = favourite) }
+
 
         override fun setShowLocationDisabledAlert(show: Boolean) =
             _state.update { it.copy(showLocationDisabledAlert = show) }

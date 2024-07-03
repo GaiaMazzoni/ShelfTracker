@@ -34,5 +34,8 @@ data class Book (
     val favourite: Boolean = false,
 
     @ColumnInfo
-    val genre: String
+    val genre: String,
+
+    @ColumnInfo
+    val returned: Boolean = false
 )

@@ -8,15 +8,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddHome
+import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults.iconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -73,7 +80,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
             }
         },
     ) { contentPadding ->
-        Column(
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -81,106 +88,146 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                 .padding(12.dp)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.size(16.dp))
+            item {
+                Spacer(Modifier.size(16.dp))
+            }
             val imageUri = Uri.parse(book.coverUri)
-            ImageWithPlaceholder(imageUri, Size.Lg)
-            Spacer(Modifier.size(16.dp))
-            Text(
-                book.title,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.headlineLarge
-            )
-            Spacer(Modifier.size(8.dp))
-            Column (
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(contentPadding)
-                    .padding(12.dp)
-                    .fillMaxSize()
-            ){
-                Row{
-                    Text(
-                        "Author: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-                    Text(
-                        book.author,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-                }
+            item{
+                ImageWithPlaceholder(imageUri, Size.Lg)
+            }
+            item{
+                Spacer(Modifier.size(16.dp))
+            }
+            item{
+                Text(
+                    book.title,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.headlineLarge
+                )
+            }
+            item{
                 Spacer(Modifier.size(8.dp))
-                Row{
-                    Text(
-                        "Library: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Text(
-                        book.library,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                Spacer(Modifier.size(8.dp))
-                Row{
-                    Text(
-                        "Pages: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Text(
-                        book.totalPages.toString(),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                Spacer(Modifier.size(8.dp))
-                Row{
-                    Text(
-                        "Personal deadline: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Text(
-                        book.personalDeadline,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                Spacer(Modifier.size(8.dp))
-                Row{
-                    Text(
-                        "Library deadline: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Text(
-                        book.libraryDeadline,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                Spacer(Modifier.size(8.dp))
-                Row{
-                    Text(
-                        "Genre: ",
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Text(
-                        book.genre,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
+            }
+            item {
+                Column (
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(contentPadding)
+                        .padding(12.dp)
+                        .fillMaxSize()
+                ){
+                    Row{
+                        Text(
+                            "Author: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineLarge
+                        )
+                        Text(
+                            book.author,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineLarge
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        Text(
+                            "Library: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            book.library,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        Text(
+                            "Pages: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            book.totalPages.toString(),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        Text(
+                            "Personal deadline: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            book.personalDeadline,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        Text(
+                            "Library deadline: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            book.libraryDeadline,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        Text(
+                            "Genre: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            book.genre,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Row{
+                        IconButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = iconButtonColors(
+                                MaterialTheme.colorScheme.tertiaryContainer,
+                                MaterialTheme.colorScheme.tertiary,
+                                MaterialTheme.colorScheme.secondaryContainer,
+                                MaterialTheme.colorScheme.secondary),
+                            enabled = book.library != "" && !book.returned,
+                            onClick = { if(book.library != "" && !book.returned) booksVm.returnBook(book.title, book.author)}
+                        ) {
+                            Row{
+                                Icon(
+                                    Icons.Outlined.AddHome, "Return icon",
+                                    modifier = Modifier.size(36.dp),
+                                    tint = MaterialTheme.colorScheme.secondary
+                                )
+                                Text(
+                                    "Return book to library" ,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    modifier = Modifier.padding(4.dp)
+                                )
+                            }
+
+                        }
+                    }
                 }
             }
 
