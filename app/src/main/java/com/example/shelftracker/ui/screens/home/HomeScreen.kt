@@ -275,6 +275,7 @@ fun BookItem(item: Book, onClick: () -> Unit) {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp / 3 + 36.dp)
             ) {
                 Text(
                     item.title,

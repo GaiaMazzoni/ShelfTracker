@@ -99,7 +99,24 @@ fun BadgesScreen (
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
-
+            item {
+                BadgeCard(
+                    title = "On time",
+                    text = "Return a book to a library on time to get it",
+                    condition = state.books.filter { book -> book.library != "" && book.returned && book.returnedDate <= book.libraryDeadline}.isNotEmpty(),
+                    resource = R.drawable.ontime
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+            }
+            item {
+                BadgeCard(
+                    title = "Too Late!",
+                    text = "Ops! you returned a book to the library after the deadline",
+                    condition = state.books.filter { book -> book.library != "" && book.returned && book.returnedDate > book.libraryDeadline}.isNotEmpty(),
+                    resource = R.drawable.late
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+            }
         }
     }
 
@@ -129,12 +146,12 @@ fun BadgeCard(
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(LocalConfiguration.current.screenWidthDp.dp / 3)
                 ) {
                     if(condition){
                         Image(
                             painter = painterResource(id = resource),
                             title,
+                            modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp / 3),
                             contentScale = ContentScale.Fit
                         )
                     }else{

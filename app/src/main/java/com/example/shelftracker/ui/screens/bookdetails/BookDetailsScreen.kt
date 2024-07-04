@@ -192,6 +192,22 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                     Spacer(Modifier.size(8.dp))
                     Row {
                         Text(
+                            "Returned date: ",
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            book.returnedDate,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    Spacer(Modifier.size(8.dp))
+                    Divider()
+                    Spacer(Modifier.size(8.dp))
+                    Row {
+                        Text(
                             "Genre: ",
                             fontStyle = FontStyle.Italic,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -243,11 +259,12 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                             ),
                             enabled = book.library != "" && !book.returned,
                             onClick = {
-                                if (book.library != "" && !book.returned) booksVm.returnBook(
-                                    book.title,
-                                    book.author,
-                                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                                )
+                                if (book.library != "" && !book.returned)
+                                    booksVm.returnBook(
+                                        book.title,
+                                        book.author,
+                                        LocalDate.now().format(DateTimeFormatter.ofPattern("d/M/yyyy"))
+                                    )
                             }
                         ) {
                             Row {

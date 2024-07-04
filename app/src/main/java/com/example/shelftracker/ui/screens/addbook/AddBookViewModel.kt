@@ -18,9 +18,7 @@ data class AddBookState(
     val favourite: Boolean = false,
     val genre: String = "",
     val returnedDate: String = "",
-
     val returned: Boolean = false,
-
     val pagesRead: Int = 0,
 
     val showLocationDisabledAlert: Boolean = false,
@@ -28,7 +26,7 @@ data class AddBookState(
     val showLocationPermissionPermanentlyDeniedSnackbar: Boolean = false,
     val showNoInternetConnectivitySnackbar: Boolean = false
 ) {
-    val canSubmit get() = author.isNotBlank() && title.isNotBlank()
+    val canSubmit get() = author.isNotBlank() && title.isNotBlank() && totalPages > 0
 
     fun toBook() = Book(
         title = title,
