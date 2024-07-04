@@ -57,30 +57,21 @@ import android.app.DatePickerDialog
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import io.ktor.http.ContentType
-import kotlinx.coroutines.launch
-import org.w3c.dom.Text
-import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
+import com.example.shelftracker.R
+import com.example.shelftracker.utils.Notifications
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,6 +90,9 @@ fun AddBookScreen(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
+
+    var notifications = Notifications();
+    notifications.initialize(ctx)
 
 
     fun showDatePicker(deadlineType: String){
@@ -287,6 +281,7 @@ fun AddBookScreen(
                 onClick = {
                     if (!state.canSubmit) return@FloatingActionButton
                     onSubmit()
+                    notifications.sendNotification("Aggiunta libro", "Nuovo libro!", "Hai aggiunto un nuovo libro")
                     navController.navigateUp()
                 }
             ) {
