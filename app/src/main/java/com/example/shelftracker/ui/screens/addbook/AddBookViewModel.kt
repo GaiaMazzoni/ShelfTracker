@@ -39,7 +39,7 @@ data class AddBookState(
         totalPages = totalPages,
         coverUri = imageUri.toString(),
         genre = genre,
-        returnedDate = returnedDate
+        returnedDate = returnedDate,
     )
 }
 

@@ -94,7 +94,7 @@ fun ShelfTrackerNavGraph(
         with(ShelfTrackerRoute.Badges) {
             composable(route) {
                 //val badgesVm = koinViewModel<BadgesViewModel>()
-                BadgesScreen()
+                BadgesScreen(booksState)
             }
         }
     }
