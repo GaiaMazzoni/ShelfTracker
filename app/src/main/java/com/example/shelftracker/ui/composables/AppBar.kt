@@ -104,7 +104,7 @@ fun AppBar(
             )
         )
 
-        if(isSearchBarVisible){
+        if(isSearchBarVisible && (currentRoute.route == ShelfTrackerRoute.Home.route)){
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -116,6 +116,7 @@ fun AppBar(
                         queryContent= newValue
                         booksVm.query = newValue
                     },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 

@@ -92,7 +92,7 @@ fun BadgesScreen (
             }
             item {
                 BadgeCard(
-                    title = "Reader intermediate",
+                    title = "Reader master",
                     text = "Read your first 1000 pages to get it",
                     condition = countPages(1000, state),
                     resource = R.drawable.read3
