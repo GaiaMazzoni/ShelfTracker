@@ -47,9 +47,9 @@ sealed class ShelfTrackerRoute(
 @Composable
 fun ShelfTrackerNavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    booksVm: BooksViewModel
 ) {
-    val booksVm = koinViewModel<BooksViewModel>()
     val booksState by booksVm.state.collectAsStateWithLifecycle()
 
     NavHost(
@@ -59,7 +59,7 @@ fun ShelfTrackerNavGraph(
     ) {
         with(ShelfTrackerRoute.Home) {
             composable(route) {
-                HomeScreen(booksState, navController)
+                HomeScreen(booksState, navController, booksVm)
             }
         }
         with(ShelfTrackerRoute.BookDetails) {

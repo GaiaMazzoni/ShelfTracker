@@ -49,8 +49,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.room.util.query
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksState
 import com.example.shelftracker.ui.BooksViewModel
@@ -62,9 +64,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(state: BooksState, navController: NavHostController) {
+fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: BooksViewModel) {
     val context = LocalContext.current
-    val booksVm = koinViewModel<BooksViewModel>()
 
     //Genres variables
 
@@ -77,7 +78,7 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
 
     val completionStatus = arrayOf("Completed", "Still Reading")
     var expandedCompletion by remember { mutableStateOf(false) }
-    var selectedTextCompletion by remember { mutableStateOf("Completion Status") }
+    var selectedTextCompletion by remember { mutableStateOf("Completion") }
 
     //Favourite variables
 
@@ -153,7 +154,10 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
 
                     ExposedDropdownMenu(
                         expanded = expandedCompletion,
-                        onDismissRequest = { expandedCompletion = false }
+                        onDismissRequest = {
+                            expandedCompletion = false;
+                            selectedTextCompletion = "Completion"
+                        }
                     ) {
                         completionStatus.forEach { item ->
                             DropdownMenuItem(
@@ -224,17 +228,14 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
                 contentPadding = PaddingValues(16.dp, 8.dp),
                 modifier = Modifier.padding(contentPadding)
             ) {
-
-                /*
-                * TODO FILTER BASED ON PAGES READ/TOTAL PAGES
-                */
-
                 items(
                     state.books.filter { book ->
-                        ((book.genre == selectedTextGenre || selectedTextGenre == "Genre") && (selectedTextFavourite == "All" || (book.favourite && selectedTextFavourite == "Favourite") || (!book.favourite && selectedTextFavourite == "Non favourite")
-                                && (booksVm.getSearchQuery().isBlank() ||
-                                book.author.contains(booksVm.getSearchQuery(), ignoreCase = true) ||
-                                book.title.contains(booksVm.getSearchQuery(), ignoreCase = true))))
+                        (book.title.contains(booksVm.query, ignoreCase = true) || book.author.contains(booksVm.query, ignoreCase = true)) &&
+                                ((selectedTextCompletion == "Completed" && book.pagesRead == book.totalPages) || (selectedTextCompletion == "Still Reading" && book.pagesRead < book.totalPages) || (selectedTextCompletion == "Completion")) &&
+                        (book.genre == selectedTextGenre || selectedTextGenre == "Genre") &&
+                                (selectedTextFavourite == "All" ||
+                                        (book.favourite && selectedTextFavourite == "Favourite") ||
+                                        (!book.favourite && selectedTextFavourite == "Non favourite"))
                     }
                 ) { item ->
                     BookItem(
