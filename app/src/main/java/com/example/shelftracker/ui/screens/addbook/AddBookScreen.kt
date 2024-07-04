@@ -54,9 +54,16 @@ import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
+import androidx.compose.material.icons.outlined.Photo
+import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -66,9 +73,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import io.ktor.http.ContentType
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -89,6 +98,7 @@ fun AddBookScreen(
         "Horror", "Thriller", "Historical", "Romance", "Biography")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("Genre") }
+    var showDialog by remember { mutableStateOf(false) }
 
 
     fun showDatePicker(deadlineType: String){
@@ -122,12 +132,28 @@ fun AddBookScreen(
         }
     }
 
-    /*val galleryLauncher = rem
-    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { status ->
-        if(status.isGranted){
-            galleryLauncher.pick
+    //Gallery
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia()){ imageUri ->
+        if (imageUri != null) {
+            actions.setImageUri(imageUri)
         }
-    }*/
+
+    }
+
+    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+        status ->
+        if(status.isGranted){
+            galleryLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        }
+        else {
+            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun takePicture() {
         if (cameraPermission.status.isGranted) {
@@ -137,38 +163,54 @@ fun AddBookScreen(
         }
     }
 
-    /*fun openGallery() {
-        if()
+    fun openGallery() {
+        if (galleryPermission.status.isGranted) {
+            galleryLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        } else {
+            galleryPermission.launchPermissionRequest()
+        }
     }
 
-    fun pictureDialog(){
-        AlertDialog(onDismissRequest = {}) {
-            Button(
-                onClick = ::takePicture,
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-            ) {
-                Icon(
-                    Icons.Outlined.PhotoCamera,
-                    contentDescription = "Camera icon",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Take a picture")
+    @Composable
+    fun PictureDialog(){
+        AlertDialog(onDismissRequest = { showDialog = false }) {
+            Column {
+                Button(
+                    onClick = ::takePicture,
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                ) {
+                    Icon(
+                        Icons.Outlined.PhotoCamera,
+                        contentDescription = "Camera icon",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Take a picture")
+                }
+                Button(
+                    onClick = ::openGallery,
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                ) {
+                    Icon(
+                        Icons.Outlined.PhotoLibrary,
+                        contentDescription = "Photo icon",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Open gallery")
+                }
             }
-            Button(
-                onClick = ::openGallery,
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-            ) {
-                Icon(
-                    Icons.Outlined.PhotoCamera,
-                    contentDescription = "Camera icon",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Take a picture")
-            }
+
+
         }
-    }*/
+    }
+    if (showDialog) {
+        PictureDialog()
+    }
 
     // Location
 
@@ -265,16 +307,16 @@ fun AddBookScreen(
             item { Spacer(Modifier.size(8.dp)) }
             item {
                 Button(
-                    onClick = ::takePicture,
+                    onClick = { showDialog = true },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                 ) {
                     Icon(
-                        Icons.Outlined.PhotoCamera,
-                        contentDescription = "Camera icon",
+                        Icons.Outlined.AddPhotoAlternate,
+                        contentDescription = "",
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Take a picture")
+                    Text("Add a photo")
                 }
             }
 
@@ -334,7 +376,7 @@ fun AddBookScreen(
                 OutlinedTextField( // Field per inserimento della data di riconsegna
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(onClick = { if(state.library != "") showDatePicker("libraryDeadline") }),
+                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline") }),
                     value = state.libraryDeadline,
                     label = { Text("Library deadline") },
                     onValueChange = {},
@@ -379,7 +421,8 @@ fun AddBookScreen(
                         onValueChange = {},
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier.menuAnchor()
+                        modifier = Modifier
+                            .menuAnchor()
                             .fillMaxWidth()
                     )
 

@@ -75,6 +75,7 @@ dependencies {
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.3")
     val ktorVersion = "2.3.8"
+    runtimeOnly("com.google.accompanist:accompanist-permissions:0.34.0")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")

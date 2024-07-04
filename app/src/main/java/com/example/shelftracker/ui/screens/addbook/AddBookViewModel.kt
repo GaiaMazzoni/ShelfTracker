@@ -53,7 +53,6 @@ interface AddBookActions {
 
     fun setReturnedDate(returnedDate: String)
 
-
     fun setPagesRead(pagesRead: Int)
 
     fun setShowLocationDisabledAlert(show: Boolean)

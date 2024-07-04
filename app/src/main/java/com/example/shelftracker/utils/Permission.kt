@@ -33,9 +33,7 @@ fun rememberPermission(
     onResult: (status: PermissionStatus) -> Unit = {}
 ): PermissionHandler {
     var status by remember { mutableStateOf(PermissionStatus.Unknown) }
-
     val activity = (LocalContext.current as ComponentActivity)
-
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
