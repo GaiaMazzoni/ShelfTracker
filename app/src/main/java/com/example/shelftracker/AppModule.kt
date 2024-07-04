@@ -66,5 +66,5 @@ val appModule = module {
 
     viewModel { SettingsViewModel(get()) }
 
-    viewModel { BooksViewModel(get()) }
+    viewModel { BooksViewModel(get(), "") }
 }

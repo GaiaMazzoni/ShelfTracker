@@ -1,6 +1,9 @@
 package com.example.shelftracker.ui.composables
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -17,18 +20,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
+import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +49,10 @@ fun AppBar(
     currentRoute: ShelfTrackerRoute,
     onMenuClick: () -> Unit
 ) {
+    var isSearchBarVisible by remember {mutableStateOf(false)}
+    var queryContent by remember { mutableStateOf("Search") }
+    val booksVm = koinViewModel<BooksViewModel>()
+    
     CenterAlignedTopAppBar(
         title = {
             Log.d(currentRoute.route, currentRoute.title)
@@ -65,7 +81,9 @@ fun AppBar(
         },
         actions = {
             if (currentRoute.route == ShelfTrackerRoute.Home.route) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = { isSearchBarVisible = !isSearchBarVisible}
+                ) {
                     Icon(Icons.Outlined.Search, contentDescription = "Search")
                 }
             }
@@ -79,4 +97,19 @@ fun AppBar(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     )
+
+    if(isSearchBarVisible){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            OutlinedTextField(
+                value = queryContent,
+                onValueChange = {queryContent = it; booksVm.updateSearchQuery(queryContent)}
+            )
+        }
+
+    }
 }

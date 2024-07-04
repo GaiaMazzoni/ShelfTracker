@@ -41,6 +41,8 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun BookDetailsScreen(book: Book, navController: NavHostController) {
@@ -146,7 +148,7 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                             style = MaterialTheme.typography.headlineSmall
                         )
                         Text(
-                            book.totalPages.toString(),
+                            book.pagesRead.toString() + "/" + book.totalPages.toString(),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -205,7 +207,11 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                         IconButton(
                             enabled = (pagesRead != 0),
                             onClick = {
-                                booksVm.updatePagesRead(book.title, book.author, pagesRead);
+                                if(pagesRead > book.totalPages){
+                                    booksVm.updatePagesRead(book.title, book.author, book.totalPages)
+                                }else{
+                                    booksVm.updatePagesRead(book.title, book.author, pagesRead)
+                                }
                                 pagesRead = 0;
                                 pagesReadText = "0"
                             },
@@ -227,7 +233,8 @@ fun BookDetailsScreen(book: Book, navController: NavHostController) {
                             onClick = {
                                 if (book.library != "" && !book.returned) booksVm.returnBook(
                                     book.title,
-                                    book.author
+                                    book.author,
+                                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                                 )
                             }
                         ) {

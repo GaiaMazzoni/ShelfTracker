@@ -40,5 +40,8 @@ data class Book (
     val returned: Boolean = false,
 
     @ColumnInfo
-    val pagesRead: Int = 0
+    val pagesRead: Int = 0,
+
+    @ColumnInfo
+    val returnedDate: String
 )

@@ -30,7 +30,7 @@ class BooksRepository(
 
     suspend fun setFavourite(title: String, author: String, favourite: Boolean) = booksDAO.setFavourite(title, author, favourite)
 
-    suspend fun returnBook(title: String, author:String) = booksDAO.returnBook(title, author)
+    suspend fun returnBook(title: String, author:String, returnedDate: String) = booksDAO.returnBook(title, author, returnedDate)
 
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int) = booksDAO.updatePagesRead(title, author, pagesRead)
 

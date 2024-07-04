@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 data class BooksState(val books: List<Book>)
 
 class BooksViewModel(
-    private val repository: BooksRepository
+    private val repository: BooksRepository,
+    private var query: String
 ) : ViewModel() {
     val state = repository.books.map { BooksState(books = it) }.stateIn(
         scope = viewModelScope,
@@ -33,12 +34,20 @@ class BooksViewModel(
     }
 
 
-    fun returnBook(title: String, author:String) = viewModelScope.launch {
-        repository.returnBook(title, author)
+    fun returnBook(title: String, author:String, returnedDate: String) = viewModelScope.launch {
+        repository.returnBook(title, author, returnedDate)
     }
 
     fun updatePagesRead(title: String, author: String, pagesRead: Int) = viewModelScope.launch {
         repository.updatePagesRead(title, author, pagesRead)
+    }
+
+    fun updateSearchQuery(query: String){
+        this.query = query
+    }
+
+    fun getSearchQuery() :String {
+        return this.query
     }
 
 }

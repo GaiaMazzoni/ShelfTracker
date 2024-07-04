@@ -20,9 +20,10 @@ interface BooksDAO {
     @Query("UPDATE book SET favourite = :fav WHERE title = :title AND author = :author")
     suspend fun setFavourite(title: String, author:String, fav: Boolean)
 
-    @Query("UPDATE book SET returned = true WHERE title = :title AND author = :author")
-    suspend fun returnBook(title: String, author:String)
+    @Query("UPDATE book SET returned = true, returnedDate = :returnedDate WHERE title = :title AND author = :author")
+    suspend fun returnBook(title: String, author:String, returnedDate: String)
 
     @Query("UPDATE book SET pagesRead = :pagesRead WHERE title = :title AND author = :author")
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int)
+
 }

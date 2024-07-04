@@ -17,6 +17,7 @@ data class AddBookState(
     val imageUri: Uri = Uri.EMPTY,
     val favourite: Boolean = false,
     val genre: String = "",
+    val returnedDate: String = "",
 
     val returned: Boolean = false,
 
@@ -37,8 +38,8 @@ data class AddBookState(
         libraryDeadline =  libraryDeadline,
         totalPages = totalPages,
         coverUri = imageUri.toString(),
-        genre = genre
-
+        genre = genre,
+        returnedDate = returnedDate
     )
 }
 
@@ -51,6 +52,8 @@ interface AddBookActions {
     fun setTotalPages(pages: Int)
     fun setImageUri(imageUri: Uri)
     fun setGenre(genre: String)
+
+    fun setReturnedDate(returnedDate: String)
 
 
     fun setPagesRead(pagesRead: Int)
@@ -89,6 +92,9 @@ class AddBookViewModel : ViewModel() {
 
         override fun setGenre(genre: String) =
             _state.update { it.copy(genre = genre) }
+
+        override fun setReturnedDate(returnedDate: String) =
+            _state.update {it.copy(returnedDate = returnedDate)}
 
 
 

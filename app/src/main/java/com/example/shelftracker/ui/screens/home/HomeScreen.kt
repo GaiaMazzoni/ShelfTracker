@@ -64,6 +64,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(state: BooksState, navController: NavHostController) {
     val context = LocalContext.current
+    val booksVm = koinViewModel<BooksViewModel>()
 
     //Genres variables
 
@@ -232,7 +233,10 @@ fun HomeScreen(state: BooksState, navController: NavHostController) {
 
                 items(
                     state.books.filter { book ->
-                        (book.genre == selectedTextGenre || selectedTextGenre == "Genre") && (selectedTextFavourite == "All" || (book.favourite && selectedTextFavourite == "Favourite") || (!book.favourite && selectedTextFavourite == "Non favourite"))
+                        ((book.genre == selectedTextGenre || selectedTextGenre == "Genre") && (selectedTextFavourite == "All" || (book.favourite && selectedTextFavourite == "Favourite") || (!book.favourite && selectedTextFavourite == "Non favourite")
+                                && (booksVm.getSearchQuery().isBlank() ||
+                                book.author.contains(booksVm.getSearchQuery(), ignoreCase = true) ||
+                                book.title.contains(booksVm.getSearchQuery(), ignoreCase = true))))
                     }
                 ) { item ->
                     BookItem(
