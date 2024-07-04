@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
         locationService = get<LocationService>()
 
         setContent {
+            val booksVm = koinViewModel<BooksViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
             val themeState by themeViewModel.state.collectAsStateWithLifecycle()
 
@@ -106,12 +108,15 @@ class MainActivity : ComponentActivity() {
                                     onMenuClick = {
                                         scope.launch {
                                             drawerState.open()
-                                    }
-                            }) }
+                                        }
+                                    },
+                                    booksVm
+                                ) }
                         ) { contentPadding ->
                             ShelfTrackerNavGraph(
                                 navController,
-                                modifier = Modifier.padding(contentPadding)
+                                modifier = Modifier.padding(contentPadding),
+                                booksVm
                             )
                         }
                     }

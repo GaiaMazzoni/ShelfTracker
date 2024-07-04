@@ -3,6 +3,7 @@ package com.example.shelftracker
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.database.ShelfTrackerDatabase
 import com.example.shelftracker.data.remote.OSMDataSource
 import com.example.shelftracker.data.repositories.BooksRepository
@@ -66,5 +67,6 @@ val appModule = module {
 
     viewModel { SettingsViewModel(get()) }
 
-    viewModel { BooksViewModel(get(), "") }
+    viewModel { BooksViewModel(get())}
+
 }
