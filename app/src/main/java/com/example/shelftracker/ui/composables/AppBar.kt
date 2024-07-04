@@ -117,6 +117,7 @@ fun AppBar(
                         booksVm.query = newValue
                     },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(4.dp)
                 )
             }
 
