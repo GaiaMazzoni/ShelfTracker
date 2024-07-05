@@ -23,6 +23,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -30,12 +35,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.shelftracker.R
-import com.example.shelftracker.ui.BooksState
+import com.example.shelftracker.data.database.Badge
+import kotlinx.coroutines.Deferred
 
 @Composable
 fun BadgesScreen (
-    state: BooksState
+    badgesVm: BadgesViewModel
 ){
+
     Scaffold (
 
     ){
@@ -46,73 +53,113 @@ fun BadgesScreen (
             modifier = Modifier.padding(contentPadding)
         ){
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library newbie")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Library newbie",
                     text = "Borrow you first book from a library to get it",
-                    condition = state.books.filter { book -> book.library != "" }.isNotEmpty(),
+                    condition = badge != null,
                     resource = R.drawable.lib1
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library intermediate")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Library intermediate",
                     text = "Borrow you first 5 books from a library to get it",
-                    condition = state.books.filter { book -> book.library != "" }.size >= 5,
+                    condition = badge != null,
                     resource = R.drawable.lib2
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library master")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Library master",
                     text = "Borrow you first 15 books from a library to get it",
-                    condition = state.books.filter { book -> book.library != "" }.size >= 15,
+                    condition = badge != null,
                     resource = R.drawable.lib3
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader newbie")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Reader newbie",
                     text = "Read your first 50 pages to get it",
-                    condition = countPages(50, state),
+                    condition = badge != null,
                     resource = R.drawable.read1
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader intermediate")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Reader intermediate",
                     text = "Read your first 200 pages to get it",
-                    condition = countPages(200, state),
+                    condition = badge != null,
                     resource = R.drawable.read2
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader master")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Reader master",
                     text = "Read your first 1000 pages to get it",
-                    condition = countPages(1000, state),
+                    condition = badge != null,
                     resource = R.drawable.read3
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("On Time")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
-                    title = "On time",
+                    title = "On Time",
                     text = "Return a book to a library on time to get it",
-                    condition = state.books.filter { book -> book.library != "" && book.returned && book.returnedDate <= book.libraryDeadline}.isNotEmpty(),
+                    condition = badge != null,
                     resource = R.drawable.ontime
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
+                var badge by remember { mutableStateOf<Badge?>(null) }
+                LaunchedEffect(Unit) {
+                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Too Late!")
+                    badge = badgeJob.await()
+                }
                 BadgeCard(
                     title = "Too Late!",
                     text = "Ops! you returned a book to the library after the deadline",
-                    condition = state.books.filter { book -> book.library != "" && book.returned && book.returnedDate > book.libraryDeadline}.isNotEmpty(),
+                    condition = badge != null,
                     resource = R.drawable.late
                 )
                 Spacer(modifier = Modifier.size(8.dp))
@@ -183,12 +230,6 @@ fun BadgeCard(
             }
         }
     }
-}
-
-fun countPages(min: Int, state: BooksState) : Boolean {
-    var count : Int = 0
-    state.books.forEach { book -> count += book.pagesRead }
-    return count >= min
 }
 
 

@@ -11,6 +11,9 @@ interface BooksDAO {
     @Query("SELECT * FROM book ORDER BY title ASC")
     fun getAll(): Flow<List<Book>>
 
+    @Query("SELECT * FROM book WHERE title = :title AND author = :author")
+    suspend fun getBook(title: String, author: String): Book?
+
     @Upsert
     suspend fun upsert(book: Book)
 
@@ -25,5 +28,23 @@ interface BooksDAO {
 
     @Query("UPDATE book SET pagesRead = :pagesRead WHERE title = :title AND author = :author")
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int)
+
+}
+
+@Dao
+interface BadgesDAO{
+
+    /*@Query("SELECT * FROM badge WHERE user = :user")
+    fun getAllFromUser(user:User): Flow<List<Badge>>*/
+    @Query("SELECT * FROM badge")
+    fun getAll(): List<Badge>
+
+    @Query("SELECT * FROM badge WHERE title = :title")
+    suspend fun getBadge(title: String): Badge?
+    @Upsert
+    suspend fun upsert(badge: Badge)
+
+    @Delete
+    suspend fun delete(item: Badge)
 
 }

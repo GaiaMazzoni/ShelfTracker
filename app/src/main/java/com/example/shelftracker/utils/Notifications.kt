@@ -10,7 +10,7 @@ import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 
 
-class Notifications {
+object Notifications {
     private lateinit var appContext: Context
 
     fun initialize(context: Context) {

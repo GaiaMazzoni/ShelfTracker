@@ -29,6 +29,7 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
+import com.example.shelftracker.ui.screens.badges.BadgesViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.theme.ShelfTrackerTheme
 import com.example.shelftracker.ui.theme.Theme

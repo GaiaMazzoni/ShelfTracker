@@ -240,6 +240,7 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
                 ) { item ->
                     BookItem(
                         item,
+                        booksVm,
                         onClick = {
                             navController.navigate(ShelfTrackerRoute.BookDetails.buildRoute(item.id.toString()))
                         }
@@ -254,8 +255,7 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookItem(item: Book, onClick: () -> Unit) {
-    val booksVm = koinViewModel<BooksViewModel>()
+fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = Modifier

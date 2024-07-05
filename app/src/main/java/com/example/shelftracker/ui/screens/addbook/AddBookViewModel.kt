@@ -26,7 +26,7 @@ data class AddBookState(
     val showLocationPermissionPermanentlyDeniedSnackbar: Boolean = false,
     val showNoInternetConnectivitySnackbar: Boolean = false
 ) {
-    val canSubmit get() = author.isNotBlank() && title.isNotBlank() && totalPages > 0
+    val canSubmit get() = author.isNotBlank() && title.isNotBlank() && totalPages > 0 && (if(library.isNotBlank()) libraryDeadline.isNotBlank() else true)
 
     fun toBook() = Book(
         title = title,

@@ -10,6 +10,7 @@ class ShelfTrackerApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Notifications.initialize(this)
         startKoin {
             androidLogger()
             androidContext(this@ShelfTrackerApplication)

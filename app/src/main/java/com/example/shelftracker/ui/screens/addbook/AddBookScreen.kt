@@ -91,9 +91,6 @@ fun AddBookScreen(
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
 
-    var notifications = Notifications();
-    notifications.initialize(ctx)
-
 
     fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
@@ -281,7 +278,6 @@ fun AddBookScreen(
                 onClick = {
                     if (!state.canSubmit) return@FloatingActionButton
                     onSubmit()
-                    notifications.sendNotification("Aggiunta libro", "Nuovo libro!", "Hai aggiunto un nuovo libro")
                     navController.navigateUp()
                 }
             ) {

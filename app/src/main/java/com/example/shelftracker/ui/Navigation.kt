@@ -68,7 +68,7 @@ fun ShelfTrackerNavGraph(
                 val bookId = backStackEntry.arguments?.getString("bookId")?.toIntOrNull()
                 val book = booksState.books.find { it.id == bookId }
                 if (book != null) {
-                    BookDetailsScreen(book, navController)
+                    BookDetailsScreen(booksVm, book, navController)
                 } else {
                     navController.navigateUp()
                 }
@@ -94,8 +94,8 @@ fun ShelfTrackerNavGraph(
         }
         with(ShelfTrackerRoute.Badges) {
             composable(route) {
-                //val badgesVm = koinViewModel<BadgesViewModel>()
-                BadgesScreen(booksState)
+                val badgesVm = koinViewModel<BadgesViewModel>()
+                BadgesScreen(badgesVm)
             }
         }
     }

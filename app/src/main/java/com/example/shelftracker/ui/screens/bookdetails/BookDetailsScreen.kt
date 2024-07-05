@@ -46,9 +46,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun BookDetailsScreen(book: Book, navController: NavHostController) {
+fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHostController) {
     val ctx = LocalContext.current
-    val booksVm = koinViewModel<BooksViewModel>()
     var pagesRead by remember { mutableStateOf(0) }
     var pagesReadText by remember { mutableStateOf("0") }
 

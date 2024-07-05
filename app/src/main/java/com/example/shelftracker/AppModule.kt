@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.database.ShelfTrackerDatabase
 import com.example.shelftracker.data.remote.OSMDataSource
+import com.example.shelftracker.data.repositories.BadgesRepository
 import com.example.shelftracker.data.repositories.BooksRepository
 import com.example.shelftracker.data.repositories.SettingsRepository
 import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
@@ -19,6 +20,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.example.shelftracker.data.repositories.ThemeRepository
 import com.example.shelftracker.ui.BooksViewModel
+import com.example.shelftracker.ui.screens.badges.BadgesViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 
 val Context.dataStore by preferencesDataStore("settings")
@@ -57,6 +59,12 @@ val appModule = module {
     single { SettingsRepository(get()) }
 
     single {
+        BadgesRepository(
+            get<ShelfTrackerDatabase>().badgesDAO()
+        )
+    }
+
+    single {
         BooksRepository(
             get<ShelfTrackerDatabase>().booksDAO(),
             get<Context>().applicationContext.contentResolver
@@ -67,6 +75,8 @@ val appModule = module {
 
     viewModel { SettingsViewModel(get()) }
 
-    viewModel { BooksViewModel(get())}
+    viewModel { BooksViewModel(get(), get())}
+
+    viewModel { BadgesViewModel(get())}
 
 }

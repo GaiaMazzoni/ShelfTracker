@@ -1,27 +1,31 @@
 package com.example.shelftracker.ui
 
-import androidx.compose.runtime.collectAsState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.repositories.BooksRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.shelftracker.R
+import com.example.shelftracker.data.database.Badge
+import com.example.shelftracker.data.repositories.BadgesRepository
+import com.example.shelftracker.utils.Notifications
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 data class BooksState(val books: List<Book>)
 
 class BooksViewModel(
-    private val repository: BooksRepository
+    private val booksRepository: BooksRepository,
+    private val badgesRepository: BadgesRepository
 ) : ViewModel() {
-    val state = repository.books.map { BooksState(books = it) }.stateIn(
+    val state = booksRepository.books.map { BooksState(books = it) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = BooksState(emptyList()),
@@ -29,27 +33,133 @@ class BooksViewModel(
 
     var query :String by mutableStateOf("")
 
-
     fun addBook(book: Book) = viewModelScope.launch {
-        repository.upsert(book)
+        booksRepository.upsert(book)
+        Notifications.sendNotification("Aggiunta libro", "Nuovo libro!", "Hai aggiunto un nuovo libro")
+        var num = state.value.books.filter { book -> book.library.isNotEmpty() }.count()
+        if(book.library.isNotEmpty()) num += 1
+        if(badgesRepository.getBadge("Library newbie") == null && num > 0) {
+            badgesRepository.upsert(
+                Badge(
+                    "Library newbie",
+                    "Borrow you first book from a library to get it",
+                    R.drawable.lib1
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
+        if(badgesRepository.getBadge("Library intermediate") == null && num >= 5) {
+            badgesRepository.upsert(
+                Badge(
+                    "Library intermediate",
+                    "Borrow you first 5 books from a library to get it",
+                    R.drawable.lib2
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
+        if(badgesRepository.getBadge("Library master") == null && num >= 15) {
+            badgesRepository.upsert(
+                Badge(
+                    "Library master",
+                    "Borrow you first 15 books from a library to get it",
+                    R.drawable.lib3
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
     }
 
     fun deleteBook(book: Book) = viewModelScope.launch {
-        repository.delete(book)
+        booksRepository.delete(book)
     }
 
     fun setFavourite(title: String, author: String, favourite: Boolean) = viewModelScope.launch {
-        repository.setFavourite(title, author, favourite)
+        booksRepository.setFavourite(title, author, favourite)
     }
 
 
     fun returnBook(title: String, author:String, returnedDate: String) = viewModelScope.launch {
-        repository.returnBook(title, author, returnedDate)
+        booksRepository.returnBook(title, author, returnedDate)
+        val book: Book? = booksRepository.getBook(title, author)
+        if(book != null) {
+            val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
+            val returnedDateParsed = LocalDate.parse(returnedDate, formatter)
+            val libraryDeadlineParsed = LocalDate.parse(book.libraryDeadline, formatter)
+            Log.d("OH", (returnedDateParsed.isBefore(libraryDeadlineParsed).toString()))
+
+            if (badgesRepository.getBadge("On Time") == null &&
+                book.library.isNotEmpty() && book.returned && returnedDateParsed.isBefore(libraryDeadlineParsed)
+            ) {
+                badgesRepository.upsert(
+                    Badge(
+                        "On Time",
+                        "Return a book to a library on time to get it",
+                        R.drawable.ontime
+                    )
+                )
+                Notifications.sendNotification(
+                    "Aggiunta badge",
+                    "Nuovo badge!",
+                    "Hai ottenuto un nuovo badge"
+                )
+            } else if (badgesRepository.getBadge("Too Late!") == null &&
+                book.library.isNotEmpty() && book.returned && returnedDateParsed.isAfter(libraryDeadlineParsed)
+            ) {
+                badgesRepository.upsert(
+                    Badge(
+                        "Too Late!",
+                        "Ops! you returned a book to the library after the deadline",
+                        R.drawable.late
+                    )
+                )
+                Notifications.sendNotification(
+                    "Aggiunta badge",
+                    "Nuovo badge!",
+                    "Hai ottenuto un nuovo badge"
+                )
+            }
+        }
     }
 
     fun updatePagesRead(title: String, author: String, pagesRead: Int) = viewModelScope.launch {
-        repository.updatePagesRead(title, author, pagesRead)
+        var num = 0
+        booksRepository.updatePagesRead(title, author, pagesRead)
+        state.value.books.forEach { book -> num += book.pagesRead }
+        num += pagesRead
+        if(badgesRepository.getBadge("Reader newbie") == null && num >= 50) {
+            badgesRepository.upsert(
+                Badge(
+                    "Reader newbie",
+                    "Read your first 50 pages to get it",
+                    R.drawable.read1
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
+        if(badgesRepository.getBadge("Reader intermediate") == null && num >= 200) {
+            badgesRepository.upsert(
+                Badge(
+                    "Reader intermediate",
+                    "Read your first 200 pages to get it",
+                    R.drawable.read2
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
+        if(badgesRepository.getBadge("Reader master") == null && num >= 1000) {
+            badgesRepository.upsert(
+                Badge(
+                    "Reader master",
+                    "Read your first 1000 pages to get it",
+                    R.drawable.read3
+                )
+            )
+            Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
+        }
+
     }
 
 
 }
+
