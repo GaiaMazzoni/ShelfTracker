@@ -19,6 +19,7 @@ import com.example.shelftracker.ui.screens.home.HomeScreen
 import com.example.shelftracker.ui.screens.settings.SettingsScreen
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.ui.screens.bookdetails.BookDetailsScreen
+import com.example.shelftracker.ui.screens.statistics.StatisticsScreen
 import org.koin.androidx.compose.koinViewModel
 
 sealed class ShelfTrackerRoute(
@@ -37,10 +38,11 @@ sealed class ShelfTrackerRoute(
     data object AddBook : ShelfTrackerRoute("books/add", "Add Book")
     data object Settings : ShelfTrackerRoute("settings", "Settings")
     data object Badges : ShelfTrackerRoute("badges", "Badges")
+    data object Statistics : ShelfTrackerRoute("statistics", "Statistics")
 
 
     companion object {
-        val routes = setOf(Home, BookDetails, AddBook, Settings, Badges)
+        val routes = setOf(Home, BookDetails, AddBook, Settings, Badges, Statistics)
     }
 }
 
@@ -96,6 +98,11 @@ fun ShelfTrackerNavGraph(
             composable(route) {
                 val badgesVm = koinViewModel<BadgesViewModel>()
                 BadgesScreen(badgesVm)
+            }
+        }
+        with(ShelfTrackerRoute.Statistics) {
+            composable(route){
+                StatisticsScreen(booksState)
             }
         }
     }
