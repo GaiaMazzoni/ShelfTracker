@@ -81,7 +81,10 @@ class MainActivity : ComponentActivity() {
                                     label = { Text(text = "Statistics", style = MaterialTheme.typography.titleMedium) },
                                     modifier = Modifier.padding(8.dp),
                                     selected = false,
-                                    onClick = { /*TODO*/ }
+                                    onClick = {
+                                        navController.navigate(ShelfTrackerRoute.Statistics.route)
+                                        scope.launch { drawerState.close() }
+                                    }
                                 )
                                 Divider()
                                 NavigationDrawerItem(

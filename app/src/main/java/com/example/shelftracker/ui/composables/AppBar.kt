@@ -56,7 +56,6 @@ fun AppBar(
 ) {
     var isSearchBarVisible by remember {mutableStateOf(false)}
     var queryContent by remember { mutableStateOf("") }
-    //val booksVm = koinViewModel<BooksViewModel>()
 
     Column {
         CenterAlignedTopAppBar(
