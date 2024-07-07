@@ -273,9 +273,8 @@ fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
                 ImageWithPlaceholder(imageUri, Size.Sm)
             }
             Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp / 3 + 36.dp)
+                modifier = Modifier.padding(0.dp, 16.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp / 3 + LocalConfiguration.current.screenWidthDp.dp / 5)
             ) {
                 Text(
                     item.title,
