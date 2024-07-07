@@ -86,7 +86,6 @@ class BooksViewModel(
             val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
             val returnedDateParsed = LocalDate.parse(returnedDate, formatter)
             val libraryDeadlineParsed = LocalDate.parse(book.libraryDeadline, formatter)
-            Log.d("OH", (returnedDateParsed.isBefore(libraryDeadlineParsed).toString()))
 
             if (badgesRepository.getBadge("On Time") == null &&
                 book.library.isNotEmpty() && book.returned && returnedDateParsed.isBefore(libraryDeadlineParsed)
