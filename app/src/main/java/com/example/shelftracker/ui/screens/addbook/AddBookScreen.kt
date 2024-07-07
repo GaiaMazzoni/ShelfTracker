@@ -54,6 +54,7 @@ import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
+import android.provider.CalendarContract
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -69,8 +70,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat.startActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.utils.Notifications
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,6 +94,7 @@ fun AddBookScreen(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
+    val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
 
 
     fun showDatePicker(deadlineType: String){
@@ -367,7 +372,18 @@ fun AddBookScreen(
                 OutlinedTextField( // Field per inserimento della data di riconsegna
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline") }),
+                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline");
+                            val intent = Intent(Intent.ACTION_INSERT)
+                                .setData(CalendarContract.Events.CONTENT_URI)
+                                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,  Calendar.getInstance().run { set(LocalDate.parse(state.libraryDeadline, formatter).year, LocalDate.parse(state.libraryDeadline, formatter).monthValue, LocalDate.parse(state.libraryDeadline, formatter).dayOfMonth, 0, 0)
+                                    timeInMillis })
+                                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Calendar.getInstance().run { set(LocalDate.parse(state.libraryDeadline, formatter).year, LocalDate.parse(state.libraryDeadline, formatter).monthValue, LocalDate.parse(state.libraryDeadline, formatter).dayOfMonth, 23, 59)
+                                    timeInMillis })
+                                .putExtra(CalendarContract.Events.TITLE, "Return date of" + state.title)
+                                .putExtra(CalendarContract.Events.DESCRIPTION, "Return the book to the library!")
+                                .putExtra(CalendarContract.Events.EVENT_LOCATION, state.library)
+                            context.startActivity(intent)
+                        }),
                     value = state.libraryDeadline,
                     label = { Text("Library deadline") },
                     onValueChange = {},
