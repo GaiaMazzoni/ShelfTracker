@@ -51,7 +51,10 @@ fun BarChart(
     modifier: Modifier = Modifier
 ){
     Canvas(modifier = modifier) {
-        val maxValue = data.maxOf { it.value }
+        if(data.isNotEmpty()){
+            val maxValue = data.maxOf { it.value }
+
+
         val barWidth = size.width / (data.size * 2)  // Calculate the width of each bar
         var xOffset = 0f
 
@@ -63,6 +66,7 @@ fun BarChart(
                 size = androidx.compose.ui.geometry.Size(barWidth, barHeight)
             )
             xOffset += barWidth * 2  // Move to the next position
+        }
         }
     }
 }
