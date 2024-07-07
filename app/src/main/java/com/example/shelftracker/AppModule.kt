@@ -19,9 +19,12 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.example.shelftracker.data.repositories.ThemeRepository
+import com.example.shelftracker.data.repositories.UsersRepository
 import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.screens.badges.BadgesViewModel
+import com.example.shelftracker.ui.screens.login.LoginViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
+import com.example.shelftracker.ui.screens.signup.SignupViewModel
 
 val Context.dataStore by preferencesDataStore("settings")
 
@@ -71,6 +74,12 @@ val appModule = module {
         )
     }
 
+    single {
+        UsersRepository(
+            get<ShelfTrackerDatabase>().usersDAO()
+        )
+    }
+
     viewModel { AddBookViewModel() }
 
     viewModel { SettingsViewModel(get()) }
@@ -78,5 +87,9 @@ val appModule = module {
     viewModel { BooksViewModel(get(), get())}
 
     viewModel { BadgesViewModel(get())}
+
+    viewModel { LoginViewModel() }
+
+    viewModel { SignupViewModel() }
 
 }

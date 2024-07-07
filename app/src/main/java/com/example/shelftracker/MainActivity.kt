@@ -1,5 +1,8 @@
 package com.example.shelftracker
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +24,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -43,6 +48,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(getString(R.string.userSharedPref), Context.MODE_PRIVATE)
 
         locationService = get<LocationService>()
 
@@ -106,23 +112,30 @@ class MainActivity : ComponentActivity() {
                     {
                         Scaffold(
                             topBar = {
-                                if(currentRoute.route != ShelfTrackerRoute.Login.route && currentRoute.route != ShelfTrackerRoute.Signup.route)
-                                AppBar(
-                                    navController,
-                                    currentRoute,
-                                    onMenuClick = {
-                                        scope.launch {
-                                            drawerState.open()
-                                        }
-                                    },
-                                    booksVm
-                                ) }
+                                if(sharedPreferences.getBoolean(getString(R.string.isLogged), false))
+                                    AppBar(
+                                        navController,
+                                        currentRoute,
+                                        onMenuClick = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
+                                        },
+                                        booksVm
+                                    ) }
                         ) { contentPadding ->
-                            ShelfTrackerNavGraph(
-                                navController,
-                                modifier = Modifier.padding(contentPadding),
-                                booksVm
-                            )
+                            if(sharedPreferences.getBoolean(getString(R.string.isLogged), false)){
+                                ShelfTrackerNavGraph(
+                                    navController,
+                                    modifier = Modifier.padding(contentPadding),
+                                    booksVm
+                                )
+                            }
+                            else{
+                                val loginIntent = Intent(LocalContext.current, LoginActivity::class.java).addFlags(
+                                    Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                ContextCompat.startActivity(LocalContext.current, loginIntent, null)
+                            }
                         }
                     }
                 }

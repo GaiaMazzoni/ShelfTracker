@@ -29,8 +29,6 @@ sealed class ShelfTrackerRoute(
     val title: String,
     val arguments: List<NamedNavArgument> = emptyList()
 ) {
-    data object Login : ShelfTrackerRoute("login", "Login")
-    data object Signup : ShelfTrackerRoute("signup", "Signup")
     data object Home : ShelfTrackerRoute("books", "ShelfTracker")
     data object BookDetails : ShelfTrackerRoute(
         "books/{bookId}",
@@ -46,7 +44,7 @@ sealed class ShelfTrackerRoute(
 
 
     companion object {
-        val routes = setOf(Login, Signup, Home, BookDetails, AddBook, Settings, Badges, Statistics)
+        val routes = setOf(Home, BookDetails, AddBook, Settings, Badges, Statistics)
     }
 }
 
@@ -61,19 +59,9 @@ fun ShelfTrackerNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = ShelfTrackerRoute.Login.route,
+        startDestination = ShelfTrackerRoute.Home.route,
         modifier = modifier
     ) {
-        with(ShelfTrackerRoute.Signup) {
-            composable(route) {
-                SignupScreen(navController)
-            }
-        }
-        with(ShelfTrackerRoute.Login) {
-            composable(route) {
-                LoginScreen(navController)
-            }
-        }
         with(ShelfTrackerRoute.Home) {
             composable(route) {
                 HomeScreen(booksState, navController, booksVm)

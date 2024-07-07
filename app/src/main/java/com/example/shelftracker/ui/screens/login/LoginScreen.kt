@@ -1,23 +1,20 @@
 package com.example.shelftracker.ui.screens.login
 
+import android.content.Intent
+import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -25,24 +22,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.core.content.ContextCompat.startActivity
+import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
-import com.example.shelftracker.ui.ShelfTrackerRoute
+import com.example.shelftracker.SignupActivity
 
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(
+    sharedPreferences: SharedPreferences,
+    loginViewModel: LoginViewModel
+){
     val usernameState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
+    val context = LocalContext.current
+
     Scaffold (
         floatingActionButton = {
             FloatingActionButton(
@@ -51,7 +52,17 @@ fun LoginScreen(navController: NavController){
                     .fillMaxWidth(),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 onClick = {
-                    navController.navigate(ShelfTrackerRoute.Home.route)
+                    val user = loginViewModel.checkUser(usernameState.value, passwordState.value)
+                    if(user != null) {
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putBoolean(context.getString(R.string.isLogged), true)
+                        editor.putString(context.getString(R.string.username), usernameState.value)
+                        editor.apply()
+                        val homeIntent = Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(context, homeIntent, null)
+                    } else {
+                        Toast.makeText(context, "Username or password are incorrect!", Toast.LENGTH_LONG).show()
+                    }
                 }
             ) {
                 Text("Login")
@@ -97,7 +108,10 @@ fun LoginScreen(navController: NavController){
             }
             item{
                 Button(
-                    onClick = { navController.navigate( ShelfTrackerRoute.Signup.route) },
+                    onClick = {
+                        val signupIntent = Intent(context, SignupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(context, signupIntent, null)
+                    },
                     colors = buttonColors(contentColor = MaterialTheme.colorScheme.background,
                         containerColor = MaterialTheme.colorScheme.background,
                         disabledContentColor = MaterialTheme.colorScheme.background,

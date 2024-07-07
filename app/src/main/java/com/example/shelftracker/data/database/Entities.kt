@@ -44,7 +44,10 @@ data class Book (
     val pagesRead: Int = 0,
 
     @ColumnInfo
-    val returnedDate: String
+    val returnedDate: String,
+
+    /*@ColumnInfo
+    val user: User*/
 )
 
 @Entity
@@ -56,7 +59,7 @@ data class Badge(
     val text: String,
 
     @DrawableRes @ColumnInfo
-    val imgResource: Int
+    val imgResource: Int,
 
     /*@ColumnInfo
     val user: User*/
@@ -75,9 +78,6 @@ data class User (
 
     @ColumnInfo
     val password: String,
-
-    @ColumnInfo
-    val library: String,
 
     @ColumnInfo
     val email: String

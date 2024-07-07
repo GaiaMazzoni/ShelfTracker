@@ -36,8 +36,7 @@ interface BadgesDAO{
 
     /*@Query("SELECT * FROM badge WHERE user = :user")
     fun getAllFromUser(user:User): Flow<List<Badge>>*/
-    @Query("SELECT * FROM badge")
-    fun getAll(): List<Badge>
+
 
     @Query("SELECT * FROM badge WHERE title = :title")
     suspend fun getBadge(title: String): Badge?
@@ -47,4 +46,16 @@ interface BadgesDAO{
     @Delete
     suspend fun delete(item: Badge)
 
+}
+
+@Dao
+interface UsersDAO {
+    @Upsert
+    suspend fun upsert(user: User)
+
+    @Query("SELECT * FROM user WHERE username = :user AND password = :password")
+    fun checkUser(user: String, password: String) : User?
+
+    @Query("SELECT * FROM user WHERE username = :user")
+    fun checkUsername(user: String) : User?
 }

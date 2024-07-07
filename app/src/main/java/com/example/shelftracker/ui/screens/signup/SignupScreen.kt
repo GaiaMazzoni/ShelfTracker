@@ -1,5 +1,8 @@
 package com.example.shelftracker.ui.screens.signup
 
+import android.content.Intent
+import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -25,21 +28,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.shelftracker.LoginActivity
+import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
+import com.example.shelftracker.data.database.User
 import com.example.shelftracker.ui.ShelfTrackerRoute
+import com.example.shelftracker.ui.screens.login.LoginViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun SignupScreen(navController: NavController){
+fun SignupScreen(
+    sharedPreferences: SharedPreferences,
+    signupViewModel: SignupViewModel
+){
     val nameState = remember { mutableStateOf("") }
     val surnameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
     val usernameState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val confirmPasswordState = remember { mutableStateOf("") }
+    val context = LocalContext.current
     Scaffold (
         floatingActionButton = {
             FloatingActionButton(
@@ -48,7 +63,21 @@ fun SignupScreen(navController: NavController){
                     .fillMaxWidth(),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 onClick = {
-
+                    if(signupViewModel.checkUsername(usernameState.value) == null){
+                        signupViewModel.upsert(
+                            User(
+                                usernameState.value,
+                                nameState.value,
+                                surnameState.value,
+                                passwordState.value,
+                                emailState.value
+                        ))
+                        val loginIntent = Intent(context, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        ContextCompat.startActivity(context, loginIntent, null)
+                    }
+                   else{
+                       Toast.makeText(context, "Username already exists!", Toast.LENGTH_LONG).show()
+                    }
                 }
             ) {
                 Text("Signup")
