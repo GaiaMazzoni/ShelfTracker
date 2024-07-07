@@ -54,8 +54,12 @@ fun StatisticsScreen (
                     Pair("Romance", Color.Magenta),
                     Pair("Biography", Color.Cyan)
                 )
-                genres.forEach { genre -> if(genre != "") genreNumbersMap.put(genre, 0) }
-                state.books.forEach { book -> if(book.genre != "") genreNumbersMap[book.genre] = genreNumbersMap[book.genre]!! + 1 }
+                genres.forEach { genre -> genreNumbersMap[genre] = 0 }
+                state.books.forEach { book ->
+                    if (genreNumbersMap.containsKey(book.genre)) {
+                        genreNumbersMap[book.genre] = genreNumbersMap[book.genre]!! + 1
+                    }
+                }
                 var pieChartData : MutableList<ChartData> = genreNumbersMap
                     .filter { it.value > 0 }
                     .mapNotNull { (genre, count) ->

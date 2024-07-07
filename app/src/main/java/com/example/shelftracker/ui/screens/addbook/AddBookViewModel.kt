@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.update
 data class AddBookState(
     val title: String = "",
     val author: String = "",
-    val personalDeadline: String = "",
+    var personalDeadline: String = "",
     val library: String = "",
-    val libraryDeadline: String = "",
+    var libraryDeadline: String = "",
     val totalPages: Int = 0,
     val imageUri: Uri = Uri.EMPTY,
     val favourite: Boolean = false,

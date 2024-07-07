@@ -55,6 +55,7 @@ import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -107,9 +108,18 @@ fun AddBookScreen(
             val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             selectedDate.value = formattedDate
             if(deadlineType == "personalDeadline"){
+                state.personalDeadline = formattedDate
                 actions.setPersonalDeadline(formattedDate)
+                makeCalendarIntent(state.title, state.personalDeadline, formatter, state.library, context,
+                    "Personal deadline for " + state.title ,
+                    "Have you finished reading the book?")
             }else{
+                state.libraryDeadline = formattedDate
                 actions.setLibraryDeadline(formattedDate)
+                makeCalendarIntent(state.title, state.libraryDeadline, formatter, state.library, context,
+                    "Deadline for " + state.title,
+                    "Return the book " + state.title + "to the library!")
+
             }
         }, year, month, day).show()
     }
@@ -333,13 +343,13 @@ fun AddBookScreen(
                 )
             }
             item{
-                OutlinedTextField( // Field per inserimento della data della dealine personale
+                OutlinedTextField( // Field per inserimento della data della deadline personale
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(onClick = { showDatePicker("personalDeadline") }),
                     value = state.personalDeadline,
                     label = { Text("PersonalDeadline") },
-                    onValueChange = {},
+                    onValueChange = { },
                     enabled = false,
                     colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
@@ -372,22 +382,12 @@ fun AddBookScreen(
                 OutlinedTextField( // Field per inserimento della data di riconsegna
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline");
-                            val intent = Intent(Intent.ACTION_INSERT)
-                                .setData(CalendarContract.Events.CONTENT_URI)
-                                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,  Calendar.getInstance().run { set(LocalDate.parse(state.libraryDeadline, formatter).year, LocalDate.parse(state.libraryDeadline, formatter).monthValue, LocalDate.parse(state.libraryDeadline, formatter).dayOfMonth, 0, 0)
-                                    timeInMillis })
-                                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Calendar.getInstance().run { set(LocalDate.parse(state.libraryDeadline, formatter).year, LocalDate.parse(state.libraryDeadline, formatter).monthValue, LocalDate.parse(state.libraryDeadline, formatter).dayOfMonth, 23, 59)
-                                    timeInMillis })
-                                .putExtra(CalendarContract.Events.TITLE, "Return date of" + state.title)
-                                .putExtra(CalendarContract.Events.DESCRIPTION, "Return the book to the library!")
-                                .putExtra(CalendarContract.Events.EVENT_LOCATION, state.library)
-                            context.startActivity(intent)
-                        }),
+                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline")}),
                     value = state.libraryDeadline,
                     label = { Text("Library deadline") },
                     onValueChange = {},
                     enabled = false,
+                    readOnly = true,
                     colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
                         disabledContainerColor = Color.Transparent,
@@ -527,6 +527,44 @@ fun AddBookScreen(
             }
             actions.setShowNoInternetConnectivitySnackbar(false)
         }
+    }
+}
+
+fun makeCalendarIntent(title: String, deadline: String, formatter: DateTimeFormatter, location: String, context: Context, eventTitle: String, eventDescription: String){
+    if(deadline != "") {
+        val intent = Intent(Intent.ACTION_INSERT)
+            .setData(CalendarContract.Events.CONTENT_URI)
+            .putExtra(
+                CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                Calendar.getInstance().run {
+                    set(
+                        LocalDate.parse(deadline, formatter).year,
+                        LocalDate.parse(deadline, formatter).monthValue - 1,
+                        LocalDate.parse(deadline, formatter).dayOfMonth,
+                        0,
+                        0
+                    )
+                    timeInMillis
+                })
+            .putExtra(
+                CalendarContract.EXTRA_EVENT_END_TIME,
+                Calendar.getInstance().run {
+                    set(
+                        LocalDate.parse(deadline, formatter).year,
+                        LocalDate.parse(deadline, formatter).monthValue - 1,
+                        LocalDate.parse(deadline, formatter).dayOfMonth,
+                        23,
+                        59
+                    )
+                    timeInMillis
+                })
+            .putExtra(CalendarContract.Events.TITLE, eventTitle)
+            .putExtra(
+                CalendarContract.Events.DESCRIPTION,
+                eventDescription
+            )
+            .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+        context.startActivity(intent)
     }
 }
 
