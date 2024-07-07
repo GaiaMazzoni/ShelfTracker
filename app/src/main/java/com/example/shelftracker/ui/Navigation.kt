@@ -19,6 +19,8 @@ import com.example.shelftracker.ui.screens.home.HomeScreen
 import com.example.shelftracker.ui.screens.settings.SettingsScreen
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.ui.screens.bookdetails.BookDetailsScreen
+import com.example.shelftracker.ui.screens.login.LoginScreen
+import com.example.shelftracker.ui.screens.signup.SignupScreen
 import com.example.shelftracker.ui.screens.statistics.StatisticsScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,6 +29,8 @@ sealed class ShelfTrackerRoute(
     val title: String,
     val arguments: List<NamedNavArgument> = emptyList()
 ) {
+    data object Login : ShelfTrackerRoute("login", "Login")
+    data object Signup : ShelfTrackerRoute("signup", "Signup")
     data object Home : ShelfTrackerRoute("books", "ShelfTracker")
     data object BookDetails : ShelfTrackerRoute(
         "books/{bookId}",
@@ -42,7 +46,7 @@ sealed class ShelfTrackerRoute(
 
 
     companion object {
-        val routes = setOf(Home, BookDetails, AddBook, Settings, Badges, Statistics)
+        val routes = setOf(Login, Signup, Home, BookDetails, AddBook, Settings, Badges, Statistics)
     }
 }
 
@@ -57,9 +61,19 @@ fun ShelfTrackerNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = ShelfTrackerRoute.Home.route,
+        startDestination = ShelfTrackerRoute.Login.route,
         modifier = modifier
     ) {
+        with(ShelfTrackerRoute.Signup) {
+            composable(route) {
+                SignupScreen(navController)
+            }
+        }
+        with(ShelfTrackerRoute.Login) {
+            composable(route) {
+                LoginScreen(navController)
+            }
+        }
         with(ShelfTrackerRoute.Home) {
             composable(route) {
                 HomeScreen(booksState, navController, booksVm)

@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity() {
                     {
                         Scaffold(
                             topBar = {
+                                if(currentRoute.route != ShelfTrackerRoute.Login.route && currentRoute.route != ShelfTrackerRoute.Signup.route)
                                 AppBar(
                                     navController,
                                     currentRoute,

@@ -207,7 +207,7 @@ fun BadgeCard(
                             modifier = Modifier
                                 .padding(bottom = 16.dp)
                                 .size(48.dp),
-                            tint = MaterialTheme.colorScheme.secondary
+                            tint = Color.Gray
                         )
                     }
                 }
@@ -218,13 +218,13 @@ fun BadgeCard(
             ) {
                 Text(
                     title,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = Color.Black,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 Text(
                     text,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = Color.Black,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
