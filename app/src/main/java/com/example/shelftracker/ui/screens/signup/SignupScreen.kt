@@ -64,20 +64,28 @@ fun SignupScreen(
                     .fillMaxWidth(),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 onClick = {
-                    if(signupViewModel.checkUsername(usernameState.value) == null){
-                        signupViewModel.upsert(
-                            User(
-                                usernameState.value,
-                                nameState.value,
-                                surnameState.value,
-                                passwordState.value,
-                                emailState.value
-                        ))
-                        context.startActivity(Intent(context, LoginActivity::class.java))
-                        (context as Activity).finish()
-                    }
-                   else{
-                       Toast.makeText(context, "Username already exists!", Toast.LENGTH_SHORT).show()
+                    if (!emailState.value.contains("@")){
+                        if(passwordState.value == confirmPasswordState.value){
+                            if(signupViewModel.checkUsername(usernameState.value) == null){
+                                signupViewModel.upsert(
+                                    User(
+                                        usernameState.value,
+                                        nameState.value,
+                                        surnameState.value,
+                                        passwordState.value,
+                                        emailState.value
+                                    ))
+                                context.startActivity(Intent(context, LoginActivity::class.java))
+                                (context as Activity).finish()
+                            }
+                            else{
+                                Toast.makeText(context, "Username already exists!", Toast.LENGTH_SHORT).show()
+                            }
+                        }else{
+                            Toast.makeText(context, "Password and confirm password don't match!", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(context, "E-mail is incorrect!", Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {

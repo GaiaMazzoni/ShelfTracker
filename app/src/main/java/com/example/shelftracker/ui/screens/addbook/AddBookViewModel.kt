@@ -117,7 +117,6 @@ class AddBookViewModel : ViewModel() {
 
         override fun setUser(user: String) {
             _state.update { it.copy(user = user) }
-            Log.wtf("E", "nello stato:" + _state.value.user +"Gli ho passato:" + user)
         }
     }
 }

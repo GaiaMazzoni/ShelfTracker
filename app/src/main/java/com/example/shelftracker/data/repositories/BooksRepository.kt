@@ -18,7 +18,7 @@ class BooksRepository(
     private val contentResolver: ContentResolver,
     private val context: Context
 ) {
-    var sharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
+    var sharedPreferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
 
     val books = booksDAO.getAll(sharedPreferences.getString(context.getString(R.string.username), "").toString())
 

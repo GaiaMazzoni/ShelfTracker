@@ -293,7 +293,6 @@ fun AddBookScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     if (!state.canSubmit) return@FloatingActionButton
-                    Log.wtf("E", context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE).getString(context.getString(R.string.username),"").toString())
                     onSubmit()
                     navController.navigateUp()
                 }

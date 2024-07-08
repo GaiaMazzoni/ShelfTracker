@@ -37,7 +37,6 @@ class BooksViewModel(
     var query :String by mutableStateOf("")
 
     fun addBook(book: Book) = viewModelScope.launch {
-        Log.wtf("E", "Nel addBook() ho " + book.user)
         booksRepository.upsert(book)
         Notifications.sendNotification("Aggiunta libro", "Nuovo libro!", "Hai aggiunto un nuovo libro")
         var num = state.value.books.filter { book -> book.library.isNotEmpty() }.count()

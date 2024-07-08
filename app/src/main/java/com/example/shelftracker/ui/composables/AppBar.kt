@@ -60,7 +60,6 @@ fun AppBar(
     Column {
         CenterAlignedTopAppBar(
             title = {
-                Log.d(currentRoute.route, currentRoute.title)
                 Text(
                     currentRoute.title,
                     fontWeight = FontWeight.Medium,
