@@ -1,6 +1,9 @@
 package com.example.shelftracker.ui.screens.settings
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -15,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -29,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.shelftracker.LoginActivity
+import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.theme.Theme
 import org.koin.androidx.compose.koinViewModel
@@ -51,6 +57,7 @@ fun SettingsScreen(
             .fillMaxSize()
     ) {
         item{
+            Spacer(modifier = Modifier.size(36.dp))
             Text(
                 text = "User: " + sharedPreferences.getString(context.getString(R.string.username), ""),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -79,7 +86,21 @@ fun SettingsScreen(
                 ThemeChoice(themeState, themeViewModel::changeTheme)
             }
         }
-
+        item{
+            Spacer(modifier = Modifier.size(36.dp))
+            Button(
+                onClick = {
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    editor.putBoolean(context.getString(R.string.isLogged), false)
+                    editor.putString(context.getString(R.string.username), "")
+                    editor.apply()
+                    context.startActivity(Intent(context, LoginActivity::class.java))
+                    (context as Activity).finish()
+                }
+            ){
+                Text(text = "Logout")
+            }
+        }
 
 
     }

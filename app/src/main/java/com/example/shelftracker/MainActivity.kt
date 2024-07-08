@@ -27,7 +27,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -35,7 +34,6 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
-import com.example.shelftracker.ui.screens.badges.BadgesViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.theme.ShelfTrackerTheme
 import com.example.shelftracker.ui.theme.Theme

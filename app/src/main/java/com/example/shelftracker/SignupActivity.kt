@@ -12,8 +12,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.shelftracker.ui.screens.login.LoginScreen
-import com.example.shelftracker.ui.screens.login.LoginViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.screens.signup.SignupScreen
 import com.example.shelftracker.ui.screens.signup.SignupViewModel

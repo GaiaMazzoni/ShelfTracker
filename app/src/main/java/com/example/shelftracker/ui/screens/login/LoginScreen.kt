@@ -30,8 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
-import com.example.shelftracker.LoginActivity
 import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.SignupActivity
@@ -63,7 +61,7 @@ fun LoginScreen(
                         context.startActivity(Intent(context, MainActivity::class.java))
                         (context as Activity).finish()
                     } else {
-                        Toast.makeText(context, "Username or password are incorrect!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Username or password are incorrect!", Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {

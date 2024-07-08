@@ -77,7 +77,7 @@ fun SignupScreen(
                         (context as Activity).finish()
                     }
                    else{
-                       Toast.makeText(context, "Username already exists!", Toast.LENGTH_LONG).show()
+                       Toast.makeText(context, "Username already exists!", Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {
