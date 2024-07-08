@@ -1,5 +1,6 @@
 package com.example.shelftracker
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -132,9 +133,8 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             else{
-                                val loginIntent = Intent(LocalContext.current, LoginActivity::class.java).addFlags(
-                                    Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                ContextCompat.startActivity(LocalContext.current, loginIntent, null)
+                                LocalContext.current.startActivity(Intent(LocalContext.current, LoginActivity::class.java))
+                                (LocalContext.current as Activity).finish()
                             }
                         }
                     }

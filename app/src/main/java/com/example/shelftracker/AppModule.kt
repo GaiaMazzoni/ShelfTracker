@@ -3,6 +3,8 @@ package com.example.shelftracker
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.database.ShelfTrackerDatabase
 import com.example.shelftracker.data.remote.OSMDataSource
@@ -34,15 +36,23 @@ val appModule = module {
     single { ThemeRepository(get()) }
     viewModel { ThemeViewModel(get()) }
 
-    single {
-        Room.databaseBuilder(
-            get(),
-            ShelfTrackerDatabase::class.java,
-            "shelf-tracker"
-        )
-            // Sconsigliato per progetti seri! Lo usiamo solo qui per semplicità
-            .fallbackToDestructiveMigration()
-            .build()
+    var instance: ShelfTrackerDatabase? = null
+    single{
+
+        instance ?: synchronized(this) {
+            var instance = Room.databaseBuilder(
+                get(),
+                ShelfTrackerDatabase::class.java,
+                "shelf-tracker"
+            ).allowMainThreadQueries()
+                .addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                    }
+                }).fallbackToDestructiveMigration().build()
+            instance = instance
+            instance
+        }
     }
 
     single {

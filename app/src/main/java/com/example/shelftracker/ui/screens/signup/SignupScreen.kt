@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui.screens.signup
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.widget.Toast
@@ -72,8 +73,8 @@ fun SignupScreen(
                                 passwordState.value,
                                 emailState.value
                         ))
-                        val loginIntent = Intent(context, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        ContextCompat.startActivity(context, loginIntent, null)
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        (context as Activity).finish()
                     }
                    else{
                        Toast.makeText(context, "Username already exists!", Toast.LENGTH_LONG).show()

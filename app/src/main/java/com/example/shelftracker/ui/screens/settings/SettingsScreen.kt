@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui.screens.settings
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -39,6 +41,8 @@ fun SettingsScreen(
 ) {
     val themeViewModel = koinViewModel<ThemeViewModel>()
     val themeState by themeViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,17 +51,8 @@ fun SettingsScreen(
             .fillMaxSize()
     ) {
         item{
-            OutlinedTextField(
-                value = state.username,
-                onValueChange = onUsernameChanged,
-                label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.size(36.dp))
-        }
-        item{
             Text(
-                text = state.username,
+                text = "User: " + sharedPreferences.getString(context.getString(R.string.username), ""),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyLarge
             )

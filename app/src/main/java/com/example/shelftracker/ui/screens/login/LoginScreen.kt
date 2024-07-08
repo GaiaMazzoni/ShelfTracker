@@ -1,5 +1,6 @@
 package com.example.shelftracker.ui.screens.login
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.widget.Toast
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import com.example.shelftracker.LoginActivity
 import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.SignupActivity
@@ -58,8 +60,8 @@ fun LoginScreen(
                         editor.putBoolean(context.getString(R.string.isLogged), true)
                         editor.putString(context.getString(R.string.username), usernameState.value)
                         editor.apply()
-                        val homeIntent = Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(context, homeIntent, null)
+                        context.startActivity(Intent(context, MainActivity::class.java))
+                        (context as Activity).finish()
                     } else {
                         Toast.makeText(context, "Username or password are incorrect!", Toast.LENGTH_LONG).show()
                     }
@@ -109,8 +111,8 @@ fun LoginScreen(
             item{
                 Button(
                     onClick = {
-                        val signupIntent = Intent(context, SignupActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(context, signupIntent, null)
+                        context.startActivity(Intent(context, SignupActivity::class.java))
+                        (context as Activity).finish()
                     },
                     colors = buttonColors(contentColor = MaterialTheme.colorScheme.background,
                         containerColor = MaterialTheme.colorScheme.background,
