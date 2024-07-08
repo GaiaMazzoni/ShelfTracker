@@ -46,8 +46,8 @@ data class Book (
     @ColumnInfo
     val returnedDate: String,
 
-    /*@ColumnInfo
-    val user: User*/
+    @ColumnInfo
+    val user: String
 )
 
 @Entity
@@ -61,8 +61,8 @@ data class Badge(
     @DrawableRes @ColumnInfo
     val imgResource: Int,
 
-    /*@ColumnInfo
-    val user: User*/
+    @ColumnInfo
+    val user: String
 )
 
 @Entity

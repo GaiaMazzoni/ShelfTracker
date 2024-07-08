@@ -1,5 +1,7 @@
 package com.example.shelftracker.ui.screens.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.shapes.Shape
 import android.net.Uri
 import android.util.Log
@@ -53,6 +55,7 @@ import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.room.util.query
+import com.example.shelftracker.R
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksState
 import com.example.shelftracker.ui.BooksViewModel
@@ -256,6 +259,9 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
+    val context = LocalContext.current
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
+    val user = sharedPreferences.getString(context.getString(R.string.username), "")
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -298,9 +304,13 @@ fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
                 IconButton(
                     onClick = {
                         if(item.favourite){
-                            booksVm.setFavourite(item.title, item.author, false)
+                            if (user != null) {
+                                booksVm.setFavourite(item.title, item.author, false, user)
+                            }
                         }else{
-                            booksVm.setFavourite(item.title, item.author, true)
+                            if (user != null) {
+                                booksVm.setFavourite(item.title, item.author, true, user)
+                            }
                         }
                 }) {
                     if(item.favourite){

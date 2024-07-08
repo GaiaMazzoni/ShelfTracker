@@ -1,7 +1,10 @@
 package com.example.shelftracker.ui.screens.bookdetails
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
+import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,6 +40,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.shelftracker.R
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
@@ -50,6 +54,8 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
     val ctx = LocalContext.current
     var pagesRead by remember { mutableStateOf(0) }
     var pagesReadText by remember { mutableStateOf("0") }
+    val sharedPreferences: SharedPreferences = ctx.getSharedPreferences(ctx.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
+    val user = sharedPreferences.getString(ctx.getString(R.string.username), "")
 
     /*fun shareDetails() {
         val sendIntent = Intent().apply {
@@ -233,9 +239,13 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                             enabled = (pagesRead != 0),
                             onClick = {
                                 if(pagesRead > book.totalPages){
-                                    booksVm.updatePagesRead(book.title, book.author, book.totalPages)
+                                    if (user != null) {
+                                        booksVm.updatePagesRead(book.title, book.author, book.totalPages, user)
+                                    }
                                 }else{
-                                    booksVm.updatePagesRead(book.title, book.author, pagesRead)
+                                    if (user != null) {
+                                        booksVm.updatePagesRead(book.title, book.author, pagesRead, user)
+                                    }
                                 }
                                 pagesRead = 0;
                                 pagesReadText = "0"
@@ -259,11 +269,14 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                             enabled = book.library != "" && !book.returned,
                             onClick = {
                                 if (book.library != "" && !book.returned)
-                                    booksVm.returnBook(
-                                        book.title,
-                                        book.author,
-                                        LocalDate.now().format(DateTimeFormatter.ofPattern("d/M/yyyy"))
-                                    )
+                                    user?.let {
+                                        booksVm.returnBook(
+                                            book.title,
+                                            book.author,
+                                            LocalDate.now().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
+                                            it
+                                        )
+                                    }
                             }
                         ) {
                             Row {

@@ -80,7 +80,8 @@ val appModule = module {
     single {
         BooksRepository(
             get<ShelfTrackerDatabase>().booksDAO(),
-            get<Context>().applicationContext.contentResolver
+            get<Context>().applicationContext.contentResolver,
+            get<Context>().applicationContext
         )
     }
 
@@ -94,7 +95,7 @@ val appModule = module {
 
     viewModel { SettingsViewModel(get()) }
 
-    viewModel { BooksViewModel(get(), get())}
+    viewModel { BooksViewModel(get(), get(), get())}
 
     viewModel { BadgesViewModel(get())}
 

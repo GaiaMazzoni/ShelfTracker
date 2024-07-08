@@ -1,9 +1,11 @@
 package com.example.shelftracker.ui
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavHostController
@@ -11,6 +13,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.shelftracker.R
 import com.example.shelftracker.ui.screens.addbook.AddBookScreen
 import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 import com.example.shelftracker.ui.screens.badges.BadgesScreen

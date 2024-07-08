@@ -11,7 +11,7 @@ class BadgesViewModel (
     private val badgesRepository: BadgesRepository
 ) : ViewModel() {
 
-    fun getBadge(title: String) : Deferred<Badge?> = viewModelScope.async {
-        return@async badgesRepository.getBadge(title)
+    fun getBadge(title: String, user: String) : Deferred<Badge?> = viewModelScope.async {
+        return@async badgesRepository.getBadge(title, user)
     }
 }

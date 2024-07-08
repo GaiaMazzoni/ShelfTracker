@@ -20,6 +20,7 @@ data class AddBookState(
     val returnedDate: String = "",
     val returned: Boolean = false,
     val pagesRead: Int = 0,
+    val user: String = "",
 
     val showLocationDisabledAlert: Boolean = false,
     val showLocationPermissionDeniedAlert: Boolean = false,
@@ -38,6 +39,7 @@ data class AddBookState(
         coverUri = imageUri.toString(),
         genre = genre,
         returnedDate = returnedDate,
+        user = user
     )
 }
 

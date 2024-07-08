@@ -1,5 +1,7 @@
 package com.example.shelftracker.ui.screens.badges
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
@@ -32,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.shelftracker.R
@@ -42,6 +45,9 @@ import kotlinx.coroutines.Deferred
 fun BadgesScreen (
     badgesVm: BadgesViewModel
 ){
+    val context = LocalContext.current
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
+    val user = sharedPreferences.getString(context.getString(R.string.username), "")
 
     Scaffold (
 
@@ -55,8 +61,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library newbie")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Library newbie", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Library newbie",
@@ -69,8 +78,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library intermediate")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Library intermediate", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Library intermediate",
@@ -83,8 +95,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Library master")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Library master", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Library master",
@@ -97,8 +112,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader newbie")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Reader newbie", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Reader newbie",
@@ -111,8 +129,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader intermediate")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Reader intermediate", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Reader intermediate",
@@ -125,8 +146,11 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Reader master")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? =
+                        user?.let { badgesVm.getBadge("Reader master", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Reader master",
@@ -139,8 +163,10 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("On Time")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? = user?.let { badgesVm.getBadge("On Time", it) }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "On Time",
@@ -153,8 +179,14 @@ fun BadgesScreen (
             item {
                 var badge by remember { mutableStateOf<Badge?>(null) }
                 LaunchedEffect(Unit) {
-                    val badgeJob: Deferred<Badge?> = badgesVm.getBadge("Too Late!")
-                    badge = badgeJob.await()
+                    val badgeJob: Deferred<Badge?>? = user?.let {
+                        badgesVm.getBadge("Too Late!",
+                            it
+                        )
+                    }
+                    if (badgeJob != null) {
+                        badge = badgeJob.await()
+                    }
                 }
                 BadgeCard(
                     title = "Too Late!",
