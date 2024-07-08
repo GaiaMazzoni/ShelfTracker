@@ -28,7 +28,7 @@ class BooksViewModel(
     private val badgesRepository: BadgesRepository,
     private val context: Context
 ) : ViewModel() {
-    val state = booksRepository.books.map { BooksState(books = it) }.stateIn(
+    val state = booksRepository.getBooksFromUsername().map { BooksState(books = it) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = BooksState(emptyList()),
