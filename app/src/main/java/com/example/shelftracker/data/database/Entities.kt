@@ -50,9 +50,9 @@ data class Book (
     var user: String
 )
 
-@Entity
+@Entity(primaryKeys = ["title", "user"])
 data class Badge(
-    @PrimaryKey
+
     val title: String,
 
     @ColumnInfo
@@ -61,7 +61,7 @@ data class Badge(
     @DrawableRes @ColumnInfo
     val imgResource: Int,
 
-    @ColumnInfo
+
     val user: String
 )
 
@@ -80,5 +80,8 @@ data class User (
     val password: String,
 
     @ColumnInfo
-    val email: String
+    val email: String,
+
+    @ColumnInfo
+    val profilePicture: String?
 )

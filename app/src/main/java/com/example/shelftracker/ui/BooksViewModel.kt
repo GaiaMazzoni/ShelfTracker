@@ -85,6 +85,9 @@ class BooksViewModel(
         booksRepository.setFavourite(title, author, favourite, user)
     }
 
+    fun getBook(title: String, author:String, user: String) : Book? {
+        return booksRepository.getBook(title, author, user)
+    }
 
     fun returnBook(title: String, author:String, returnedDate: String, user: String) = viewModelScope.launch {
         booksRepository.returnBook(title, author, returnedDate, user)

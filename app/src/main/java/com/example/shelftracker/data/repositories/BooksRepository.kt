@@ -24,7 +24,7 @@ class BooksRepository(
         return booksDAO.getAll(sharedPreferences.getString(context.getString(R.string.username), "").toString())
     }
 
-    suspend fun getBook(title: String, author: String, user: String) : Book? {
+    fun getBook(title: String, author: String, user: String) : Book? {
         return booksDAO.getBook(title, author, user)
     }
 

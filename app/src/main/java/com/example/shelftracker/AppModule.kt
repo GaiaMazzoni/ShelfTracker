@@ -93,7 +93,7 @@ val appModule = module {
 
     viewModel { AddBookViewModel() }
 
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get())}
 
     viewModel { BooksViewModel(get(), get(), get())}
 
