@@ -285,6 +285,7 @@ fun AddBookScreen(
 
     // UI
 
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
@@ -292,6 +293,7 @@ fun AddBookScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     if (!state.canSubmit) return@FloatingActionButton
+                    Log.wtf("E", context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE).getString(context.getString(R.string.username),"").toString())
                     onSubmit()
                     navController.navigateUp()
                 }
@@ -329,7 +331,8 @@ fun AddBookScreen(
             item {
                 OutlinedTextField( //Field per inserimento Titolo
                     value = state.title,
-                    onValueChange = {actions.setTitle(it)},
+                    onValueChange = {actions.setTitle(it)
+                        actions.setUser(context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE).getString(context.getString(R.string.username),"").toString())},
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth()
                 )

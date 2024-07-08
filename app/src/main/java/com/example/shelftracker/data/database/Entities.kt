@@ -47,7 +47,7 @@ data class Book (
     val returnedDate: String,
 
     @ColumnInfo
-    val user: String
+    var user: String
 )
 
 @Entity

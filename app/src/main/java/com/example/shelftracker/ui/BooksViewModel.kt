@@ -33,45 +33,44 @@ class BooksViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = BooksState(emptyList()),
     )
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
-    val user = sharedPreferences.getString(context.getString(R.string.username), "").toString()
 
     var query :String by mutableStateOf("")
 
     fun addBook(book: Book) = viewModelScope.launch {
+        Log.wtf("E", "Nel addBook() ho " + book.user)
         booksRepository.upsert(book)
         Notifications.sendNotification("Aggiunta libro", "Nuovo libro!", "Hai aggiunto un nuovo libro")
         var num = state.value.books.filter { book -> book.library.isNotEmpty() }.count()
         if(book.library.isNotEmpty()) num += 1
-        if(badgesRepository.getBadge("Library newbie", user) == null && num > 0) {
+        if(badgesRepository.getBadge("Library newbie", book.user) == null && num > 0) {
             badgesRepository.upsert(
                 Badge(
                     "Library newbie",
                     "Borrow you first book from a library to get it",
                     R.drawable.lib1,
-                    user
+                    book.user
                 )
             )
             Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
         }
-        if(badgesRepository.getBadge("Library intermediate", user) == null && num >= 5) {
+        if(badgesRepository.getBadge("Library intermediate", book.user) == null && num >= 5) {
             badgesRepository.upsert(
                 Badge(
                     "Library intermediate",
                     "Borrow you first 5 books from a library to get it",
                     R.drawable.lib2,
-                    user
+                    book.user
                 )
             )
             Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")
         }
-        if(badgesRepository.getBadge("Library master", user) == null && num >= 15) {
+        if(badgesRepository.getBadge("Library master", book.user) == null && num >= 15) {
             badgesRepository.upsert(
                 Badge(
                     "Library master",
                     "Borrow you first 15 books from a library to get it",
                     R.drawable.lib3,
-                    user
+                    book.user
                 )
             )
             Notifications.sendNotification("Aggiunta badge", "Nuovo badge!", "Hai ottenuto un nuovo badge")

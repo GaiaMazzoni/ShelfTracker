@@ -1,6 +1,7 @@
 package com.example.shelftracker.ui.screens.addbook
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shelftracker.data.database.Book
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,6 +58,8 @@ interface AddBookActions {
 
     fun setPagesRead(pagesRead: Int)
 
+    fun setUser(user: String)
+
     fun setShowLocationDisabledAlert(show: Boolean)
     fun setShowLocationPermissionDeniedAlert(show: Boolean)
     fun setShowLocationPermissionPermanentlyDeniedSnackbar(show: Boolean)
@@ -109,9 +112,12 @@ class AddBookViewModel : ViewModel() {
         override fun setShowNoInternetConnectivitySnackbar(show: Boolean) =
             _state.update { it.copy(showNoInternetConnectivitySnackbar = show) }
 
-        override fun setPagesRead(pagesRead: Int){
-            _state.update {it.copy(pagesRead = pagesRead)}
-        }
+        override fun setPagesRead(pagesRead: Int) =
+            _state.update {it.copy(pagesRead = pagesRead) }
 
-           }
+        override fun setUser(user: String) {
+            _state.update { it.copy(user = user) }
+            Log.wtf("E", "nello stato:" + _state.value.user +"Gli ho passato:" + user)
+        }
+    }
 }
