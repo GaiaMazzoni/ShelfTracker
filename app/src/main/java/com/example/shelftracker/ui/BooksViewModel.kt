@@ -28,7 +28,7 @@ class BooksViewModel(
     private val badgesRepository: BadgesRepository,
     private val context: Context
 ) : ViewModel() {
-    val state = booksRepository.books.map { BooksState(books = it) }.stateIn(
+    val state = booksRepository.getBooksFromUsername().map { BooksState(books = it) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = BooksState(emptyList()),
@@ -84,6 +84,9 @@ class BooksViewModel(
         booksRepository.setFavourite(title, author, favourite, user)
     }
 
+    fun getBook(title: String, author:String, user: String) : Book? {
+        return booksRepository.getBook(title, author, user)
+    }
 
     fun returnBook(title: String, author:String, returnedDate: String, user: String) = viewModelScope.launch {
         booksRepository.returnBook(title, author, returnedDate, user)

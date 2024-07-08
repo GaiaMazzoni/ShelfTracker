@@ -20,9 +20,11 @@ class BooksRepository(
 ) {
     var sharedPreferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
 
-    val books = booksDAO.getAll(sharedPreferences.getString(context.getString(R.string.username), "").toString())
+    fun getBooksFromUsername() : Flow<List<Book>> {
+        return booksDAO.getAll(sharedPreferences.getString(context.getString(R.string.username), "").toString())
+    }
 
-    suspend fun getBook(title: String, author: String, user: String) : Book? {
+    fun getBook(title: String, author: String, user: String) : Book? {
         return booksDAO.getBook(title, author, user)
     }
 

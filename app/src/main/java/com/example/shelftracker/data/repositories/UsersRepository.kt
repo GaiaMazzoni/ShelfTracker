@@ -17,4 +17,8 @@ class UsersRepository (
     fun checkUsername(user: String) : User? {
         return usersDAO.checkUsername(user)
     }
+
+    fun getProfilePic(user: String) :String? {
+        return usersDAO.getProfilePic(user)
+    }
 }

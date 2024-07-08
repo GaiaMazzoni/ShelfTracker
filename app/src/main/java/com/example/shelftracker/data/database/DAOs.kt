@@ -12,7 +12,7 @@ interface BooksDAO {
     fun getAll(user: String): Flow<List<Book>>
 
     @Query("SELECT * FROM book WHERE title = :title AND author = :author AND user = :user")
-    suspend fun getBook(title: String, author: String, user: String): Book?
+    fun getBook(title: String, author: String, user: String): Book?
 
     @Upsert
     suspend fun upsert(book: Book)
@@ -58,4 +58,7 @@ interface UsersDAO {
 
     @Query("SELECT * FROM user WHERE username = :user")
     fun checkUsername(user: String) : User?
+
+    @Query("SELECT profilePicture FROM user WHERE username = :user")
+    fun getProfilePic(user: String) : String?
 }

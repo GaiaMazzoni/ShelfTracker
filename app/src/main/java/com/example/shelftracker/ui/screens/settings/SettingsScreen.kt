@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.shelftracker.LoginActivity
 import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
+import com.example.shelftracker.ui.composables.ImageWithPlaceholder
+import com.example.shelftracker.ui.composables.Size
 import com.example.shelftracker.ui.theme.Theme
 import org.koin.androidx.compose.koinViewModel
 
@@ -46,6 +50,7 @@ fun SettingsScreen(
     onUsernameChanged: (String) -> Unit
 ) {
     val themeViewModel = koinViewModel<ThemeViewModel>()
+    val settingsViewModel = koinViewModel<SettingsViewModel>()
     val themeState by themeViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
@@ -58,11 +63,20 @@ fun SettingsScreen(
     ) {
         item{
             Spacer(modifier = Modifier.size(36.dp))
-            Text(
-                text = "User: " + sharedPreferences.getString(context.getString(R.string.username), ""),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ){
+                if(sharedPreferences.getString(context.getString(R.string.username), "") != null){
+                    ImageWithPlaceholder(Uri.parse(settingsViewModel.getProfilePic(sharedPreferences.getString(context.getString(R.string.username), "").toString())) , Size.Lg)
+                }
+                Text(
+                    text = "" + sharedPreferences.getString(context.getString(R.string.username), ""),
+                    modifier = Modifier.padding(32.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
             Spacer(modifier = Modifier.size(36.dp))
             Divider()
             Spacer(modifier = Modifier.size(36.dp))

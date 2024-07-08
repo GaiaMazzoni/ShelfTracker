@@ -55,7 +55,6 @@ import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
 import android.provider.CalendarContract
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,9 +70,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.core.content.ContextCompat.startActivity
 import com.example.shelftracker.R
-import com.example.shelftracker.utils.Notifications
+import com.example.shelftracker.ui.BooksViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -84,7 +82,8 @@ fun AddBookScreen(
     state: AddBookState,
     actions: AddBookActions,
     onSubmit: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    booksVm : BooksViewModel
 ) {
     val ctx = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -118,7 +117,7 @@ fun AddBookScreen(
                 actions.setLibraryDeadline(formattedDate)
                 makeCalendarIntent(state.title, state.libraryDeadline, formatter, state.library, context,
                     "Deadline for " + state.title,
-                    "Return the book " + state.title + "to the library!")
+                    "Return the book " + state.title + " to the library!")
 
             }
         }, year, month, day).show()
@@ -293,6 +292,10 @@ fun AddBookScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     if (!state.canSubmit) return@FloatingActionButton
+                    if (booksVm.getBook(state.title, state.author, state.user) != null) {
+                        Toast.makeText(context, "Book already exists!", Toast.LENGTH_SHORT).show()
+                        return@FloatingActionButton
+                    }
                     onSubmit()
                     navController.navigateUp()
                 }
