@@ -57,18 +57,6 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
     val sharedPreferences: SharedPreferences = ctx.getSharedPreferences(ctx.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
     val user = sharedPreferences.getString(ctx.getString(R.string.username), "")
 
-    /*fun shareDetails() {
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, book.title)
-        }
-        val shareIntent = Intent.createChooser(sendIntent, "Share book")
-        if (shareIntent.resolveActivity(ctx.packageManager) != null) {
-            ctx.startActivity(shareIntent)
-        }
-    }*/
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(

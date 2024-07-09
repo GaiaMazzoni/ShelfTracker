@@ -110,14 +110,14 @@ fun AddBookScreen(
                 state.personalDeadline = formattedDate
                 actions.setPersonalDeadline(formattedDate)
                 personalDeadline = formattedDate
-                makeCalendarIntent(state.title, state.personalDeadline, formatter, state.library, context,
+                makeCalendarIntent(state.personalDeadline, formatter, state.library, context,
                     "Personal deadline for " + state.title ,
                     "Have you finished reading the book?")
             }else{
                 state.libraryDeadline = formattedDate
                 actions.setLibraryDeadline(formattedDate)
                 libraryDeadline = formattedDate
-                makeCalendarIntent(state.title, state.libraryDeadline, formatter, state.library, context,
+                makeCalendarIntent(state.libraryDeadline, formatter, state.library, context,
                     "Deadline for " + state.title,
                     "Return the book " + state.title + " to the library!")
 
@@ -538,7 +538,7 @@ fun AddBookScreen(
     }
 }
 
-fun makeCalendarIntent(title: String, deadline: String, formatter: DateTimeFormatter, location: String, context: Context, eventTitle: String, eventDescription: String){
+fun makeCalendarIntent(deadline: String, formatter: DateTimeFormatter, location: String, context: Context, eventTitle: String, eventDescription: String){
     if(deadline != "") {
         val intent = Intent(Intent.ACTION_INSERT)
             .setData(CalendarContract.Events.CONTENT_URI)
