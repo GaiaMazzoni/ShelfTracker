@@ -188,7 +188,7 @@ fun SettingsScreen(
                 if(sharedPreferences.getString(context.getString(R.string.username), "") != null){
                     Button(
                         onClick = { showDialog = true },
-                        colors = buttonColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+                        colors = buttonColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
                         ImageWithPlaceholder(Uri.parse(settingsViewModel.getProfilePic(sharedPreferences.getString(context.getString(R.string.username), "").toString())) , Size.Lg)
                     }

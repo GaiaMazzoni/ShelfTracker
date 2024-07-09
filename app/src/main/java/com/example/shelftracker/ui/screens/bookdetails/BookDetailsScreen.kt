@@ -187,7 +187,7 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
             item {
                 Button(
                     onClick = { showDialog = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                 ){
                     Spacer(Modifier.size(16.dp))
                     val imageUri = Uri.parse(book.coverUri)
@@ -362,9 +362,9 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                             modifier = Modifier.fillMaxWidth(),
                             colors = iconButtonColors(
                                 MaterialTheme.colorScheme.tertiary,
-                                MaterialTheme.colorScheme.tertiary,
+                                MaterialTheme.colorScheme.onSecondary,
                                 MaterialTheme.colorScheme.secondary,
-                                MaterialTheme.colorScheme.secondary
+                                MaterialTheme.colorScheme.onSecondary
                             ),
                             enabled = book.library != "" && !book.returned,
                             onClick = {
@@ -382,14 +382,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                             Row {
                                 Icon(
                                     Icons.Outlined.AddHome, "Return icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = MaterialTheme.colorScheme.onPrimary
+                                    modifier = Modifier.size(32.dp)
                                 )
                                 Text(
                                     "Return book to library",
-                                    color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier.padding(4.dp)
+                                    modifier = Modifier.padding(6.dp)
                                 )
                             }
 

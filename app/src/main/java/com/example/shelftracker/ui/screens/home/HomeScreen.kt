@@ -79,13 +79,13 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
 
     //Completion variables
 
-    val completionStatus = arrayOf("Completed", "Still Reading")
+    val completionStatus = arrayOf("Completed", "Reading")
     var expandedCompletion by remember { mutableStateOf(false) }
-    var selectedTextCompletion by remember { mutableStateOf("Completion") }
+    var selectedTextCompletion by remember { mutableStateOf("Status") }
 
     //Favourite variables
 
-    val favouriteFilters = arrayOf("Favourite", "Non favourite")
+    val favouriteFilters = arrayOf("Fav", "Not fav")
     var expandedFavourite by remember { mutableStateOf(false) }
     var selectedTextFavourite by remember { mutableStateOf("All") }
 
@@ -159,7 +159,7 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
                         expanded = expandedCompletion,
                         onDismissRequest = {
                             expandedCompletion = false;
-                            selectedTextCompletion = "Completion"
+                            selectedTextCompletion = "Status"
                         }
                     ) {
                         completionStatus.forEach { item ->
@@ -235,11 +235,11 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
                 items(
                     state.books.filter { book ->
                         (book.title.contains(booksVm.query, ignoreCase = true) || book.author.contains(booksVm.query, ignoreCase = true)) &&
-                                ((selectedTextCompletion == "Completed" && book.pagesRead == book.totalPages) || (selectedTextCompletion == "Still Reading" && book.pagesRead < book.totalPages) || (selectedTextCompletion == "Completion")) &&
+                                ((selectedTextCompletion == "Completed" && book.pagesRead == book.totalPages) || (selectedTextCompletion == "Reading" && book.pagesRead < book.totalPages) || (selectedTextCompletion == "Status")) &&
                         (book.genre == selectedTextGenre || selectedTextGenre == "Genre") &&
                                 (selectedTextFavourite == "All" ||
-                                        (book.favourite && selectedTextFavourite == "Favourite") ||
-                                        (!book.favourite && selectedTextFavourite == "Non favourite"))
+                                        (book.favourite && selectedTextFavourite == "Fav") ||
+                                        (!book.favourite && selectedTextFavourite == "Not fav"))
                     }
                 ) { item ->
                     BookItem(
