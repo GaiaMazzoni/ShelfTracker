@@ -1,6 +1,5 @@
 package com.example.shelftracker.data.repositories
 
-import com.example.shelftracker.data.database.Badge
 import com.example.shelftracker.data.database.User
 import com.example.shelftracker.data.database.UsersDAO
 
