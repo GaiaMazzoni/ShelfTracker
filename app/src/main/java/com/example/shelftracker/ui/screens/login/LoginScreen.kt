@@ -50,7 +50,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                containerColor = MaterialTheme.colorScheme.tertiary,
                 onClick = {
                     val user = loginViewModel.checkUser(usernameState.value, passwordState.value)
                     if(user != null) {
@@ -65,7 +65,7 @@ fun LoginScreen(
                     }
                 }
             ) {
-                Text("Login")
+                Text("Login", color = MaterialTheme.colorScheme.onSecondary)
             }
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -82,7 +82,7 @@ fun LoginScreen(
             item {
                 Spacer(modifier = Modifier.size(32.dp))
                 Image(
-                    painter = painterResource(id = R.drawable.logo_no_background),
+                    painter = painterResource(id = R.drawable.logo_nuovo_no_background),
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit
                 )

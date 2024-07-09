@@ -63,6 +63,7 @@ fun AppBar(
                 Text(
                     currentRoute.title,
                     fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             },
             navigationIcon = {
@@ -70,7 +71,8 @@ fun AppBar(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Outlined.ArrowBack,
-                            contentDescription = "Back button"
+                            contentDescription = "Back button",
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -78,7 +80,8 @@ fun AppBar(
                     IconButton(onClick = { onMenuClick() }) {
                         Icon(
                             imageVector = Icons.Outlined.Menu,
-                            contentDescription = "Sidebar button"
+                            contentDescription = "Sidebar button",
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -88,17 +91,17 @@ fun AppBar(
                     IconButton(
                         onClick = { isSearchBarVisible = !isSearchBarVisible}
                     ) {
-                        Icon(Icons.Outlined.Search, contentDescription = "Search")
+                        Icon(Icons.Outlined.Search, contentDescription = "Search", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
                 if (currentRoute.route != ShelfTrackerRoute.Settings.route) {
                     IconButton(onClick = { navController.navigate(ShelfTrackerRoute.Settings.route) }) {
-                        Icon(Icons.Outlined.Settings, "Settings")
+                        Icon(Icons.Outlined.Settings, "Settings", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.secondary
             )
         )
 

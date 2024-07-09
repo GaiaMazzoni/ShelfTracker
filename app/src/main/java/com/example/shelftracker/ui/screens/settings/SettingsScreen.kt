@@ -21,6 +21,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -73,7 +74,7 @@ fun SettingsScreen(
                 Text(
                     text = "" + sharedPreferences.getString(context.getString(R.string.username), ""),
                     modifier = Modifier.padding(32.dp),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -110,9 +111,15 @@ fun SettingsScreen(
                     editor.apply()
                     context.startActivity(Intent(context, LoginActivity::class.java))
                     (context as Activity).finish()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    disabledContentColor = MaterialTheme.colorScheme.tertiary,
+                    disabledContainerColor = MaterialTheme.colorScheme.tertiary
+                )
             ){
-                Text(text = "Logout")
+                Text(text = "Logout", color = MaterialTheme.colorScheme.onSecondary)
             }
         }
 

@@ -221,7 +221,7 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = { navController.navigate(ShelfTrackerRoute.AddBook.route) }
             ) {
-                Icon(Icons.Outlined.Add, "Add Book")
+                Icon(Icons.Outlined.Add, "Add Book", tint = MaterialTheme.colorScheme.onSecondary)
             }
         },
     ) { contentPadding ->
@@ -268,7 +268,7 @@ fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = MaterialTheme.colorScheme.secondary
         )
     ) {
         Row{
@@ -286,13 +286,13 @@ fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
             ) {
                 Text(
                     item.title,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 Text(
                     item.author,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -315,9 +315,9 @@ fun BookItem(item: Book, booksVm: BooksViewModel, onClick: () -> Unit) {
                         }
                 }) {
                     if(item.favourite){
-                        Icon(Icons.Outlined.Star, contentDescription = "Favourite")
+                        Icon(Icons.Outlined.Star, contentDescription = "Favourite", tint = MaterialTheme.colorScheme.onPrimary)
                     }else{
-                        Icon(Icons.Outlined.StarOutline, contentDescription = "Favourite")
+                        Icon(Icons.Outlined.StarOutline, contentDescription = "Favourite", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
             }
@@ -338,7 +338,7 @@ fun NoItemsPlaceholder(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .size(48.dp),
-            tint = MaterialTheme.colorScheme.secondary
+            tint = MaterialTheme.colorScheme.primary
         )
         Text(
             "No items",
