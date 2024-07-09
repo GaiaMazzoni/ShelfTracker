@@ -1,11 +1,13 @@
 package com.example.shelftracker.ui.screens.bookdetails
 
+import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.provider.Settings.Global.getString
-import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +21,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddHome
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,15 +48,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.camera.utils.rememberPermission
 import com.example.shelftracker.R
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
-import org.koin.androidx.compose.koinViewModel
+import com.example.shelftracker.utils.rememberCameraLauncher
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHostController) {
     val ctx = LocalContext.current
@@ -56,18 +66,105 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
     var pagesReadText by remember { mutableStateOf("0") }
     val sharedPreferences: SharedPreferences = ctx.getSharedPreferences(ctx.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
     val user = sharedPreferences.getString(ctx.getString(R.string.username), "")
+    var showDialog by remember { mutableStateOf(false) }
 
-    /*fun shareDetails() {
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, book.title)
+    // Camera
+    val cameraLauncher = rememberCameraLauncher { imageUri ->
+        booksVm.updateCover(book.title, book.author, imageUri.toString(), user.toString())
+    }
+
+    val cameraPermission = rememberPermission(Manifest.permission.CAMERA) { status ->
+        if (status.isGranted) {
+            cameraLauncher.captureImage()
+        } else {
+            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
         }
-        val shareIntent = Intent.createChooser(sendIntent, "Share book")
-        if (shareIntent.resolveActivity(ctx.packageManager) != null) {
-            ctx.startActivity(shareIntent)
+    }
+
+    //Gallery
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia()){ imageUri ->
+        if (imageUri != null) {
+            booksVm.updateCover(book.title, book.author, imageUri.toString(), user.toString())
         }
-    }*/
+    }
+
+    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+            status ->
+        if(status.isGranted){
+            galleryLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        }
+        else {
+            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun takePicture() {
+        if (cameraPermission.status.isGranted) {
+            cameraLauncher.captureImage()
+        } else {
+            cameraPermission.launchPermissionRequest()
+        }
+    }
+
+    fun openGallery() {
+        if (galleryPermission.status.isGranted) {
+            galleryLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        } else {
+            galleryPermission.launchPermissionRequest()
+        }
+    }
+
+    @Composable
+    fun PictureDialog(){
+        AlertDialog(onDismissRequest = { showDialog = false }) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = ::takePicture,
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+                ) {
+                    Icon(
+                        Icons.Outlined.PhotoCamera,
+                        contentDescription = "Camera icon",
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Take a picture", color = MaterialTheme.colorScheme.onSecondary)
+                }
+                Button(
+                    onClick = ::openGallery,
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+                ) {
+                    Icon(
+                        Icons.Outlined.PhotoLibrary,
+                        contentDescription = "Photo icon",
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Open gallery",  color = MaterialTheme.colorScheme.onSecondary)
+                }
+            }
+        }
+    }
+    if (showDialog) {
+        PictureDialog()
+    }
+
+
 
     Scaffold(
         floatingActionButton = {
@@ -90,9 +187,14 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                 .fillMaxSize()
         ) {
             item {
-                Spacer(Modifier.size(16.dp))
-                val imageUri = Uri.parse(book.coverUri)
-                ImageWithPlaceholder(imageUri, Size.Lg)
+                Button(
+                    onClick = { showDialog = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+                ){
+                    Spacer(Modifier.size(16.dp))
+                    val imageUri = Uri.parse(book.coverUri)
+                    ImageWithPlaceholder(imageUri, Size.Lg)
+                }
             }
             item{
                 Spacer(Modifier.size(16.dp))

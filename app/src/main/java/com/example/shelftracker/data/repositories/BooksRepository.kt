@@ -49,5 +49,6 @@ class BooksRepository(
 
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int, user: String) = booksDAO.updatePagesRead(title, author, pagesRead, user)
 
+    suspend fun updateCover(title: String, author: String, photo: String, user: String) = booksDAO.updateCover(title, author, photo, user)
 
 }

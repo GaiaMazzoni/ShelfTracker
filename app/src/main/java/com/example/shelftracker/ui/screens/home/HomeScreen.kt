@@ -343,7 +343,7 @@ fun NoItemsPlaceholder(modifier: Modifier = Modifier) {
         Text(
             "No items",
             style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(

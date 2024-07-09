@@ -183,30 +183,36 @@ fun AddBookScreen(
     @Composable
     fun PictureDialog(){
         AlertDialog(onDismissRequest = { showDialog = false }) {
-            Column {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Button(
                     onClick = ::takePicture,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.PhotoCamera,
                         contentDescription = "Camera icon",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Take a picture")
+                    Text("Take a picture", color = MaterialTheme.colorScheme.onSecondary)
                 }
                 Button(
                     onClick = ::openGallery,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.PhotoLibrary,
                         contentDescription = "Photo icon",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Open gallery")
+                    Text("Open gallery", color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
 
@@ -319,6 +325,7 @@ fun AddBookScreen(
                 Button(
                     onClick = { showDialog = true },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.AddPhotoAlternate,

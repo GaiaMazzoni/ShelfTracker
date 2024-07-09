@@ -21,4 +21,8 @@ class UsersRepository (
     fun getProfilePic(user: String) :String? {
         return usersDAO.getProfilePic(user)
     }
+
+    suspend fun setProfilePic(user: String, photo: String){
+        usersDAO.setProfilePic(user, photo)
+    }
 }

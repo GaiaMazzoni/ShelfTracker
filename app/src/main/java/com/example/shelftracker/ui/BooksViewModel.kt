@@ -173,6 +173,9 @@ class BooksViewModel(
 
     }
 
+    fun updateCover(title: String, author: String, photo: String, user: String) = viewModelScope.launch {
+        booksRepository.updateCover(title, author, photo, user)
+    }
 
 }
 

@@ -29,6 +29,8 @@ interface BooksDAO {
     @Query("UPDATE book SET pagesRead = :pagesRead WHERE title = :title AND author = :author AND user = :user")
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int, user: String)
 
+    @Query("UPDATE book SET coverUri = :photo WHERE title = :title AND author = :author AND user = :user")
+    suspend fun updateCover(title: String, author: String, photo: String, user: String)
 }
 
 @Dao
@@ -61,4 +63,7 @@ interface UsersDAO {
 
     @Query("SELECT profilePicture FROM user WHERE username = :user")
     fun getProfilePic(user: String) : String?
+
+    @Query("UPDATE user SET profilePicture = :photo WHERE username = :user")
+    suspend fun setProfilePic(user: String, photo: String)
 }

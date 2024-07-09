@@ -28,6 +28,10 @@ class SettingsViewModel (
         return usersRepository.getProfilePic(user)
     }
 
+    fun setProfilePic(user: String, photo: String) = viewModelScope.launch{
+        usersRepository.setProfilePic(user, photo)
+    }
+
     init {
         viewModelScope.launch {
             state = SettingsState(repository.username.first())

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -78,7 +79,6 @@ fun SignupScreen(
     var showDialog by remember { mutableStateOf(false) }
 
     // Camera
-
     val cameraLauncher = rememberCameraLauncher { imageUri ->
         profilePictureState.value = imageUri.toString()
     }
@@ -97,7 +97,6 @@ fun SignupScreen(
         if (imageUri != null) {
             profilePictureState.value = imageUri.toString()
         }
-
     }
 
     val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
@@ -137,34 +136,38 @@ fun SignupScreen(
     @Composable
     fun PictureDialog(){
         AlertDialog(onDismissRequest = { showDialog = false }) {
-            Column {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Button(
                     onClick = ::takePicture,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.PhotoCamera,
                         contentDescription = "Camera icon",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Take a picture")
+                    Text("Take a picture", color = MaterialTheme.colorScheme.onSecondary)
                 }
                 Button(
                     onClick = ::openGallery,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.PhotoLibrary,
                         contentDescription = "Photo icon",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Open gallery")
+                    Text("Open gallery", color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
-
-
         }
     }
     if (showDialog) {
@@ -221,13 +224,15 @@ fun SignupScreen(
                 .fillMaxSize()
         ) {
             item {
-                Spacer(modifier = Modifier.size(32.dp))
+                Spacer(modifier = Modifier.size(16.dp))
                 Image(
                     painter = painterResource(id = R.drawable.logo_nuovo_no_background),
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit
                 )
-                Spacer(modifier = Modifier.size(32.dp))
+                Spacer(modifier = Modifier.size(16.dp))
+                Divider()
+                Spacer(modifier = Modifier.size(16.dp))
             }
             item { ImageWithPlaceholder(Uri.parse(profilePictureState.value), Size.Lg) }
             item { Spacer(Modifier.size(8.dp)) }
@@ -235,15 +240,17 @@ fun SignupScreen(
                 Button(
                     onClick = { showDialog = true },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Icon(
                         Icons.Outlined.AddPhotoAlternate,
                         contentDescription = "",
                         modifier = Modifier.size(ButtonDefaults.IconSize),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Add a photo")
+                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary)
+                    Spacer(modifier = Modifier.size(16.dp))
                 }
             }
             item {
@@ -301,7 +308,7 @@ fun SignupScreen(
                 Spacer(modifier = Modifier.size(16.dp))
             }
             item{
-                Spacer(modifier = Modifier.size(44.dp))
+                Spacer(modifier = Modifier.size(64.dp))
             }
         }
     }
