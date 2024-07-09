@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -14,9 +15,10 @@ data class ChartData(val value: Float, val label: String, val color: Color)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PieChart(
+fun PieChart( //Composable di un grafico a torta
     data: MutableList<ChartData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    horizontal: Alignment.Horizontal
 ) {
     val totalValue = data.fold(0f) { sum, pieData -> sum + pieData.value }
     var startAngle = -90f
@@ -46,9 +48,10 @@ fun DrawScope.drawPieSlice(color: Color, startAngle: Float, sweepAngle: Float) {
 }
 
 @Composable
-fun BarChart(
+fun BarChart( //Composable di un istogramma
     data: MutableList<ChartData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    horizontal: Alignment.Horizontal
 ){
     Canvas(modifier = modifier) {
         if(data.isNotEmpty()){

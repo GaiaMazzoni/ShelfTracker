@@ -164,8 +164,6 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
         PictureDialog()
     }
 
-
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(

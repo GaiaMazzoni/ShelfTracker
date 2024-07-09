@@ -184,7 +184,7 @@ fun SignupScreen(
                     .fillMaxWidth(),
                 containerColor = MaterialTheme.colorScheme.tertiary,
                 onClick = {
-                    if (!emailState.value.contains("@")){
+                    if (emailState.value.contains("@")){
                         if(passwordState.value == confirmPasswordState.value){
                             if(signupViewModel.checkUsername(usernameState.value) == null){
                                 signupViewModel.upsert(

@@ -2,7 +2,6 @@ package com.example.shelftracker.data.repositories
 
 import com.example.shelftracker.data.database.Badge
 import com.example.shelftracker.data.database.BadgesDAO
-import com.example.shelftracker.data.database.User
 import kotlinx.coroutines.flow.Flow
 
 class BadgesRepository(
