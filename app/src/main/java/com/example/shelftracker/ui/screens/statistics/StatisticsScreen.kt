@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +49,8 @@ fun StatisticsScreen (
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(16.dp, 8.dp),
-            modifier = Modifier.padding(contentPadding)
+            modifier = Modifier.padding(contentPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             if(!state.books.any { book -> book.genre != "Genre" }){ //If i have no books with explicitly stated genres, the program won't show the piechart for the genre distribution
                 item {
@@ -104,7 +106,11 @@ fun StatisticsScreen (
                 }
             }
 
-            if(!state.books.any { book -> book.pagesRead > 0 }) { //If the user has not read any page, the program won't show the pages read by genre bargraph
+            item {
+                Divider()
+            }
+
+            if(!state.books.any { book -> book.pagesRead > 0  && book.genre != "Genre"}) { //If the user has not read any page, the program won't show the pages read by genre bargraph
                 item {
                     Text("Pages read by genre distribution graph not yet available! Come back once you have read some pages!",
                         textAlign = TextAlign.Center)

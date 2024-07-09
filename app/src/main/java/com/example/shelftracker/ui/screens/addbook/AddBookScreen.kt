@@ -88,7 +88,8 @@ fun AddBookScreen(
     val ctx = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
-    val selectedDate = remember { mutableStateOf("") }
+    var personalDeadline by remember { mutableStateOf("") }
+    var libraryDeadline by remember { mutableStateOf("") }
     val genres = arrayOf("Fantasy", "Science Fiction", "Dystopian", "Action", "Mystery",
         "Horror", "Thriller", "Historical", "Romance", "Biography")
     var expanded by remember { mutableStateOf(false) }
@@ -105,16 +106,17 @@ fun AddBookScreen(
 
         DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-            selectedDate.value = formattedDate
             if(deadlineType == "personalDeadline"){
                 state.personalDeadline = formattedDate
                 actions.setPersonalDeadline(formattedDate)
+                personalDeadline = formattedDate
                 makeCalendarIntent(state.title, state.personalDeadline, formatter, state.library, context,
                     "Personal deadline for " + state.title ,
                     "Have you finished reading the book?")
             }else{
                 state.libraryDeadline = formattedDate
                 actions.setLibraryDeadline(formattedDate)
+                libraryDeadline = formattedDate
                 makeCalendarIntent(state.title, state.libraryDeadline, formatter, state.library, context,
                     "Deadline for " + state.title,
                     "Return the book " + state.title + " to the library!")
@@ -353,9 +355,9 @@ fun AddBookScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(onClick = { showDatePicker("personalDeadline") }),
-                    value = state.personalDeadline,
+                    value = personalDeadline,
                     label = { Text("PersonalDeadline") },
-                    onValueChange = { },
+                    onValueChange = {},
                     enabled = false,
                     colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
@@ -388,8 +390,8 @@ fun AddBookScreen(
                 OutlinedTextField( // Field per inserimento della data di riconsegna
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline")}),
-                    value = state.libraryDeadline,
+                        .clickable(onClick = { if (state.library != "") showDatePicker("libraryDeadline") }),
+                    value = libraryDeadline,
                     label = { Text("Library deadline") },
                     onValueChange = {},
                     enabled = false,
