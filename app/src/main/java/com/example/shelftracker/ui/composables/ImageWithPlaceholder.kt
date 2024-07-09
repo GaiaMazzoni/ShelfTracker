@@ -46,7 +46,7 @@ fun ImageWithPlaceholder(uri: Uri?, size: Size) {
             modifier = Modifier
                 .size(if (size == Size.Sm) 72.dp else 128.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.secondary)
+                .background(MaterialTheme.colorScheme.tertiary)
                 .padding(if (size == Size.Sm) 20.dp else 36.dp)
         )
     }

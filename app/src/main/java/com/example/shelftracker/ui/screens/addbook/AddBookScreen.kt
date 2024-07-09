@@ -300,7 +300,7 @@ fun AddBookScreen(
                     navController.navigateUp()
                 }
             ) {
-                Icon(Icons.Outlined.Check, "Add Book")
+                Icon(Icons.Outlined.Check, "Add Book", tint = MaterialTheme.colorScheme.onSecondary)
             }
         },
     ) { contentPadding ->
@@ -323,10 +323,11 @@ fun AddBookScreen(
                     Icon(
                         Icons.Outlined.AddPhotoAlternate,
                         contentDescription = "",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Add a photo")
+                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
 

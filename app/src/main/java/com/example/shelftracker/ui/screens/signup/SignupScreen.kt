@@ -179,7 +179,7 @@ fun SignupScreen(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                containerColor = MaterialTheme.colorScheme.tertiary,
                 onClick = {
                     if (emailState.value.contains("@")){
                         if(passwordState.value == confirmPasswordState.value){
@@ -207,7 +207,7 @@ fun SignupScreen(
                     }
                 }
             ) {
-                Text("Signup")
+                Text("Signup", color = MaterialTheme.colorScheme.onSecondary)
             }
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -223,7 +223,7 @@ fun SignupScreen(
             item {
                 Spacer(modifier = Modifier.size(32.dp))
                 Image(
-                    painter = painterResource(id = R.drawable.logo_no_background),
+                    painter = painterResource(id = R.drawable.logo_nuovo_no_background),
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit
                 )
@@ -239,7 +239,8 @@ fun SignupScreen(
                     Icon(
                         Icons.Outlined.AddPhotoAlternate,
                         contentDescription = "",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text("Add a photo")

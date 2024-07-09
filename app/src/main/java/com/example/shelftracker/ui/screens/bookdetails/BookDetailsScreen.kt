@@ -99,7 +99,7 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                 Text(
                     book.title,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.size(8.dp))
@@ -119,12 +119,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Author: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.author,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -135,12 +135,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Library: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.library,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -151,12 +151,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Pages: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.pagesRead.toString() + "/" + book.totalPages.toString(),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -167,12 +167,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Personal deadline: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.personalDeadline,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -183,12 +183,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Library deadline: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.libraryDeadline,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -199,12 +199,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Returned date: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.returnedDate,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -215,12 +215,12 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         Text(
                             "Genre: ",
                             fontStyle = FontStyle.Italic,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
                             book.genre,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -261,9 +261,9 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                         IconButton(
                             modifier = Modifier.fillMaxWidth(),
                             colors = iconButtonColors(
-                                MaterialTheme.colorScheme.tertiaryContainer,
                                 MaterialTheme.colorScheme.tertiary,
-                                MaterialTheme.colorScheme.secondaryContainer,
+                                MaterialTheme.colorScheme.tertiary,
+                                MaterialTheme.colorScheme.secondary,
                                 MaterialTheme.colorScheme.secondary
                             ),
                             enabled = book.library != "" && !book.returned,
@@ -283,11 +283,11 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                                 Icon(
                                     Icons.Outlined.AddHome, "Return icon",
                                     modifier = Modifier.size(32.dp),
-                                    tint = MaterialTheme.colorScheme.secondary
+                                    tint = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Text(
                                     "Return book to library",
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyLarge,
                                     modifier = Modifier.padding(4.dp)
                                 )

@@ -36,7 +36,7 @@ object Notifications {
         )
 
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(appContext, channelId)
-            .setSmallIcon(R.drawable.vecteezy_wooden_shelf_with_books_13815590)
+            .setSmallIcon(R.drawable.icona_nuova_no_background)
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(pendingIntent)
