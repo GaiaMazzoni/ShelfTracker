@@ -65,7 +65,7 @@ fun LoginScreen(
                     }
                 }
             ) {
-                Text("Login", color = MaterialTheme.colorScheme.onSecondary)
+                Text("Login", color = MaterialTheme.colorScheme.onSecondary, style = MaterialTheme.typography.titleMedium)
             }
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -121,7 +121,8 @@ fun LoginScreen(
                     Text(
                         text = "Don't have an account? Signup!",
                         color = MaterialTheme.colorScheme.tertiary,
-                        textDecoration = TextDecoration.Underline
+                        textDecoration = TextDecoration.Underline,
+                        style = MaterialTheme.typography.titleMedium
                         )
                 }
             }

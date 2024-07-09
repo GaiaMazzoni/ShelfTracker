@@ -210,7 +210,7 @@ fun SignupScreen(
                     }
                 }
             ) {
-                Text("Signup", color = MaterialTheme.colorScheme.onSecondary)
+                Text("Signup", color = MaterialTheme.colorScheme.onSecondary, style = MaterialTheme.typography.titleMedium)
             }
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -249,7 +249,7 @@ fun SignupScreen(
                         tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary)
+                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary, style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.size(16.dp))
                 }
             }

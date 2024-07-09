@@ -236,7 +236,7 @@ fun SettingsScreen(
                 },
                 colors = buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
             ){
-                Text(text = "Logout", color = MaterialTheme.colorScheme.onSecondary)
+                Text(text = "Logout", color = MaterialTheme.colorScheme.onSecondary, style = MaterialTheme.typography.titleMedium)
             }
         }
 

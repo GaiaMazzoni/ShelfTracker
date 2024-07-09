@@ -336,7 +336,7 @@ fun AddBookScreen(
                         tint = MaterialTheme.colorScheme.onSecondary
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary)
+                    Text("Add a photo", color = MaterialTheme.colorScheme.onSecondary, style = MaterialTheme.typography.titleMedium)
                 }
             }
 
