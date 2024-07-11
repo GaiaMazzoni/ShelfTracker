@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                         drawerContent = {
                             ModalDrawerSheet {
                                 NavigationDrawerItem(
-                                    label = { Text(text = "Statistics", style = MaterialTheme.typography.titleMedium) },
+                                    label = { Text(text = "Statistics", style = MaterialTheme.typography.bodyLarge) },
                                     modifier = Modifier.padding(8.dp),
                                     selected = false,
                                     onClick = {
@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                                 )
                                 Divider()
                                 NavigationDrawerItem(
-                                    label = { Text(text = "Badges", style = MaterialTheme.typography.titleMedium) },
+                                    label = { Text(text = "Badges", style = MaterialTheme.typography.bodyLarge) },
                                     modifier = Modifier.padding(8.dp),
                                     selected = false,
                                     onClick = {

@@ -195,7 +195,7 @@ fun SettingsScreen(
                 }
                 Text(
                     text = "" + sharedPreferences.getString(context.getString(R.string.username), ""),
-                    modifier = Modifier.padding(32.dp),
+                    modifier = Modifier.padding(32.dp, 54.dp),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -218,7 +218,7 @@ fun SettingsScreen(
                 Text(
                     text = "App Theme: ",
                     modifier = Modifier.padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 ThemeChoice(themeState, themeViewModel::changeTheme)
             }
