@@ -226,7 +226,6 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
         },
     ) { contentPadding ->
         if (state.books.isNotEmpty()) {
-            Log.d("E", "libri non vuoti")
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(16.dp, 8.dp),

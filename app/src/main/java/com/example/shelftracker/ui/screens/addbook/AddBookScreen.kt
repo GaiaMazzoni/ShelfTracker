@@ -54,7 +54,9 @@ import com.example.shelftracker.utils.rememberCameraLauncher
 import org.koin.compose.koinInject
 import java.util.Calendar
 import android.app.DatePickerDialog
+import android.os.Build
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -148,8 +150,10 @@ fun AddBookScreen(
 
     }
 
-    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
-        status ->
+    val permission = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+
+    val galleryPermission = rememberPermission(permission) {
+            status ->
         if(status.isGranted){
             galleryLauncher.launch(
                 PickVisualMediaRequest(
@@ -158,7 +162,7 @@ fun AddBookScreen(
             )
         }
         else {
-            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, Manifest.permission.READ_EXTERNAL_STORAGE, Toast.LENGTH_SHORT).show()
         }
     }
 

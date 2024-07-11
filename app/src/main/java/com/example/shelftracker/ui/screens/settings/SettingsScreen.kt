@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -96,7 +97,9 @@ fun SettingsScreen(
         }
     }
 
-    val galleryPermission = rememberPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+    val permission = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+
+    val galleryPermission = rememberPermission(permission) {
             status ->
         if(status.isGranted){
             galleryLauncher.launch(
@@ -106,7 +109,7 @@ fun SettingsScreen(
             )
         }
         else {
-            Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, Manifest.permission.READ_EXTERNAL_STORAGE, Toast.LENGTH_SHORT).show()
         }
     }
 
