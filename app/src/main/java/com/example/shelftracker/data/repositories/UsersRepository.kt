@@ -1,10 +1,14 @@
 package com.example.shelftracker.data.repositories
 
+import android.content.ContentResolver
+import android.net.Uri
+import com.example.camera.utils.saveImageToStorage
 import com.example.shelftracker.data.database.User
 import com.example.shelftracker.data.database.UsersDAO
 
 class UsersRepository (
-    private val usersDAO: UsersDAO
+    private val usersDAO: UsersDAO,
+    private val contentResolver: ContentResolver
 ){
     suspend fun upsert(user: User){
         usersDAO.upsert(user)
@@ -22,6 +26,16 @@ class UsersRepository (
     }
 
     suspend fun setProfilePic(user: String, photo: String){
-        usersDAO.setProfilePic(user, photo)
+        if (photo?.isNotEmpty() == true) {
+            val imageUri = saveImageToStorage(
+                Uri.parse(photo),
+                contentResolver,
+                "ShelfTracker_User${user}"
+            )
+            usersDAO.setProfilePic(user, imageUri.toString())
+
+        } else {
+            usersDAO.setProfilePic(user, photo)
+        }
     }
 }

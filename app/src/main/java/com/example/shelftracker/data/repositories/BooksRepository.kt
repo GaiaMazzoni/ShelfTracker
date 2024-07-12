@@ -49,6 +49,18 @@ class BooksRepository(
 
     suspend fun updatePagesRead(title: String, author: String, pagesRead: Int, user: String) = booksDAO.updatePagesRead(title, author, pagesRead, user)
 
-    suspend fun updateCover(title: String, author: String, photo: String, user: String) = booksDAO.updateCover(title, author, photo, user)
+    suspend fun updateCover(title: String, author: String, photo: String, user: String) {
+        if (photo?.isNotEmpty() == true) {
+            val imageUri = saveImageToStorage(
+                Uri.parse(photo),
+                contentResolver,
+                "ShelfTracker_Book${title}"
+            )
+            booksDAO.updateCover(title, author, imageUri.toString(), user)
+
+        } else {
+            booksDAO.updateCover(title, author, photo, user)
+        }
+    }
 
 }

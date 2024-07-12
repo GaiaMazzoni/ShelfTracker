@@ -87,7 +87,8 @@ val appModule = module {
 
     single {
         UsersRepository(
-            get<ShelfTrackerDatabase>().usersDAO()
+            get<ShelfTrackerDatabase>().usersDAO(),
+            get<Context>().applicationContext.contentResolver
         )
     }
 

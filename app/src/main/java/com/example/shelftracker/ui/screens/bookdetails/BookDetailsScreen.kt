@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -192,7 +193,6 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                     onClick = { showDialog = true },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                 ){
-                    Spacer(Modifier.size(16.dp))
                     val imageUri = Uri.parse(book.coverUri)
                     ImageWithPlaceholder(imageUri, Size.Lg)
                 }
