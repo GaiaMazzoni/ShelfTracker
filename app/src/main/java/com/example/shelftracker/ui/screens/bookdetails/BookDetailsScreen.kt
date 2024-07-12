@@ -103,7 +103,7 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
             )
         }
         else {
-            Toast.makeText(ctx, Manifest.permission.READ_EXTERNAL_STORAGE, Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 

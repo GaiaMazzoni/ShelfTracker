@@ -109,7 +109,7 @@ fun SettingsScreen(
             )
         }
         else {
-            Toast.makeText(context, Manifest.permission.READ_EXTERNAL_STORAGE, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
