@@ -66,11 +66,9 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    state: SettingsState,
-    onUsernameChanged: (String) -> Unit
+    settingsViewModel: SettingsViewModel,
+    themeViewModel: ThemeViewModel
 ) {
-    val themeViewModel = koinViewModel<ThemeViewModel>()
-    val settingsViewModel = koinViewModel<SettingsViewModel>()
     val themeState by themeViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)

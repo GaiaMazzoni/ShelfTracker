@@ -39,6 +39,8 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
+import com.example.shelftracker.ui.screens.badges.BadgesViewModel
+import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.theme.ShelfTrackerTheme
 import com.example.shelftracker.ui.theme.Theme
@@ -60,6 +62,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val booksVm = koinViewModel<BooksViewModel>()
+            val settingsVm = koinViewModel<SettingsViewModel>()
+            val badgesVm = koinViewModel<BadgesViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
             val themeState by themeViewModel.state.collectAsStateWithLifecycle()
 
@@ -134,12 +138,15 @@ class MainActivity : ComponentActivity() {
                                 ShelfTrackerNavGraph(
                                     navController,
                                     modifier = Modifier.padding(contentPadding),
-                                    booksVm
+                                    booksVm,
+                                    settingsVm,
+                                    badgesVm,
+                                    themeViewModel
                                 )
                             }
                             else{
-                                LocalContext.current.startActivity(Intent(LocalContext.current, LoginActivity::class.java))
                                 (LocalContext.current as Activity).finish()
+                                LocalContext.current.startActivity(Intent(LocalContext.current, LoginActivity::class.java))
                             }
                         }
                     }

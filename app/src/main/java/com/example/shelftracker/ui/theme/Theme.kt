@@ -2,6 +2,7 @@ package com.example.shelftracker.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -41,6 +42,7 @@ fun ShelfTrackerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    Log.d("THEME", isSystemInDarkTheme().toString())
     val colorScheme = when {
         darkTheme -> DarkColorScheme
         else -> LightColorScheme

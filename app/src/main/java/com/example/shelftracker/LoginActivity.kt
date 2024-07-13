@@ -36,6 +36,7 @@ class LoginActivity : ComponentActivity() {
                     Theme.System -> isSystemInDarkTheme()
                 }
             ) {
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
