@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -65,10 +66,9 @@ class MainActivity : ComponentActivity() {
             val settingsVm = koinViewModel<SettingsViewModel>()
             val badgesVm = koinViewModel<BadgesViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
-            val themeState by themeViewModel.state.collectAsStateWithLifecycle()
 
             ShelfTrackerTheme(
-                darkTheme = when (themeState.theme) {
+                darkTheme = when (themeViewModel.state.theme) {
                     Theme.Light -> false
                     Theme.Dark -> true
                     Theme.System -> isSystemInDarkTheme()

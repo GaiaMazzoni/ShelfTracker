@@ -42,7 +42,6 @@ fun ShelfTrackerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    Log.d("THEME", isSystemInDarkTheme().toString())
     val colorScheme = when {
         darkTheme -> DarkColorScheme
         else -> LightColorScheme

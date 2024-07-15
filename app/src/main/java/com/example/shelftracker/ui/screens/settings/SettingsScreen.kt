@@ -69,7 +69,6 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel,
     themeViewModel: ThemeViewModel
 ) {
-    val themeState by themeViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences(context.getString(R.string.userSharedPref), Context.MODE_PRIVATE)
     var showDialog by remember { mutableStateOf(false) }
@@ -221,7 +220,7 @@ fun SettingsScreen(
                     modifier = Modifier.padding(bottom = 8.dp),
                     style = MaterialTheme.typography.bodyLarge
                 )
-                ThemeChoice(themeState, themeViewModel::changeTheme)
+                ThemeChoice(themeViewModel.state, themeViewModel::changeTheme)
             }
         }
         item{

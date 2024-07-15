@@ -27,10 +27,9 @@ class LoginActivity : ComponentActivity() {
         setContent {
             val loginVm = koinViewModel<LoginViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
-            val themeState by themeViewModel.state.collectAsStateWithLifecycle()
 
             ShelfTrackerTheme(
-                darkTheme = when (themeState.theme) {
+                darkTheme = when (themeViewModel.state.theme) {
                     Theme.Light -> false
                     Theme.Dark -> true
                     Theme.System -> isSystemInDarkTheme()
