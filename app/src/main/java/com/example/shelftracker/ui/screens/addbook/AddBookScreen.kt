@@ -70,10 +70,12 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.BooksViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -98,7 +100,7 @@ fun AddBookScreen(
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
     val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
-
+    val coroutineScope = rememberCoroutineScope()
 
     fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
@@ -284,19 +286,7 @@ fun AddBookScreen(
         }
     }
 
-    LaunchedEffect(locationService.coordinates) {
-        if (locationService.coordinates == null) return@LaunchedEffect
-        if (!isOnline()) {
-            actions.setShowNoInternetConnectivitySnackbar(true)
-            return@LaunchedEffect
-        }
-        val place = osmDataSource.getPlace(locationService.coordinates!!)
-        actions.setLibrary(place.displayName)
-    }
-
     // UI
-
-
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
@@ -395,7 +385,16 @@ fun AddBookScreen(
                     label = { Text("Library") },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = ::requestLocation) {
+                        IconButton(onClick = {
+                            requestLocation()
+                            if (locationService.coordinates != null && isOnline()) {
+                                coroutineScope.launch {
+                                    val place = osmDataSource.getPlace(locationService.coordinates!!)
+                                    actions.setLibrary(place.displayName)
+                                }
+                            }
+
+                        }) {
                             Icon(Icons.Outlined.MyLocation, "Current location")
                         }
                     }
