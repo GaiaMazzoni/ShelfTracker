@@ -1,5 +1,6 @@
 package com.example.shelftracker.data.repositories
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -22,6 +23,7 @@ class ThemeRepository(
                 Theme.System
             }
         }
+
 
     suspend fun setTheme(theme: Theme) = dataStore.edit { it[THEME_KEY] = theme.toString() }
 }

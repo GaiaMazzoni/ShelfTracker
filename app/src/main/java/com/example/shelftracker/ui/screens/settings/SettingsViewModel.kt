@@ -13,16 +13,11 @@ import kotlinx.coroutines.launch
 data class SettingsState(val username: String)
 
 class SettingsViewModel (
-    private val repository: SettingsRepository,
     private val usersRepository: UsersRepository
 ) : ViewModel() {
     var state by mutableStateOf(SettingsState(""))
         private set
 
-    fun setUsername(value: String) {
-        state = SettingsState(value)
-        viewModelScope.launch { repository.setUsername(value) }
-    }
 
     fun getProfilePic(user: String) : String? {
         return usersRepository.getProfilePic(user)
@@ -32,10 +27,5 @@ class SettingsViewModel (
         usersRepository.setProfilePic(user, photo)
     }
 
-    init {
-        viewModelScope.launch {
-            state = SettingsState(repository.username.first())
-        }
-    }
 
 }

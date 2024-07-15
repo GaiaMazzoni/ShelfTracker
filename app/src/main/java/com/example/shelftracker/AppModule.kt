@@ -28,7 +28,7 @@ import com.example.shelftracker.ui.screens.login.LoginViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.screens.signup.SignupViewModel
 
-val Context.dataStore by preferencesDataStore("settings")
+val Context.dataStore by preferencesDataStore("themes")
 
 val appModule = module {
 
@@ -69,7 +69,6 @@ val appModule = module {
 
     single { LocationService(get()) }
 
-    single { SettingsRepository(get()) }
 
     single {
         BadgesRepository(
@@ -94,7 +93,7 @@ val appModule = module {
 
     viewModel { AddBookViewModel() }
 
-    viewModel { SettingsViewModel(get(), get())}
+    viewModel { SettingsViewModel(get())}
 
     viewModel { BooksViewModel(get(), get(), get())}
 
