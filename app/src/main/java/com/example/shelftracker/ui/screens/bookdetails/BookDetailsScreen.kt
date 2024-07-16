@@ -49,7 +49,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.camera.utils.rememberPermission
+import com.example.shelftracker.utils.rememberPermission
 import com.example.shelftracker.R
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.ui.BooksViewModel

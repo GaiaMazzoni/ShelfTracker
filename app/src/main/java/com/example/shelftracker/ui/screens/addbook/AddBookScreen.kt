@@ -44,8 +44,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.camera.utils.PermissionStatus
-import com.example.camera.utils.rememberPermission
+import com.example.shelftracker.utils.PermissionStatus
+import com.example.shelftracker.utils.rememberPermission
 import com.example.shelftracker.data.remote.OSMDataSource
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size

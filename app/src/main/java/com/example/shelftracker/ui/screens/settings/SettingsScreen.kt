@@ -50,7 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.example.camera.utils.rememberPermission
+import com.example.shelftracker.utils.rememberPermission
 import com.example.shelftracker.LoginActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
