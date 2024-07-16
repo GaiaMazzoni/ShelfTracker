@@ -11,7 +11,7 @@ data class AddBookState(
     val title: String = "",
     val author: String = "",
     var personalDeadline: String = "",
-    val library: String = "",
+    var library: String = "",
     var libraryDeadline: String = "",
     val totalPages: Int = 0,
     val imageUri: Uri = Uri.EMPTY,

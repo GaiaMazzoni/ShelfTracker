@@ -100,6 +100,7 @@ fun AddBookScreen(
     var showDialog by remember { mutableStateOf(false) }
     val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
     val coroutineScope = rememberCoroutineScope()
+    var location by remember { mutableStateOf("") }
 
     fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
@@ -234,6 +235,8 @@ fun AddBookScreen(
 
     val locationService = koinInject<LocationService>()
 
+
+
     val locationPermission = rememberPermission(
         Manifest.permission.ACCESS_COARSE_LOCATION
     ) { status ->
@@ -248,14 +251,6 @@ fun AddBookScreen(
                 actions.setShowLocationPermissionPermanentlyDeniedSnackbar(true)
 
             PermissionStatus.Unknown -> {}
-        }
-    }
-
-    fun requestLocation() {
-        if (locationPermission.status.isGranted) {
-            locationService.requestCurrentLocation()
-        } else {
-            locationPermission.launchPermissionRequest()
         }
     }
 
@@ -282,6 +277,32 @@ fun AddBookScreen(
         }
         if (intent.resolveActivity(ctx.applicationContext.packageManager) != null) {
             ctx.applicationContext.startActivity(intent)
+        }
+    }
+
+
+    fun requestLocation() {
+        if (locationPermission.status.isGranted) {
+            locationService.requestCurrentLocation()
+        } else {
+            locationPermission.launchPermissionRequest()
+        }
+    }
+
+
+
+    LaunchedEffect(locationService.coordinates){
+        if (locationService.coordinates != null && isOnline()) {
+            coroutineScope.launch {
+                val place = osmDataSource.getPlace(locationService.coordinates!!)
+
+                state.library = place.displayName
+                actions.setLibrary(place.displayName)
+                location = place.displayName
+            }
+        }
+        if(!isOnline()){
+            Toast.makeText(ctx, "Check your internet connection!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -379,24 +400,12 @@ fun AddBookScreen(
             }
             item{
                 OutlinedTextField( //Field per inserimento della biblioteca
-                    value = state.library,
-                    onValueChange = {actions.setLibrary(it)},
+                    value = location,
+                    onValueChange = {},
                     label = { Text("Library") },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = {
-                            requestLocation()
-                            if (locationService.coordinates != null && isOnline()) {
-                                coroutineScope.launch {
-                                    val place = osmDataSource.getPlace(locationService.coordinates!!)
-                                    actions.setLibrary(place.displayName)
-                                }
-                            }
-                            else{
-                                Toast.makeText(ctx, "Check your internet connection!", Toast.LENGTH_SHORT).show()
-                            }
-
-                        }) {
+                        IconButton(onClick = {requestLocation()}) {
                             Icon(Icons.Outlined.MyLocation, "Current location")
                         }
                     }

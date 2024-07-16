@@ -192,7 +192,7 @@ fun SettingsScreen(
                 }
                 Text(
                     text = "" + sharedPreferences.getString(context.getString(R.string.username), ""),
-                    modifier = Modifier.padding(32.dp, 54.dp),
+                    modifier = Modifier.padding(16.dp, 54.dp),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge
                 )

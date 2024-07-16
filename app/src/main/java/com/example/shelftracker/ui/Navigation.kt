@@ -83,6 +83,7 @@ fun ShelfTrackerNavGraph(
             composable(route) {
                 val addBookVm = koinViewModel<AddBookViewModel>()
                 val state by addBookVm.state.collectAsStateWithLifecycle()
+                state.library = ""
                 AddBookScreen(
                     state = state,
                     actions = addBookVm.actions,
