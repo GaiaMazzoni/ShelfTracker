@@ -2,7 +2,6 @@ package com.example.shelftracker.ui.screens.badges
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Badge
-import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon

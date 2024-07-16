@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.AlertDialog
@@ -47,22 +45,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.camera.utils.rememberPermission
 import com.example.shelftracker.LoginActivity
-import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.data.database.User
-import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
-import com.example.shelftracker.ui.screens.login.LoginViewModel
 import com.example.shelftracker.utils.rememberCameraLauncher
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

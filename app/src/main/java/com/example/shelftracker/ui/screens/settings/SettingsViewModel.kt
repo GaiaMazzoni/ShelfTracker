@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shelftracker.data.repositories.SettingsRepository
 import com.example.shelftracker.data.repositories.UsersRepository
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 data class SettingsState(val username: String)

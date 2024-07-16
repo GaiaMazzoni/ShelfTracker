@@ -4,13 +4,10 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
-import androidx.compose.ui.platform.LocalContext
 import com.example.camera.utils.saveImageToStorage
 import com.example.shelftracker.R
-import com.example.shelftracker.data.database.Badge
 import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.database.BooksDAO
-import com.example.shelftracker.data.database.User
 import kotlinx.coroutines.flow.Flow
 
 class BooksRepository(

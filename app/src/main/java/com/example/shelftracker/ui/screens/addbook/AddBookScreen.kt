@@ -56,7 +56,6 @@ import java.util.Calendar
 import android.app.DatePickerDialog
 import android.os.Build
 import android.provider.CalendarContract
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -392,6 +391,9 @@ fun AddBookScreen(
                                     val place = osmDataSource.getPlace(locationService.coordinates!!)
                                     actions.setLibrary(place.displayName)
                                 }
+                            }
+                            else{
+                                Toast.makeText(ctx, "Check your internet connection!", Toast.LENGTH_SHORT).show()
                             }
 
                         }) {

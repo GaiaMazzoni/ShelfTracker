@@ -20,7 +20,7 @@ object Notifications {
     fun sendNotification(channelName: String, title: String, text: String? = null){
         val notificationManager = appContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        var channelId = appContext.packageName
+        val channelId = appContext.packageName
         val channel = NotificationChannel(
             channelId,
             channelName,

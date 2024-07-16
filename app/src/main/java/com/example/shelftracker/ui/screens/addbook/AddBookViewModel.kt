@@ -1,7 +1,6 @@
 package com.example.shelftracker.ui.screens.addbook
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.shelftracker.data.database.Book
 import kotlinx.coroutines.flow.MutableStateFlow

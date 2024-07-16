@@ -1,6 +1,5 @@
 package com.example.shelftracker.ui.composables
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,7 +12,6 @@ import androidx.compose.ui.graphics.drawscope.rotate
 
 data class ChartData(val value: Float, val label: String, val color: Color)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PieChart( //Composable di un grafico a torta
     data: MutableList<ChartData>,

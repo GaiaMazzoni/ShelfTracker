@@ -14,7 +14,7 @@ class ShelfTrackerApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@ShelfTrackerApplication)
-            modules(com.example.shelftracker.appModule)
+            modules(appModule)
         }
     }
 }

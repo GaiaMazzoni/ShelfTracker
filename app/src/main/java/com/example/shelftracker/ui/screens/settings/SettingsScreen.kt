@@ -50,16 +50,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.camera.utils.rememberPermission
 import com.example.shelftracker.LoginActivity
-import com.example.shelftracker.MainActivity
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
 import com.example.shelftracker.ui.theme.Theme
 import com.example.shelftracker.utils.rememberCameraLauncher
-import org.koin.androidx.compose.koinViewModel
 
 
 

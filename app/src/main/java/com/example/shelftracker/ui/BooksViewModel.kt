@@ -1,8 +1,6 @@
 package com.example.shelftracker.ui
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shelftracker.data.database.Book

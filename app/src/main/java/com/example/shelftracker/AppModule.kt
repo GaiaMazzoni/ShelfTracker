@@ -5,12 +5,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.shelftracker.data.database.Book
 import com.example.shelftracker.data.database.ShelfTrackerDatabase
 import com.example.shelftracker.data.remote.OSMDataSource
 import com.example.shelftracker.data.repositories.BadgesRepository
 import com.example.shelftracker.data.repositories.BooksRepository
-import com.example.shelftracker.data.repositories.SettingsRepository
 import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.utils.LocationService
@@ -36,7 +34,7 @@ val appModule = module {
     single { ThemeRepository(get()) }
     viewModel { ThemeViewModel(get()) }
 
-    var instance: ShelfTrackerDatabase? = null
+    val instance: ShelfTrackerDatabase? = null
     single{
 
         instance ?: synchronized(this) {

@@ -44,7 +44,7 @@ fun StatisticsScreen (
         Pair("Biography", Color(0xFF5E4fA2))
     )
 
-    Scaffold () {
+    Scaffold {
         contentPadding ->
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),

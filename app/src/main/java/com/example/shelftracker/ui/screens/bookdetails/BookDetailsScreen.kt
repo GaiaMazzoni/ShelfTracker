@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -350,7 +349,7 @@ fun BookDetailsScreen(booksVm: BooksViewModel, book: Book, navController: NavHos
                                         booksVm.updatePagesRead(book.title, book.author, pagesRead, user)
                                     }
                                 }
-                                pagesRead = 0;
+                                pagesRead = 0
                                 pagesReadText = "0"
                             },
                         ) {
