@@ -56,6 +56,7 @@ import java.util.Calendar
 import android.app.DatePickerDialog
 import android.os.Build
 import android.provider.CalendarContract
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -74,7 +75,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.BooksViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -99,8 +102,7 @@ fun AddBookScreen(
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
     val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
-    val coroutineScope = rememberCoroutineScope()
-    var location by remember { mutableStateOf("") }
+    var place by remember { mutableStateOf("") }
 
     fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
@@ -236,7 +238,6 @@ fun AddBookScreen(
     val locationService = koinInject<LocationService>()
 
 
-
     val locationPermission = rememberPermission(
         Manifest.permission.ACCESS_COARSE_LOCATION
     ) { status ->
@@ -291,20 +292,16 @@ fun AddBookScreen(
 
 
 
-    LaunchedEffect(locationService.coordinates){
-        if (locationService.coordinates != null && isOnline()) {
-            coroutineScope.launch {
-                val place = osmDataSource.getPlace(locationService.coordinates!!)
-
-                state.library = place.displayName
-                actions.setLibrary(place.displayName)
-                location = place.displayName
-            }
+    LaunchedEffect(locationService.coordinates) {
+        if (locationService.coordinates == null) return@LaunchedEffect
+        if (!isOnline()) {
+            actions.setShowNoInternetConnectivitySnackbar(true)
+            return@LaunchedEffect
         }
-        if(!isOnline()){
-            Toast.makeText(ctx, "Check your internet connection!", Toast.LENGTH_SHORT).show()
-        }
+        place = osmDataSource.getPlace(locationService.coordinates!!).displayName
+        Log.d("LOCATION", place)
     }
+
 
     // UI
     Scaffold(
@@ -400,12 +397,15 @@ fun AddBookScreen(
             }
             item{
                 OutlinedTextField( //Field per inserimento della biblioteca
-                    value = location,
-                    onValueChange = {},
+                    value = state.library,
+                    onValueChange = { actions.setLibrary(it) },
                     label = { Text("Library") },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = {requestLocation()}) {
+                        IconButton(onClick = {
+                            requestLocation()
+                            actions.setLibrary(place)
+                        }) {
                             Icon(Icons.Outlined.MyLocation, "Current location")
                         }
                     }

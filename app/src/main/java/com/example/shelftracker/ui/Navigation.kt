@@ -53,10 +53,11 @@ fun ShelfTrackerNavGraph(
     booksVm: BooksViewModel,
     settingsVm : SettingsViewModel,
     badgesVm : BadgesViewModel,
-    themesVm : ThemeViewModel
+    themesVm : ThemeViewModel,
+    addBookVm : AddBookViewModel
 ) {
     val booksState by booksVm.state.collectAsStateWithLifecycle()
-
+    val state by addBookVm.state.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
@@ -65,7 +66,7 @@ fun ShelfTrackerNavGraph(
     ) {
         with(ShelfTrackerRoute.Home) {
             composable(route) {
-                HomeScreen(booksState, navController, booksVm)
+                HomeScreen(booksState, navController, booksVm, addBookVm)
             }
         }
         with(ShelfTrackerRoute.BookDetails) {
@@ -81,9 +82,6 @@ fun ShelfTrackerNavGraph(
         }
         with(ShelfTrackerRoute.AddBook) {
             composable(route) {
-                val addBookVm = koinViewModel<AddBookViewModel>()
-                val state by addBookVm.state.collectAsStateWithLifecycle()
-                state.library = ""
                 AddBookScreen(
                     state = state,
                     actions = addBookVm.actions,

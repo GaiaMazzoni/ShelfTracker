@@ -17,7 +17,7 @@ import com.example.shelftracker.ui.theme.ShelfTrackerTheme
 import com.example.shelftracker.ui.theme.Theme
 import org.koin.androidx.compose.koinViewModel
 
-class SignupActivity : ComponentActivity() {
+class  SignupActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences: SharedPreferences = getSharedPreferences(getString(R.string.userSharedPref), Context.MODE_PRIVATE)

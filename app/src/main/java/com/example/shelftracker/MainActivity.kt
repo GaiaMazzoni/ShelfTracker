@@ -33,6 +33,7 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerNavGraph
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.AppBar
+import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 import com.example.shelftracker.ui.screens.badges.BadgesViewModel
 import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
             val settingsVm = koinViewModel<SettingsViewModel>()
             val badgesVm = koinViewModel<BadgesViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
+            val addBookVm = koinViewModel<AddBookViewModel>()
 
             ShelfTrackerTheme(
                 darkTheme = when (themeViewModel.state.theme) {
@@ -134,7 +136,8 @@ class MainActivity : ComponentActivity() {
                                     booksVm,
                                     settingsVm,
                                     badgesVm,
-                                    themeViewModel
+                                    themeViewModel,
+                                    addBookVm
                                 )
                             }
                             else{

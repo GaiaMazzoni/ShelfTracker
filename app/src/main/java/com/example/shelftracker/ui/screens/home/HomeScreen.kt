@@ -3,6 +3,7 @@ package com.example.shelftracker.ui.screens.home
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,10 +53,11 @@ import com.example.shelftracker.ui.BooksViewModel
 import com.example.shelftracker.ui.ShelfTrackerRoute
 import com.example.shelftracker.ui.composables.ImageWithPlaceholder
 import com.example.shelftracker.ui.composables.Size
+import com.example.shelftracker.ui.screens.addbook.AddBookViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: BooksViewModel) {
+fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: BooksViewModel, addBookVm: AddBookViewModel) {
 
     //Genres variables
 
@@ -206,7 +208,11 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
-                onClick = { navController.navigate(ShelfTrackerRoute.AddBook.route) }
+                onClick = {
+                    addBookVm.actions.setLibrary("")
+                    //Log.d("LOCATION", addBookVm.state.value.library)
+                    navController.navigate(ShelfTrackerRoute.AddBook.route)
+                }
             ) {
                 Icon(Icons.Outlined.Add, "Add Book", tint = MaterialTheme.colorScheme.onSecondary)
             }
