@@ -70,14 +70,10 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.example.shelftracker.R
 import com.example.shelftracker.ui.BooksViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -89,9 +85,9 @@ fun AddBookScreen(
     actions: AddBookActions,
     onSubmit: () -> Unit,
     navController: NavHostController,
-    booksVm : BooksViewModel
+    booksVm : BooksViewModel,
+    locationService : LocationService
 ) {
-    val ctx = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     var personalDeadline by remember { mutableStateOf("") }
@@ -102,7 +98,9 @@ fun AddBookScreen(
     var selectedText by remember { mutableStateOf("Genre") }
     var showDialog by remember { mutableStateOf(false) }
     val formatter = DateTimeFormatter.ofPattern("d/M/yyyy")
-    var place by remember { mutableStateOf("") }
+    var place by remember { mutableStateOf("")}
+    var clicked by remember { mutableStateOf(false) }
+
 
     fun showDatePicker(deadlineType: String){
         val calendar = Calendar.getInstance()
@@ -141,7 +139,7 @@ fun AddBookScreen(
         if (status.isGranted) {
             cameraLauncher.captureImage()
         } else {
-            Toast.makeText(ctx, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -235,9 +233,6 @@ fun AddBookScreen(
 
     // Location
 
-    val locationService = koinInject<LocationService>()
-
-
     val locationPermission = rememberPermission(
         Manifest.permission.ACCESS_COARSE_LOCATION
     ) { status ->
@@ -264,7 +259,7 @@ fun AddBookScreen(
     val osmDataSource = koinInject<OSMDataSource>()
 
     fun isOnline(): Boolean {
-        val connectivityManager = ctx
+        val connectivityManager = context
             .applicationContext
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
@@ -276,8 +271,8 @@ fun AddBookScreen(
         val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        if (intent.resolveActivity(ctx.applicationContext.packageManager) != null) {
-            ctx.applicationContext.startActivity(intent)
+        if (intent.resolveActivity(context.applicationContext.packageManager) != null) {
+            context.applicationContext.startActivity(intent)
         }
     }
 
@@ -293,13 +288,16 @@ fun AddBookScreen(
 
 
     LaunchedEffect(locationService.coordinates) {
-        if (locationService.coordinates == null) return@LaunchedEffect
         if (!isOnline()) {
             actions.setShowNoInternetConnectivitySnackbar(true)
             return@LaunchedEffect
         }
-        place = osmDataSource.getPlace(locationService.coordinates!!).displayName
-        Log.d("LOCATION", place)
+        if(locationService.coordinates != null){
+            place = osmDataSource.getPlace(locationService.coordinates!!).displayName
+            Log.d("LOCATION", place)
+            actions.setLibrary(place)
+        }
+
     }
 
 
@@ -321,6 +319,7 @@ fun AddBookScreen(
                     }
                     onSubmit()
                     navController.navigateUp()
+                    clicked = false
                 }
             ) {
                 Icon(Icons.Outlined.Check, "Add Book", tint = MaterialTheme.colorScheme.onSecondary)
@@ -397,14 +396,14 @@ fun AddBookScreen(
             }
             item{
                 OutlinedTextField( //Field per inserimento della biblioteca
-                    value = state.library,
+                    value = if(clicked) state.library else "",
                     onValueChange = { actions.setLibrary(it) },
                     label = { Text("Library") },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = {
+                            clicked = true
                             requestLocation()
-                            actions.setLibrary(place)
                         }) {
                             Icon(Icons.Outlined.MyLocation, "Current location")
                         }
@@ -537,9 +536,9 @@ fun AddBookScreen(
                 duration = SnackbarDuration.Long
             )
             if (res == SnackbarResult.ActionPerformed) {
-                ctx.startActivity(
+                context.startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.fromParts("package", ctx.packageName, null)
+                        data = Uri.fromParts("package", context.packageName, null)
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     }
                 )

@@ -20,6 +20,7 @@ import com.example.shelftracker.ui.screens.settings.SettingsViewModel
 import com.example.shelftracker.ui.screens.bookdetails.BookDetailsScreen
 import com.example.shelftracker.ui.screens.settings.ThemeViewModel
 import com.example.shelftracker.ui.screens.statistics.StatisticsScreen
+import com.example.shelftracker.utils.LocationService
 import org.koin.androidx.compose.koinViewModel
 
 sealed class ShelfTrackerRoute(
@@ -54,7 +55,8 @@ fun ShelfTrackerNavGraph(
     settingsVm : SettingsViewModel,
     badgesVm : BadgesViewModel,
     themesVm : ThemeViewModel,
-    addBookVm : AddBookViewModel
+    addBookVm : AddBookViewModel,
+    locationService : LocationService
 ) {
     val booksState by booksVm.state.collectAsStateWithLifecycle()
     val state by addBookVm.state.collectAsStateWithLifecycle()
@@ -87,7 +89,8 @@ fun ShelfTrackerNavGraph(
                     actions = addBookVm.actions,
                     onSubmit = { booksVm.addBook(state.toBook()) },
                     navController = navController,
-                    booksVm = booksVm
+                    booksVm = booksVm,
+                    locationService
                 )
             }
         }

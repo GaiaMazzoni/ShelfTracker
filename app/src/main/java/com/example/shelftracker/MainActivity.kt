@@ -43,6 +43,7 @@ import com.example.shelftracker.utils.LocationService
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     private lateinit var locationService: LocationService
@@ -61,6 +62,7 @@ class MainActivity : ComponentActivity() {
             val badgesVm = koinViewModel<BadgesViewModel>()
             val themeViewModel = koinViewModel<ThemeViewModel>()
             val addBookVm = koinViewModel<AddBookViewModel>()
+            val locationService = koinInject<LocationService>()
 
             ShelfTrackerTheme(
                 darkTheme = when (themeViewModel.state.theme) {
@@ -137,7 +139,8 @@ class MainActivity : ComponentActivity() {
                                     settingsVm,
                                     badgesVm,
                                     themeViewModel,
-                                    addBookVm
+                                    addBookVm,
+                                    locationService
                                 )
                             }
                             else{

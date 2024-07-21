@@ -210,7 +210,14 @@ fun HomeScreen(state: BooksState, navController: NavHostController, booksVm: Boo
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     addBookVm.actions.setLibrary("")
-                    //Log.d("LOCATION", addBookVm.state.value.library)
+                    addBookVm.actions.setAuthor("")
+                    addBookVm.actions.setTitle("")
+                    addBookVm.actions.setImageUri(Uri.EMPTY)
+                    addBookVm.actions.setPersonalDeadline("")
+                    addBookVm.actions.setLibraryDeadline("")
+                    addBookVm.actions.setPagesRead(0)
+                    addBookVm.actions.setTotalPages(0)
+                    addBookVm.actions.setGenre("")
                     navController.navigate(ShelfTrackerRoute.AddBook.route)
                 }
             ) {
@@ -343,4 +350,8 @@ fun NoItemsPlaceholder(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyLarge
         )
     }
+}
+
+fun reset(){
+
 }
