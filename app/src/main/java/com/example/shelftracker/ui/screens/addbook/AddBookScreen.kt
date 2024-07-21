@@ -309,7 +309,7 @@ fun AddBookScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     if (!state.canSubmit) {
-                        if(state.library.isNotBlank() && libraryDeadline.isBlank()) Toast.makeText(context, "If you insert a library you must insert the deadline!", Toast.LENGTH_SHORT).show()
+                        if(state.library.isNotBlank() && clicked && libraryDeadline.isBlank()) Toast.makeText(context, "If you insert a library you must insert the deadline!", Toast.LENGTH_SHORT).show()
                         else Toast.makeText(context, "Check your fields: title, author and pages can't be empty!", Toast.LENGTH_SHORT).show()
                         return@FloatingActionButton
                     }
